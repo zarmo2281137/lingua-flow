@@ -36,7 +36,7 @@ export default function VocabularyPage() {
 
           <div className="flex items-center gap-2 bg-white/10 backdrop-blur-md px-4 py-2.5 rounded-2xl border border-white/15 self-start md:self-auto text-xs font-bold text-white">
             <Sparkles className="w-4 h-4 text-amber-400" />
-            <span>100+ відібраних слів та ідіом</span>
+            <span>2400+ відібраних слів та виразів</span>
           </div>
         </div>
       </div>

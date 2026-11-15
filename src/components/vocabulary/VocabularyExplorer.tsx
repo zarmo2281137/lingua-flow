@@ -125,7 +125,7 @@ export const VocabularyExplorer: React.FC<VocabularyExplorerProps> = ({ words, c
             />
           </div>
           <div className="flex items-center justify-between text-[11px] text-indigo-300">
-            <span>Ціль: 100 слів</span>
+            <span>Всього: {words.length} слів</span>
             <span>{percentLearned}% завершено</span>
           </div>
         </div>
