@@ -30,5 +30,9 @@ scripts/test*
 # vercel
 .vercel
 
+# python
+__pycache__/
+*.pyc
+
 # typescript
 *.tsbuildinfo

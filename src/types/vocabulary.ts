@@ -7,7 +7,9 @@ export type PartOfSpeech =
   | 'adverb'
   | 'phrasal_verb'
   | 'idiom'
-  | 'phrase';
+  | 'phrase'
+  | 'preposition'
+  | 'conjunction';
 
 export interface VocabularyWord {
   id: string;
