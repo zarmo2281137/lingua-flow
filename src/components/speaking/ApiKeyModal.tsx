@@ -1,13 +1,14 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { X, Volume2, Headphones, CheckCircle2, Database, RefreshCw } from 'lucide-react';
+import { X, Volume2, Headphones, CheckCircle2, Database, RefreshCw, RotateCcw } from 'lucide-react';
 import {
   getUserStats,
   updateUserStats,
   getStudentSyncId,
   setStudentSyncId,
   syncWithCloud,
+  resetUserProgress,
 } from '@/utils/storage';
 import { HUMAN_VOICES, playHumanAudio, stopSpeech } from '@/utils/speech';
 import { isSupabaseConfigured } from '@/utils/supabase';
@@ -27,6 +28,11 @@ export const ApiKeyModal: React.FC<ApiKeyModalProps> = ({ isOpen, onClose }) => 
   const [isSyncing, setIsSyncing] = useState(false);
   const [syncMsg, setSyncMsg] = useState<{ ok: boolean; text: string } | null>(null);
   const [hasSupabase, setHasSupabase] = useState(false);
+
+  // Reset progress state
+  const [isResetting, setIsResetting] = useState(false);
+  const [resetConfirm, setResetConfirm] = useState(false);
+  const [resetMsg, setResetMsg] = useState<string | null>(null);
 
   useEffect(() => {
     if (isOpen) {
@@ -51,6 +57,19 @@ export const ApiKeyModal: React.FC<ApiKeyModalProps> = ({ isOpen, onClose }) => 
     const res = await syncWithCloud(studentId);
     setSyncMsg({ ok: res.ok, text: res.message });
     setIsSyncing(false);
+  };
+
+  const handleReset = async () => {
+    setIsResetting(true);
+    try {
+      await resetUserProgress(true);
+      setResetMsg('Прогрес успішно анульовано (0 XP, 0 слів, A1)');
+      setResetConfirm(false);
+    } catch (e: any) {
+      setResetMsg('Помилка при анулюванні');
+    } finally {
+      setIsResetting(false);
+    }
   };
 
   const handleTestVoice = () => {
@@ -245,6 +264,56 @@ export const ApiKeyModal: React.FC<ApiKeyModalProps> = ({ isOpen, onClose }) => 
                 </p>
               </div>
             )}
+          </div>
+
+          {/* Reset Progress Section */}
+          <div className="space-y-2.5 pt-3 border-t border-slate-100 dark:border-slate-800">
+            <label className="text-xs font-bold uppercase tracking-wider text-rose-600 dark:text-rose-400 flex items-center gap-1.5">
+              <RotateCcw className="w-3.5 h-3.5 text-rose-500" />
+              <span>Анулювання прогресу</span>
+            </label>
+
+            <div className="p-3.5 rounded-2xl bg-rose-50/70 dark:bg-rose-950/30 border border-rose-200/80 dark:border-rose-900/40 text-xs space-y-2.5">
+              <p className="text-slate-600 dark:text-slate-300 text-[11px] leading-relaxed">
+                Скидає всі вивчені слова, XP, виконані тести, уроки та сценарії до початкового стану (0 XP, рівень A1) як локально, так і в хмарі Supabase.
+              </p>
+
+              {resetMsg && (
+                <p className="text-[11px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/50 p-2 rounded-lg">
+                  {resetMsg}
+                </p>
+              )}
+
+              {!resetConfirm ? (
+                <button
+                  type="button"
+                  onClick={() => setResetConfirm(true)}
+                  className="w-full py-2 px-3 rounded-xl bg-white dark:bg-slate-800 border border-rose-300 dark:border-rose-800 text-rose-600 dark:text-rose-400 font-bold text-xs hover:bg-rose-50 dark:hover:bg-rose-900/30 transition shadow-sm flex items-center justify-center gap-1.5"
+                >
+                  <RotateCcw className="w-3.5 h-3.5" />
+                  <span>Скинути мій прогрес...</span>
+                </button>
+              ) : (
+                <div className="flex items-center gap-2 pt-1">
+                  <button
+                    type="button"
+                    onClick={handleReset}
+                    disabled={isResetting}
+                    className="flex-1 py-2 px-3 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs transition shadow-sm flex items-center justify-center gap-1.5 disabled:opacity-50"
+                  >
+                    <RotateCcw className={`w-3.5 h-3.5 ${isResetting ? 'animate-spin' : ''}`} />
+                    <span>{isResetting ? 'Скидання...' : 'Так, анулювати все!'}</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setResetConfirm(false)}
+                    className="py-2 px-3 rounded-xl bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 font-semibold text-xs hover:bg-slate-300 transition"
+                  >
+                    Скасувати
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
         </div>
 

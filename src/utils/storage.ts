@@ -11,8 +11,8 @@ const STORAGE_KEY = 'lingua_flow_user_data_v1';
 const STUDENT_ID_KEY = 'lingua_flow_student_id';
 
 export const DEFAULT_USER_STATS: UserStats = {
-  xp: 120,
-  streakDays: 3,
+  xp: 0,
+  streakDays: 0,
   lastActiveDate: new Date().toISOString().split('T')[0],
   currentLevel: 'A1',
   placementTestDone: false,
@@ -223,3 +223,37 @@ export const isWordLearned = (wordId: string): boolean => {
   const stats = getUserStats();
   return Boolean(stats.learnedWords?.includes(wordId));
 };
+
+export const resetUserProgress = async (clearCloud: boolean = true): Promise<UserStats> => {
+  const current = getUserStats();
+  const resetStats: UserStats = {
+    xp: 0,
+    streakDays: 0,
+    lastActiveDate: new Date().toISOString().split('T')[0],
+    currentLevel: 'A1',
+    placementTestDone: false,
+    dismissedPlacementPrompt: false,
+    completedTopics: [],
+    quizScores: {},
+    completedScenarios: [],
+    learnedWords: [],
+    geminiApiKey: current.geminiApiKey || '',
+    voiceSpeed: current.voiceSpeed || 1.0,
+    preferredVoice: current.preferredVoice || 'Puck',
+  };
+
+  if (typeof window !== 'undefined') {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(resetStats));
+    window.dispatchEvent(new CustomEvent('lingua_flow_stats_updated', { detail: resetStats }));
+
+    if (clearCloud && isSupabaseConfigured()) {
+      const studentId = getStudentSyncId();
+      await saveCloudProgress(resetStats, studentId).catch((err) => {
+        console.warn('Failed to reset cloud progress:', err);
+      });
+    }
+  }
+
+  return resetStats;
+};
+
