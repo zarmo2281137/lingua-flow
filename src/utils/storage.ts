@@ -20,6 +20,7 @@ export const DEFAULT_USER_STATS: UserStats = {
   completedTopics: [],
   quizScores: {},
   completedScenarios: [],
+  learnedWords: [],
   geminiApiKey: '',
   voiceSpeed: 1.0,
   preferredVoice: 'Puck',
@@ -92,6 +93,10 @@ export const mergeStats = (local: UserStats, cloud: UserStats): UserStats => {
     new Set([...(local.completedScenarios || []), ...(cloud.completedScenarios || [])])
   );
 
+  const allLearnedWords = Array.from(
+    new Set([...(local.learnedWords || []), ...(cloud.learnedWords || [])])
+  );
+
   return {
     ...local,
     xp: Math.max(local.xp || 0, cloud.xp || 0),
@@ -102,6 +107,7 @@ export const mergeStats = (local: UserStats, cloud: UserStats): UserStats => {
     completedTopics: allCompletedTopics,
     quizScores: mergedScores,
     completedScenarios: allScenarios,
+    learnedWords: allLearnedWords,
     voiceSpeed: cloud.voiceSpeed || local.voiceSpeed || 1.0,
     preferredVoice: cloud.preferredVoice || local.preferredVoice || 'Puck',
   };
@@ -190,4 +196,30 @@ export const completeTopic = (topicId: string, scorePercent: number): void => {
 
 export const setLevel = (level: LevelCode): void => {
   updateUserStats((prev) => ({ ...prev, currentLevel: level }));
+};
+
+export const toggleLearnedWord = (wordId: string): boolean => {
+  let isLearnedNow = false;
+  updateUserStats((prev) => {
+    const set = new Set(prev.learnedWords || []);
+    if (set.has(wordId)) {
+      set.delete(wordId);
+      isLearnedNow = false;
+      return { ...prev, learnedWords: Array.from(set) };
+    } else {
+      set.add(wordId);
+      isLearnedNow = true;
+      return {
+        ...prev,
+        learnedWords: Array.from(set),
+        xp: prev.xp + 5, // Reward 5 XP for learning a word
+      };
+    }
+  });
+  return isLearnedNow;
+};
+
+export const isWordLearned = (wordId: string): boolean => {
+  const stats = getUserStats();
+  return Boolean(stats.learnedWords?.includes(wordId));
 };

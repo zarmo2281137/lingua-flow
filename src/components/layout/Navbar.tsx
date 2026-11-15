@@ -13,6 +13,7 @@ import {
   Menu,
   X,
   Volume2,
+  BookMarked,
 } from 'lucide-react';
 import { getUserStats, syncWithCloud } from '@/utils/storage';
 import { isSupabaseConfigured } from '@/utils/supabase';
@@ -49,6 +50,7 @@ export const Navbar: React.FC = () => {
 
   const navLinks = [
     { href: '/', label: 'Уроки & Конспекти', icon: BookOpen },
+    { href: '/vocabulary', label: 'Словник', icon: BookMarked },
     { href: '/practice', label: 'Тренажер тестів', icon: Zap },
     { href: '/speaking', label: 'Speaking AI', icon: Mic, highlight: true },
     { href: '/placement', label: 'Тест рівня', icon: Compass },

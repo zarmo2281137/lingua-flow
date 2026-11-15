@@ -3,15 +3,16 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { BookOpen, Mic, Compass, Zap } from 'lucide-react';
+import { BookOpen, Mic, Compass, Zap, BookMarked } from 'lucide-react';
 
 export const MobileNav: React.FC = () => {
   const pathname = usePathname();
 
   const tabs = [
     { href: '/', label: 'Уроки', icon: BookOpen },
+    { href: '/vocabulary', label: 'Словник', icon: BookMarked },
+    { href: '/speaking', label: 'Speaking', icon: Mic, special: true },
     { href: '/practice', label: 'Тести', icon: Zap },
-    { href: '/speaking', label: 'Speaking AI', icon: Mic, special: true },
     { href: '/placement', label: 'Рівень', icon: Compass },
   ];
 
