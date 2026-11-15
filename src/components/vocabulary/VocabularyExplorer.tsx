@@ -32,6 +32,12 @@ export const VocabularyExplorer: React.FC<VocabularyExplorerProps> = ({ words, c
     const stats = getUserStats();
     return new Set(stats.learnedWords || []);
   });
+  const [displayLimit, setDisplayLimit] = useState(60);
+
+  // Reset display limit when filtering
+  React.useEffect(() => {
+    setDisplayLimit(60);
+  }, [selectedLevel, selectedCategory, searchQuery]);
 
   // Filtered words
   const filteredWords = useMemo(() => {
@@ -48,6 +54,10 @@ export const VocabularyExplorer: React.FC<VocabularyExplorerProps> = ({ words, c
       return matchLevel && matchCategory && matchSearch;
     });
   }, [words, selectedLevel, selectedCategory, searchQuery]);
+
+  const displayedWords = useMemo(() => {
+    return filteredWords.slice(0, displayLimit);
+  }, [filteredWords, displayLimit]);
 
   const handleSpeak = (text: string, id: string) => {
     if (playingWordId === id) {
@@ -197,7 +207,7 @@ export const VocabularyExplorer: React.FC<VocabularyExplorerProps> = ({ words, c
 
       {/* Words Grid */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {filteredWords.map((item) => {
+        {displayedWords.map((item) => {
           const isLearned = learnedSet.has(item.id);
           const isPlaying = playingWordId === item.id;
 
@@ -295,6 +305,24 @@ export const VocabularyExplorer: React.FC<VocabularyExplorerProps> = ({ words, c
           );
         })}
       </div>
+
+      {/* Load More Button if results exceed displayLimit */}
+      {filteredWords.length > displayLimit && (
+        <div className="flex flex-col items-center justify-center pt-2 pb-4 gap-2">
+          <p className="text-xs text-slate-500 dark:text-slate-400">
+            Показано {displayedWords.length} з {filteredWords.length} слів
+          </p>
+          <button
+            onClick={() => setDisplayLimit((prev) => prev + 60)}
+            className="px-6 py-3 rounded-2xl bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white font-bold text-xs shadow-md shadow-indigo-600/20 transition-all flex items-center gap-2"
+          >
+            <span>Показати ще 60 слів</span>
+            <span className="px-2 py-0.5 rounded-lg bg-white/20 text-[10px]">
+              +{Math.min(60, filteredWords.length - displayedWords.length)}
+            </span>
+          </button>
+        </div>
+      )}
 
       {filteredWords.length === 0 && (
         <div className="p-12 text-center bg-white dark:bg-slate-800 rounded-3xl border border-slate-200 dark:border-slate-800 space-y-3">
