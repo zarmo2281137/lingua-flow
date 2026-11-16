@@ -16,9 +16,10 @@ import { getUserStats } from '@/utils/storage';
 interface TheoryNotesProps {
   notes: LessonNote;
   onGoToQuiz: () => void;
+  onGoToExam?: () => void;
 }
 
-export const TheoryNotes: React.FC<TheoryNotesProps> = ({ notes, onGoToQuiz }) => {
+export const TheoryNotes: React.FC<TheoryNotesProps> = ({ notes, onGoToQuiz, onGoToExam }) => {
   const [playingWord, setPlayingWord] = useState<string | null>(null);
 
   const handleSpeak = (text: string) => {
@@ -279,7 +280,7 @@ export const TheoryNotes: React.FC<TheoryNotesProps> = ({ notes, onGoToQuiz }) =
           </span>
         </div>
 
-        <div className="grid gap-3 sm:grid-cols-3 pt-1">
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4 pt-1">
           {/* Step 1: Practice Tests */}
           <div className="p-4 rounded-xl bg-white dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700/80 flex flex-col justify-between gap-3">
             <div className="space-y-1.5">
@@ -291,7 +292,7 @@ export const TheoryNotes: React.FC<TheoryNotesProps> = ({ notes, onGoToQuiz }) =
                 40 практичних тестів
               </h4>
               <p className="text-[11px] text-zinc-500 dark:text-zinc-400 leading-relaxed">
-                Пройдіть усі 40 різнопланових тестів (тест, пропуски, складання речень) з результатом від 80%.
+                Пройдіть 40 різнопланових тестів (тест, пропуски, порядок слів) для первинного закріплення.
               </p>
             </div>
             <button
@@ -303,11 +304,34 @@ export const TheoryNotes: React.FC<TheoryNotesProps> = ({ notes, onGoToQuiz }) =
             </button>
           </div>
 
-          {/* Step 2: Speaking AI */}
+          {/* Step 2: Topic Exam (КР) */}
+          <div className="p-4 rounded-xl bg-white dark:bg-zinc-800/50 border border-amber-300 dark:border-amber-900/60 flex flex-col justify-between gap-3">
+            <div className="space-y-1.5">
+              <div className="flex items-center justify-between">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-amber-500 font-mono">Крок 2</span>
+                <span className="w-2 h-2 rounded-full bg-amber-500" />
+              </div>
+              <h4 className="font-semibold text-zinc-900 dark:text-zinc-100 text-xs sm:text-sm">
+                Контрольна робота (КР)
+              </h4>
+              <p className="text-[11px] text-zinc-500 dark:text-zinc-400 leading-relaxed">
+                Складіть підсумкову контрольну з 15 завдань на 80%+ для офіційного зарахування теми (+100 XP).
+              </p>
+            </div>
+            <button
+              onClick={onGoToExam || onGoToQuiz}
+              className="w-full py-2 px-3 rounded-lg bg-amber-500 hover:bg-amber-600 text-zinc-950 font-semibold text-xs flex items-center justify-center gap-1.5 transition shadow-sm"
+            >
+              <span>Скласти КР</span>
+              <ArrowRight className="w-3 h-3" />
+            </button>
+          </div>
+
+          {/* Step 3: Speaking AI */}
           <div className="p-4 rounded-xl bg-white dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700/80 flex flex-col justify-between gap-3">
             <div className="space-y-1.5">
               <div className="flex items-center justify-between">
-                <span className="text-[11px] font-bold uppercase tracking-wider text-zinc-400 font-mono">Крок 2</span>
+                <span className="text-[11px] font-bold uppercase tracking-wider text-zinc-400 font-mono">Крок 3</span>
                 <span className="w-2 h-2 rounded-full bg-emerald-500" />
               </div>
               <h4 className="font-semibold text-zinc-900 dark:text-zinc-100 text-xs sm:text-sm">
@@ -326,18 +350,18 @@ export const TheoryNotes: React.FC<TheoryNotesProps> = ({ notes, onGoToQuiz }) =
             </a>
           </div>
 
-          {/* Step 3: Vocabulary */}
+          {/* Step 4: Vocabulary */}
           <div className="p-4 rounded-xl bg-white dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700/80 flex flex-col justify-between gap-3">
             <div className="space-y-1.5">
               <div className="flex items-center justify-between">
-                <span className="text-[11px] font-bold uppercase tracking-wider text-zinc-400 font-mono">Крок 3</span>
+                <span className="text-[11px] font-bold uppercase tracking-wider text-zinc-400 font-mono">Крок 4</span>
                 <span className="w-2 h-2 rounded-full bg-purple-500" />
               </div>
               <h4 className="font-semibold text-zinc-900 dark:text-zinc-100 text-xs sm:text-sm">
                 Лексика та флеш-картки
               </h4>
               <p className="text-[11px] text-zinc-500 dark:text-zinc-400 leading-relaxed">
-                Повторіть слова у Словнику з аудіоозвучкою для довготривалого запамʼятовування.
+                Повторіть слова у Словнику з аудіоозвучкою для довготривалого закріплення.
               </p>
             </div>
             <a

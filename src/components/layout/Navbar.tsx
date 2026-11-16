@@ -14,6 +14,7 @@ import {
   X,
   BookMarked,
   CheckCircle2,
+  Headphones,
 } from 'lucide-react';
 import { getUserStats, syncWithCloud } from '@/utils/storage';
 import { isSupabaseConfigured } from '@/utils/supabase';
@@ -51,6 +52,7 @@ export const Navbar: React.FC = () => {
   const navLinks = [
     { href: '/', label: 'Конспекти', icon: BookOpen },
     { href: '/vocabulary', label: 'Словник', icon: BookMarked },
+    { href: '/listening', label: 'Аудіювання', icon: Headphones, badge: 'Audio' },
     { href: '/practice', label: 'Практика', icon: Zap },
     { href: '/speaking', label: 'Speaking AI', icon: Mic, badge: 'Voice' },
     { href: '/placement', label: 'Тест рівня', icon: Compass },

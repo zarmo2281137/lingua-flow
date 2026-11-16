@@ -18,6 +18,7 @@ interface QuizEngineProps {
   topicTitleEn: string;
   exercises: Exercise[];
   onRestart: () => void;
+  onGoToExam?: () => void;
 }
 
 interface TestResultState {
@@ -31,6 +32,7 @@ export const QuizEngine: React.FC<QuizEngineProps> = ({
   topicTitleEn,
   exercises,
   onRestart,
+  onGoToExam,
 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
@@ -498,6 +500,29 @@ export const QuizEngine: React.FC<QuizEngineProps> = ({
               +{correctTotal * 10} XP зароблено
             </span>
           </div>
+
+          {onGoToExam && (
+            <div className="p-4 rounded-xl bg-amber-500/10 border border-amber-300 dark:border-amber-900/60 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div className="space-y-0.5">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-amber-600 dark:text-amber-400 font-mono">
+                  Фінальна атестація теми
+                </span>
+                <h4 className="font-semibold text-zinc-900 dark:text-white text-sm">
+                  Контрольна робота (КР) готова до проходження!
+                </h4>
+                <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                  15 контрольних питань, прохідний бал 80%, офіційне зарахування теми та +100 XP.
+                </p>
+              </div>
+              <button
+                onClick={onGoToExam}
+                className="px-5 py-2.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-white dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-100 font-semibold text-xs flex items-center justify-center gap-2 transition shrink-0 shadow-sm"
+              >
+                <span>Скласти контрольну (КР)</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
+          )}
 
           <div className="pt-2 grid gap-3 sm:grid-cols-2">
             <a

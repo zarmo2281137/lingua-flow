@@ -97,6 +97,20 @@ export const mergeStats = (local: UserStats, cloud: UserStats): UserStats => {
     new Set([...(local.learnedWords || []), ...(cloud.learnedWords || [])])
   );
 
+  const allCompletedListening = Array.from(
+    new Set([...(local.completedListeningTracks || []), ...(cloud.completedListeningTracks || [])])
+  );
+
+  const mergedListeningScores: Record<string, number> = { ...(local.listeningScores || {}) };
+  for (const [trackId, score] of Object.entries(cloud.listeningScores || {})) {
+    mergedListeningScores[trackId] = Math.max(mergedListeningScores[trackId] || 0, score);
+  }
+
+  const mergedTopicExamScores = {
+    ...(local.topicExamScores || {}),
+    ...(cloud.topicExamScores || {}),
+  };
+
   return {
     ...local,
     xp: Math.max(local.xp || 0, cloud.xp || 0),
@@ -108,6 +122,9 @@ export const mergeStats = (local: UserStats, cloud: UserStats): UserStats => {
     quizScores: mergedScores,
     completedScenarios: allScenarios,
     learnedWords: allLearnedWords,
+    completedListeningTracks: allCompletedListening,
+    listeningScores: mergedListeningScores,
+    topicExamScores: mergedTopicExamScores,
     voiceSpeed: cloud.voiceSpeed || local.voiceSpeed || 1.0,
     preferredVoice: cloud.preferredVoice || local.preferredVoice || 'Puck',
   };
@@ -222,6 +239,66 @@ export const toggleLearnedWord = (wordId: string): boolean => {
 export const isWordLearned = (wordId: string): boolean => {
   const stats = getUserStats();
   return Boolean(stats.learnedWords?.includes(wordId));
+};
+
+export const saveTopicExamScore = (
+  topicId: string,
+  score: number,
+  total: number,
+  passed: boolean
+): void => {
+  const percentage = Math.round((score / total) * 100);
+  const xpReward = passed ? 100 : score * 5;
+
+  updateUserStats((prev) => {
+    const existingScores = prev.topicExamScores || {};
+    const previousBest = existingScores[topicId]?.percentage || 0;
+
+    const updatedExamScores = {
+      ...existingScores,
+      [topicId]: {
+        score,
+        total,
+        percentage: Math.max(previousBest, percentage),
+        passed: passed || Boolean(existingScores[topicId]?.passed),
+        date: new Date().toISOString().split('T')[0],
+      },
+    };
+
+    const completed = new Set(prev.completedTopics || []);
+    if (passed) {
+      completed.add(topicId);
+    }
+
+    return {
+      ...prev,
+      xp: prev.xp + xpReward,
+      completedTopics: Array.from(completed),
+      topicExamScores: updatedExamScores,
+    };
+  });
+};
+
+export const saveListeningProgress = (
+  trackId: string,
+  scorePct: number
+): void => {
+  const xpReward = scorePct >= 80 ? 50 : 25;
+
+  updateUserStats((prev) => {
+    const completed = new Set(prev.completedListeningTracks || []);
+    completed.add(trackId);
+
+    const scores = { ...(prev.listeningScores || {}) };
+    scores[trackId] = Math.max(scores[trackId] || 0, scorePct);
+
+    return {
+      ...prev,
+      xp: prev.xp + xpReward,
+      completedListeningTracks: Array.from(completed),
+      listeningScores: scores,
+    };
+  });
 };
 
 export const resetUserProgress = async (clearCloud: boolean = true): Promise<UserStats> => {

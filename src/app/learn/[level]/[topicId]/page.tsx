@@ -7,7 +7,8 @@ import { TOPICS, findTopicById } from '@/data/courses';
 import { getTopicExercises } from '@/data/topicExercises';
 import { TheoryNotes } from '@/components/lesson/TheoryNotes';
 import { QuizEngine } from '@/components/lesson/QuizEngine';
-import { ArrowLeft, ArrowRight, BookOpen, HelpCircle } from 'lucide-react';
+import { TopicExam } from '@/components/lesson/TopicExam';
+import { ArrowLeft, ArrowRight, BookOpen, HelpCircle, FileCheck } from 'lucide-react';
 
 export default function LessonPage() {
   const params = useParams();
@@ -15,12 +16,12 @@ export default function LessonPage() {
   const router = useRouter();
 
   const topicId = params.topicId as string;
-  const initialTab = (searchParams.get('tab') as 'notes' | 'quiz') || 'notes';
-  const [activeTab, setActiveTab] = useState<'notes' | 'quiz'>(initialTab);
+  const initialTab = (searchParams.get('tab') as 'notes' | 'quiz' | 'exam') || 'notes';
+  const [activeTab, setActiveTab] = useState<'notes' | 'quiz' | 'exam'>(initialTab);
 
   useEffect(() => {
     const tabParam = searchParams.get('tab');
-    if (tabParam === 'notes' || tabParam === 'quiz') {
+    if (tabParam === 'notes' || tabParam === 'quiz' || tabParam === 'exam') {
       setActiveTab(tabParam);
     }
   }, [searchParams]);
@@ -51,7 +52,7 @@ export default function LessonPage() {
   const topicExercises = getTopicExercises(topic.id);
   const activeExercises = topicExercises.length > 0 ? topicExercises : topic.exercises;
 
-  const handleTabChange = (tab: 'notes' | 'quiz') => {
+  const handleTabChange = (tab: 'notes' | 'quiz' | 'exam') => {
     setActiveTab(tab);
     router.replace(`/learn/${params.level}/${topic.id}?tab=${tab}`);
   };
@@ -82,10 +83,10 @@ export default function LessonPage() {
 
       {/* Tabs Control */}
       <div className="flex justify-center">
-        <div className="inline-flex p-1 bg-zinc-100 dark:bg-zinc-800/80 rounded-xl w-full max-w-sm">
+        <div className="inline-flex p-1 bg-zinc-100 dark:bg-zinc-800/80 rounded-xl w-full max-w-md">
           <button
             onClick={() => handleTabChange('notes')}
-            className={`flex-1 py-2 px-3 rounded-lg text-xs font-medium flex items-center justify-center gap-2 transition ${
+            className={`flex-1 py-2 px-3 rounded-lg text-xs font-medium flex items-center justify-center gap-1.5 transition ${
               activeTab === 'notes'
                 ? 'bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 shadow-sm font-semibold'
                 : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100'
@@ -97,7 +98,7 @@ export default function LessonPage() {
 
           <button
             onClick={() => handleTabChange('quiz')}
-            className={`flex-1 py-2 px-3 rounded-lg text-xs font-medium flex items-center justify-center gap-2 transition ${
+            className={`flex-1 py-2 px-3 rounded-lg text-xs font-medium flex items-center justify-center gap-1.5 transition ${
               activeTab === 'quiz'
                 ? 'bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 shadow-sm font-semibold'
                 : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100'
@@ -106,18 +107,48 @@ export default function LessonPage() {
             <HelpCircle className="w-3.5 h-3.5" />
             <span>Практика ({activeExercises.length})</span>
           </button>
+
+          <button
+            onClick={() => handleTabChange('exam')}
+            className={`flex-1 py-2 px-3 rounded-lg text-xs font-medium flex items-center justify-center gap-1.5 transition ${
+              activeTab === 'exam'
+                ? 'bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 shadow-sm font-semibold'
+                : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100'
+            }`}
+          >
+            <FileCheck className="w-3.5 h-3.5 text-amber-500" />
+            <span>Контрольна (КР)</span>
+          </button>
         </div>
       </div>
 
       {/* Tab Contents */}
       {activeTab === 'notes' ? (
-        <TheoryNotes notes={topic.notes} onGoToQuiz={() => handleTabChange('quiz')} />
-      ) : (
+        <TheoryNotes
+          notes={topic.notes}
+          onGoToQuiz={() => handleTabChange('quiz')}
+          onGoToExam={() => handleTabChange('exam')}
+        />
+      ) : activeTab === 'quiz' ? (
         <QuizEngine
           topicId={topic.id}
           topicTitleEn={topic.titleEn}
           exercises={activeExercises}
           onRestart={() => handleTabChange('quiz')}
+          onGoToExam={() => handleTabChange('exam')}
+        />
+      ) : (
+        <TopicExam
+          topic={topic}
+          onBackToPractice={() => handleTabChange('quiz')}
+          onBackToTheory={() => handleTabChange('notes')}
+          onNextLesson={
+            nextLesson
+              ? () => {
+                  router.push(`/learn/${nextLesson.level.toLowerCase()}/${nextLesson.id}?tab=notes`);
+                }
+              : undefined
+          }
         />
       )}
 

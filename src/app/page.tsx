@@ -16,6 +16,7 @@ import {
   CheckCircle2,
   BookOpen,
   Layers,
+  Headphones,
 } from 'lucide-react';
 
 export default function HomePage() {
@@ -131,6 +132,14 @@ export default function HomePage() {
             </Link>
 
             <Link
+              href="/listening"
+              className="py-2.5 px-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white hover:bg-zinc-50 dark:bg-[#12141A] dark:hover:bg-zinc-850 text-zinc-800 dark:text-zinc-200 font-semibold text-xs sm:text-sm transition flex items-center gap-2"
+            >
+              <Headphones className="w-4 h-4 text-blue-500" />
+              <span>Аудіювання (20 треків)</span>
+            </Link>
+
+            <Link
               href="/vocabulary"
               className="py-2.5 px-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white hover:bg-zinc-50 dark:bg-[#12141A] dark:hover:bg-zinc-850 text-zinc-800 dark:text-zinc-200 font-semibold text-xs sm:text-sm transition flex items-center gap-2"
             >
@@ -152,7 +161,7 @@ export default function HomePage() {
         <div className="mt-8 pt-6 border-t border-zinc-100 dark:border-zinc-850 grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs">
           <div>
             <span className="text-zinc-400 block text-[11px]">Повна програма</span>
-            <span className="font-bold text-zinc-900 dark:text-white text-sm">80 уроків (по 16 на рівень)</span>
+            <span className="font-bold text-zinc-900 dark:text-white text-sm">80 уроків + 80 КР</span>
           </div>
           <div>
             <span className="text-zinc-400 block text-[11px]">Словниковий банк</span>
@@ -160,11 +169,11 @@ export default function HomePage() {
           </div>
           <div>
             <span className="text-zinc-400 block text-[11px]">Практикум тестів</span>
-            <span className="font-bold text-zinc-900 dark:text-white text-sm">200 тестових завдань</span>
+            <span className="font-bold text-zinc-900 dark:text-white text-sm">3 200 практичних тестів</span>
           </div>
           <div>
-            <span className="text-zinc-400 block text-[11px]">Вимова</span>
-            <span className="font-bold text-zinc-900 dark:text-white text-sm">Google Studio TTS</span>
+            <span className="text-zinc-400 block text-[11px]">Аудіювання</span>
+            <span className="font-bold text-zinc-900 dark:text-white text-sm">20 треків • 240+ вправ</span>
           </div>
         </div>
       </div>
