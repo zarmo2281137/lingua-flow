@@ -1,0 +1,478 @@
+[
+  {
+    "id": "a1-to-be-present",
+    "level": "A1",
+    "lessonNumber": 1,
+    "titleEn": "Demonstratives: This, That, These, Those",
+    "titleUk": "Вказівні займенники: This, That, These, Those"
+  },
+  {
+    "id": "a1-possessives",
+    "level": "A1",
+    "lessonNumber": 4,
+    "titleEn": "Articles: A, An & Zero Article",
+    "titleUk": "Артиклі: A, An та коли вони не потрібні"
+  },
+  {
+    "id": "a1-there-is-are",
+    "level": "A1",
+    "lessonNumber": 6,
+    "titleEn": "There is & There are",
+    "titleUk": "Конструкція There is / There are"
+  },
+  {
+    "id": "a1-prepositions-place",
+    "level": "A1",
+    "lessonNumber": 7,
+    "titleEn": "Prepositions of Place: In, On, Under, At",
+    "titleUk": "Прийменники місця: In, On, Under, Behind, Next to"
+  },
+  {
+    "id": "a1-plurals-irregular",
+    "level": "A1",
+    "lessonNumber": 8,
+    "titleEn": "Noun Plurals: Regular & Irregular",
+    "titleUk": "Множина іменників: Правило -s та головні винятки"
+  },
+  {
+    "id": "a1-present-simple-positive",
+    "level": "A1",
+    "lessonNumber": 9,
+    "titleEn": "Present Simple — Daily Habits & Rules",
+    "titleUk": "Present Simple — Ствердження та правило -s/-es"
+  },
+  {
+    "id": "a1-present-simple-questions",
+    "level": "A1",
+    "lessonNumber": 10,
+    "titleEn": "Present Simple — Questions & Negatives",
+    "titleUk": "Present Simple — Заперечення та запитання (Do / Does)"
+  },
+  {
+    "id": "a1-adverbs-frequency",
+    "level": "A1",
+    "lessonNumber": 11,
+    "titleEn": "Adverbs of Frequency: Always, Often, Never",
+    "titleUk": "Прислівники частоти: Always, Usually, Often, Never"
+  },
+  {
+    "id": "a1-wh-questions",
+    "level": "A1",
+    "lessonNumber": 12,
+    "titleEn": "Wh- Questions: Who, What, Where, When, Why",
+    "titleUk": "Спеціальні запитання: Who, What, Where, When, Why, How"
+  },
+  {
+    "id": "a1-modal-can",
+    "level": "A1",
+    "lessonNumber": 13,
+    "titleEn": "Telling Time, Days & Time Prepositions",
+    "titleUk": "Годинник, дні тижня та прийменники часу: At, On, In"
+  },
+  {
+    "id": "a1-present-continuous",
+    "level": "A1",
+    "lessonNumber": 15,
+    "titleEn": "Present Continuous — Actions Right Now",
+    "titleUk": "Present Continuous — Дії в момент мовлення (am/is/are + -ing)"
+  },
+  {
+    "id": "a1-level-review",
+    "level": "A1",
+    "lessonNumber": 16,
+    "titleEn": "Level A1 Review & Checkpoint",
+    "titleUk": "Підсумковий огляд та закріплення рівня A1"
+  },
+  {
+    "id": "a2-past-simple-regular",
+    "level": "A2",
+    "lessonNumber": 1,
+    "titleEn": "Past Simple — Regular Verbs & -ED",
+    "titleUk": "Past Simple — Правильні дієслова та закінчення -ed"
+  },
+  {
+    "id": "a2-past-simple-irregular",
+    "level": "A2",
+    "lessonNumber": 2,
+    "titleEn": "Past Simple — Irregular Verbs",
+    "titleUk": "Past Simple — Неправильні дієслова (went, bought, saw)"
+  },
+  {
+    "id": "a2-past-simple-questions",
+    "level": "A2",
+    "lessonNumber": 3,
+    "titleEn": "Past Simple — Questions & Negatives (Did)",
+    "titleUk": "Past Simple — Питання та заперечення з Did / Didn\\"
+  },
+  {
+    "id": "a2-past-continuous",
+    "level": "A2",
+    "lessonNumber": 4,
+    "titleEn": "Past Continuous — Ongoing Past Actions",
+    "titleUk": "Past Continuous — Тривала дія в минулому (was/were + -ing)"
+  },
+  {
+    "id": "a2-past-cont-vs-past-simple",
+    "level": "A2",
+    "lessonNumber": 5,
+    "titleEn": "Past Continuous vs Past Simple (When & While)",
+    "titleUk": "Past Continuous проти Past Simple (Коли одна дія перервала іншу)"
+  },
+  {
+    "id": "a2-used-to",
+    "level": "A2",
+    "lessonNumber": 6,
+    "titleEn": "Used To — Past Habits",
+    "titleUk": "Конструкція Used To — Колишні звички та стани"
+  },
+  {
+    "id": "a2-comparatives",
+    "level": "A2",
+    "lessonNumber": 7,
+    "titleEn": "Be Going To — Intentions & Predictions",
+    "titleUk": "Be Going To — Заплановані наміри та очевидні прогнози"
+  },
+  {
+    "id": "a2-future-will",
+    "level": "A2",
+    "lessonNumber": 10,
+    "titleEn": "Future Simple (Will) — Spontaneous Decisions & Promises",
+    "titleUk": "Future Simple (Will) — Спонтанні рішення та обіцянки"
+  },
+  {
+    "id": "a2-present-continuous-future",
+    "level": "A2",
+    "lessonNumber": 11,
+    "titleEn": "Present Continuous for Fixed Arrangements",
+    "titleUk": "Present Continuous для залізних домовленостей"
+  },
+  {
+    "id": "a2-future-comparison",
+    "level": "A2",
+    "lessonNumber": 12,
+    "titleEn": "Future Tenses Comparison: Will vs Going To vs Continuous",
+    "titleUk": "Порівняння способів вираження майбутнього: Will проти Going To та Continuous"
+  },
+  {
+    "id": "a2-have-to-must",
+    "level": "A2",
+    "lessonNumber": 13,
+    "titleEn": "Verb Patterns: Gerund (-ing) or Infinitive (to)",
+    "titleUk": "Дієслова з герундієм (-ing) або інфінітивом (to)"
+  },
+  {
+    "id": "a2-zero-first-conditional",
+    "level": "A2",
+    "lessonNumber": 16,
+    "titleEn": "Zero & First Conditionals (Real Conditions)",
+    "titleUk": "Zero та First Conditionals — Реальні умови (If it rains, we will stay)"
+  },
+  {
+    "id": "b1-present-perfect-intro",
+    "level": "B1",
+    "lessonNumber": 1,
+    "titleEn": "Present Perfect — Experience & Life Results",
+    "titleUk": "Present Perfect — Життєвий досвід та результат (have/has + V3)"
+  },
+  {
+    "id": "b1-present-perfect-markers",
+    "level": "B1",
+    "lessonNumber": 2,
+    "titleEn": "Markers: Already, Yet, Just, Ever, Never",
+    "titleUk": "Слова-маркери: Already, Yet, Just, Ever, Never"
+  },
+  {
+    "id": "b1-for-since",
+    "level": "B1",
+    "lessonNumber": 3,
+    "titleEn": "Duration: For vs Since",
+    "titleUk": "Тривалість стану: For проти Since"
+  },
+  {
+    "id": "b1-present-perfect-vs-past-simple",
+    "level": "B1",
+    "lessonNumber": 4,
+    "titleEn": "Present Perfect vs Past Simple",
+    "titleUk": "Present Perfect проти Past Simple: Головна битва часів"
+  },
+  {
+    "id": "b1-present-perfect-continuous",
+    "level": "B1",
+    "lessonNumber": 5,
+    "titleEn": "Present Perfect Continuous — Duration of Actions",
+    "titleUk": "Present Perfect Continuous — Тривалість дії (have been doing)"
+  },
+  {
+    "id": "b1-past-perfect",
+    "level": "B1",
+    "lessonNumber": 6,
+    "titleEn": "Past Perfect — Action Before Another Past Action",
+    "titleUk": "Past Perfect — Передминулий час (had + V3)"
+  },
+  {
+    "id": "b1-narrative-tenses",
+    "level": "B1",
+    "lessonNumber": 7,
+    "titleEn": "Narrative Tenses: Storytelling Masterclass",
+    "titleUk": "Звʼязні розповіді історій: Поєднання Past Simple, Continuous & Perfect"
+  },
+  {
+    "id": "b1-defining-relative-clauses",
+    "level": "B1",
+    "lessonNumber": 8,
+    "titleEn": "Defining Relative Clauses: Who, Which, That, Where",
+    "titleUk": "Означальні підрядні речення: Who, Which, That, Where"
+  },
+  {
+    "id": "b1-second-conditional",
+    "level": "B1",
+    "lessonNumber": 9,
+    "titleEn": "Second Conditional — Imaginary Situations & Dreams",
+    "titleUk": "Second Conditional — Нереальні мрії та гіпотези (If I had money...)"
+  },
+  {
+    "id": "b1-passive-voice-simple",
+    "level": "B1",
+    "lessonNumber": 10,
+    "titleEn": "Passive Voice — Present & Past Simple",
+    "titleUk": "Passive Voice — Пасивний стан (is made, was built)"
+  },
+  {
+    "id": "b1-modal-deduction-present",
+    "level": "B1",
+    "lessonNumber": 11,
+    "titleEn": "Too vs Enough: Degrees & Modifiers",
+    "titleUk": "Конструкції Too та Enough (too late, strong enough)"
+  },
+  {
+    "id": "b1-phrasal-verbs-daily",
+    "level": "B1",
+    "lessonNumber": 13,
+    "titleEn": "Top Daily Phrasal Verbs",
+    "titleUk": "Топ фразових дієслів на щодень: Give up, Look for, Turn on"
+  },
+  {
+    "id": "b1-reported-speech-intro",
+    "level": "B1",
+    "lessonNumber": 14,
+    "titleEn": "Reported Speech: Shifting Tenses",
+    "titleUk": "Непряма мова — Як переказати чужі слова (Backshift)"
+  },
+  {
+    "id": "b1-question-tags",
+    "level": "B1",
+    "lessonNumber": 15,
+    "titleEn": "Level B1 Review & Fluency Checkpoint",
+    "titleUk": "Підсумковий практикум рівня B1: Вільне спілкування"
+  },
+  {
+    "id": "b2-future-continuous-perfect",
+    "level": "B2",
+    "lessonNumber": 1,
+    "titleEn": "Future Continuous & Future Perfect",
+    "titleUk": "Future Continuous та Future Perfect (will be doing, will have done)"
+  },
+  {
+    "id": "b2-passive-all-tenses",
+    "level": "B2",
+    "lessonNumber": 2,
+    "titleEn": "Passive Voice in Continuous & Perfect Aspects",
+    "titleUk": "Пасивний стан у всіх часах (is being done, has been done)"
+  },
+  {
+    "id": "b2-causative-have-get",
+    "level": "B2",
+    "lessonNumber": 3,
+    "titleEn": "Causative: Have / Get Something Done",
+    "titleUk": "Каузативні конструкції: Have / Get something done"
+  },
+  {
+    "id": "b2-passive-reporting-verbs",
+    "level": "B2",
+    "lessonNumber": 4,
+    "titleEn": "Passive with Reporting Verbs: It is said that...",
+    "titleUk": "Безособовий пасив: It is said that... / He is believed to be..."
+  },
+  {
+    "id": "b2-third-conditional",
+    "level": "B2",
+    "lessonNumber": 5,
+    "titleEn": "Third Conditional — Regrets About the Past",
+    "titleUk": "Third Conditional — Нереальні умови в минулому та жалі"
+  },
+  {
+    "id": "b2-mixed-conditionals",
+    "level": "B2",
+    "lessonNumber": 6,
+    "titleEn": "Mixed Conditionals — Past Cause, Present Result",
+    "titleUk": "Змішані умовні речення: Минула причина — теперішній наслідок"
+  },
+  {
+    "id": "b2-wishes-regrets",
+    "level": "B2",
+    "lessonNumber": 7,
+    "titleEn": "Wish & If Only: Present and Past Regrets",
+    "titleUk": "Конструкції Wish та If Only: Як висловити жаль"
+  },
+  {
+    "id": "b2-modals-past-deduction",
+    "level": "B2",
+    "lessonNumber": 8,
+    "titleEn": "Gerund vs Infinitive: Meaning Shifts",
+    "titleUk": "Герундій чи інфінітив: Зміна значення дієслів"
+  },
+  {
+    "id": "b2-advanced-linkers",
+    "level": "B2",
+    "lessonNumber": 10,
+    "titleEn": "Advanced Discourse Markers & Concession",
+    "titleUk": "Звʼязуючі слова: Although, Despite, Whereas, Furthermore"
+  },
+  {
+    "id": "b2-non-defining-relative",
+    "level": "B2",
+    "lessonNumber": 11,
+    "titleEn": "Non-Defining Relative Clauses (With Commas)",
+    "titleUk": "Неозначальні підрядні речення: Правило ком в англійській мові"
+  },
+  {
+    "id": "b2-reported-speech-patterns",
+    "level": "B2",
+    "lessonNumber": 12,
+    "titleEn": "Advanced Reporting Verbs: Warn, Accuse, Insist",
+    "titleUk": "Складні звітні дієслова: Warn, Accuse, Remind, Apologise"
+  },
+  {
+    "id": "b2-business-correspondence",
+    "level": "B2",
+    "lessonNumber": 13,
+    "titleEn": "Formal & Professional Business Correspondence",
+    "titleUk": "Ділове листування: Етикет, шаблони та тон комунікації"
+  },
+  {
+    "id": "b2-essential-idioms-b2",
+    "level": "B2",
+    "lessonNumber": 14,
+    "titleEn": "Essential Idioms for Discussions & Negotiations",
+    "titleUk": "Ключові ідіоми для дискусій: Cut corners, Hit the nail, Play devil\\"
+  },
+  {
+    "id": "b2-hedging-politeness",
+    "level": "B2",
+    "lessonNumber": 15,
+    "titleEn": "Hedging & Softening: Diplomatic Disagreement",
+    "titleUk": "Хеджування: Мистецтво ввічливої та делікатної незгоди"
+  },
+  {
+    "id": "b2-b2-mastery",
+    "level": "B2",
+    "lessonNumber": 16,
+    "titleEn": "Level B2 Capstone & Exam Readiness",
+    "titleUk": "Підсумковий практикум B2: Готовність до міжнародних іспитів (IELTS / FCE)"
+  },
+  {
+    "id": "c1-negative-inversion",
+    "level": "C1",
+    "lessonNumber": 1,
+    "titleEn": "Negative Inversion: Never, Seldom, Under No Circumstances",
+    "titleUk": "Негативна інверсія: Зворотний порядок слів для підсилення"
+  },
+  {
+    "id": "c1-cleft-sentences-what",
+    "level": "C1",
+    "lessonNumber": 2,
+    "titleEn": "Cleft Sentences with WHAT and ALL",
+    "titleUk": "Розщеплені речення (Cleft Sentences) з What та All"
+  },
+  {
+    "id": "c1-cleft-sentences-it",
+    "level": "C1",
+    "lessonNumber": 3,
+    "titleEn": "It-Cleft Sentences: It was John who...",
+    "titleUk": "Конструкція It-Cleft: It was John who solved the problem"
+  },
+  {
+    "id": "c1-fronting-adverbials",
+    "level": "C1",
+    "lessonNumber": 4,
+    "titleEn": "Fronting & Locative Inversion",
+    "titleUk": "Фронтинг та просторова інверсія: Up went the prices"
+  },
+  {
+    "id": "c1-participle-clauses-active",
+    "level": "C1",
+    "lessonNumber": 5,
+    "titleEn": "Active Participle Clauses: Having done, Doing",
+    "titleUk": "Активні дієприкметникові звороти: Having finished, Feeling tired"
+  },
+  {
+    "id": "c1-participle-clauses-passive",
+    "level": "C1",
+    "lessonNumber": 6,
+    "titleEn": "Passive Participle Clauses: Seen from above...",
+    "titleUk": "Пасивні дієприкметникові звороти: Rejected by the board..."
+  },
+  {
+    "id": "c1-inverted-conditionals",
+    "level": "C1",
+    "lessonNumber": 7,
+    "titleEn": "Inverted Conditionals: Had I known, Were you to ask",
+    "titleUk": "Інвертовані умовні речення без IF: Had I known, Should you need"
+  },
+  {
+    "id": "c1-subjunctive-mood",
+    "level": "C1",
+    "lessonNumber": 8,
+    "titleEn": "The Subjunctive Mood: I insist that he BE present",
+    "titleUk": "Англійський сослагальний нахил (Subjunctive): It is vital that she study"
+  },
+  {
+    "id": "c1-advanced-modal-idioms",
+    "level": "C1",
+    "lessonNumber": 9,
+    "titleEn": "Academic & C1 Collocations: Blatantly obvious, Utterly devastated",
+    "titleUk": "Вишукані колокації рівня C1: Blatantly obvious, Heavily influenced"
+  },
+  {
+    "id": "c1-nuanced-concession",
+    "level": "C1",
+    "lessonNumber": 11,
+    "titleEn": "Nuanced Concession: Be that as it may, Much as I...",
+    "titleUk": "Тонкі звороти поступки: Difficult though it is, Be that as it may"
+  },
+  {
+    "id": "c1-nominalization",
+    "level": "C1",
+    "lessonNumber": 12,
+    "titleEn": "Nominalization in Academic & Executive Style",
+    "titleUk": "Номіналізація: Перетворення дієслів на іменники"
+  },
+  {
+    "id": "c1-diplomatic-language",
+    "level": "C1",
+    "lessonNumber": 13,
+    "titleEn": "Diplomatic & High-Level Negotiation Language",
+    "titleUk": "Дипломатичний регістр та ведення високих перемовин"
+  },
+  {
+    "id": "c1-advanced-metaphors-idioms",
+    "level": "C1",
+    "lessonNumber": 14,
+    "titleEn": "Sophisticated Idioms, Euphemisms & Metaphors",
+    "titleUk": "Евфемізми та рідкісні метафори: Bite the bullet, Elephant in the room"
+  },
+  {
+    "id": "c1-stylistic-devices",
+    "level": "C1",
+    "lessonNumber": 15,
+    "titleEn": "Stylistic Devices: Litotes, Chiasmus & Understatement",
+    "titleUk": "Стилістичні фігури: Літота, Хіазм та Британський Understatement"
+  },
+  {
+    "id": "c1-capstone",
+    "level": "C1",
+    "lessonNumber": 16,
+    "titleEn": "Level C1 Capstone: Executive English Mastery",
+    "titleUk": "Фінальний майстер-клас C1: Досконале володіння англійською мовою"
+  }
+]

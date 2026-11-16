@@ -9,6 +9,7 @@ import {
   ArrowRight,
   Check,
   X,
+  Headphones,
 } from 'lucide-react';
 import { playHumanAudio, stopSpeech } from '@/utils/speech';
 import { getUserStats } from '@/utils/storage';
@@ -17,9 +18,10 @@ interface TheoryNotesProps {
   notes: LessonNote;
   onGoToQuiz: () => void;
   onGoToExam?: () => void;
+  onGoToListening?: () => void;
 }
 
-export const TheoryNotes: React.FC<TheoryNotesProps> = ({ notes, onGoToQuiz, onGoToExam }) => {
+export const TheoryNotes: React.FC<TheoryNotesProps> = ({ notes, onGoToQuiz, onGoToExam, onGoToListening }) => {
   const [playingWord, setPlayingWord] = useState<string | null>(null);
 
   const handleSpeak = (text: string) => {
@@ -271,7 +273,7 @@ export const TheoryNotes: React.FC<TheoryNotesProps> = ({ notes, onGoToQuiz, onG
                 Домашнє завдання для закріплення теми
               </h3>
               <p className="text-xs text-zinc-500 dark:text-zinc-400">
-                Виконайте 3 кроки для повного засвоєння граматичного матеріалу
+                Виконайте 5 послідовних кроків для повного опанування граматичного матеріалу
               </p>
             </div>
           </div>
@@ -280,7 +282,7 @@ export const TheoryNotes: React.FC<TheoryNotesProps> = ({ notes, onGoToQuiz, onG
           </span>
         </div>
 
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4 pt-1">
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5 pt-1">
           {/* Step 1: Practice Tests */}
           <div className="p-4 rounded-xl bg-white dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700/80 flex flex-col justify-between gap-3">
             <div className="space-y-1.5">
@@ -304,18 +306,41 @@ export const TheoryNotes: React.FC<TheoryNotesProps> = ({ notes, onGoToQuiz, onG
             </button>
           </div>
 
-          {/* Step 2: Topic Exam (КР) */}
+          {/* Step 2: Listening Hub (Аудіювання) */}
+          <div className="p-4 rounded-xl bg-white dark:bg-zinc-800/50 border border-blue-300 dark:border-blue-900/60 flex flex-col justify-between gap-3">
+            <div className="space-y-1.5">
+              <div className="flex items-center justify-between">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-blue-500 font-mono">Крок 2</span>
+                <span className="w-2 h-2 rounded-full bg-blue-500" />
+              </div>
+              <h4 className="font-semibold text-zinc-900 dark:text-zinc-100 text-xs sm:text-sm">
+                Аудіювання теми
+              </h4>
+              <p className="text-[11px] text-zinc-500 dark:text-zinc-400 leading-relaxed">
+                Послухайте живий багатоголосий діалог та виконайте 10 завдань на сприйняття (+30 XP).
+              </p>
+            </div>
+            <button
+              onClick={onGoToListening || onGoToQuiz}
+              className="w-full py-2 px-3 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs flex items-center justify-center gap-1.5 transition shadow-sm"
+            >
+              <Headphones className="w-3 h-3" />
+              <span>Слухати аудіо</span>
+            </button>
+          </div>
+
+          {/* Step 3: Topic Exam (КР) */}
           <div className="p-4 rounded-xl bg-white dark:bg-zinc-800/50 border border-amber-300 dark:border-amber-900/60 flex flex-col justify-between gap-3">
             <div className="space-y-1.5">
               <div className="flex items-center justify-between">
-                <span className="text-[11px] font-bold uppercase tracking-wider text-amber-500 font-mono">Крок 2</span>
+                <span className="text-[11px] font-bold uppercase tracking-wider text-amber-500 font-mono">Крок 3</span>
                 <span className="w-2 h-2 rounded-full bg-amber-500" />
               </div>
               <h4 className="font-semibold text-zinc-900 dark:text-zinc-100 text-xs sm:text-sm">
-                Контрольна робота (КР)
+                Контрольна (КР + аудіо)
               </h4>
               <p className="text-[11px] text-zinc-500 dark:text-zinc-400 leading-relaxed">
-                Складіть підсумкову контрольну з 15 завдань на 80%+ для офіційного зарахування теми (+100 XP).
+                Складіть контрольну з 15 завдань (включно з аудіюванням) на 80%+ для зарахування (+100 XP).
               </p>
             </div>
             <button
@@ -327,11 +352,11 @@ export const TheoryNotes: React.FC<TheoryNotesProps> = ({ notes, onGoToQuiz, onG
             </button>
           </div>
 
-          {/* Step 3: Speaking AI */}
+          {/* Step 4: Speaking AI */}
           <div className="p-4 rounded-xl bg-white dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700/80 flex flex-col justify-between gap-3">
             <div className="space-y-1.5">
               <div className="flex items-center justify-between">
-                <span className="text-[11px] font-bold uppercase tracking-wider text-zinc-400 font-mono">Крок 3</span>
+                <span className="text-[11px] font-bold uppercase tracking-wider text-zinc-400 font-mono">Крок 4</span>
                 <span className="w-2 h-2 rounded-full bg-emerald-500" />
               </div>
               <h4 className="font-semibold text-zinc-900 dark:text-zinc-100 text-xs sm:text-sm">
@@ -350,11 +375,11 @@ export const TheoryNotes: React.FC<TheoryNotesProps> = ({ notes, onGoToQuiz, onG
             </a>
           </div>
 
-          {/* Step 4: Vocabulary */}
+          {/* Step 5: Vocabulary */}
           <div className="p-4 rounded-xl bg-white dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700/80 flex flex-col justify-between gap-3">
             <div className="space-y-1.5">
               <div className="flex items-center justify-between">
-                <span className="text-[11px] font-bold uppercase tracking-wider text-zinc-400 font-mono">Крок 4</span>
+                <span className="text-[11px] font-bold uppercase tracking-wider text-zinc-400 font-mono">Крок 5</span>
                 <span className="w-2 h-2 rounded-full bg-purple-500" />
               </div>
               <h4 className="font-semibold text-zinc-900 dark:text-zinc-100 text-xs sm:text-sm">

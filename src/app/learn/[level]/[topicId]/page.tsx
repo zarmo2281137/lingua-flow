@@ -8,7 +8,9 @@ import { getTopicExercises } from '@/data/topicExercises';
 import { TheoryNotes } from '@/components/lesson/TheoryNotes';
 import { QuizEngine } from '@/components/lesson/QuizEngine';
 import { TopicExam } from '@/components/lesson/TopicExam';
-import { ArrowLeft, ArrowRight, BookOpen, HelpCircle, FileCheck } from 'lucide-react';
+import { ListeningPlayer } from '@/components/listening/ListeningPlayer';
+import { getListeningTrackByTopicId } from '@/data/listening/tracks';
+import { ArrowLeft, ArrowRight, BookOpen, HelpCircle, FileCheck, Headphones } from 'lucide-react';
 
 export default function LessonPage() {
   const params = useParams();
@@ -16,17 +18,18 @@ export default function LessonPage() {
   const router = useRouter();
 
   const topicId = params.topicId as string;
-  const initialTab = (searchParams.get('tab') as 'notes' | 'quiz' | 'exam') || 'notes';
-  const [activeTab, setActiveTab] = useState<'notes' | 'quiz' | 'exam'>(initialTab);
+  const initialTab = (searchParams.get('tab') as 'notes' | 'quiz' | 'listening' | 'exam') || 'notes';
+  const [activeTab, setActiveTab] = useState<'notes' | 'quiz' | 'listening' | 'exam'>(initialTab);
 
   useEffect(() => {
     const tabParam = searchParams.get('tab');
-    if (tabParam === 'notes' || tabParam === 'quiz' || tabParam === 'exam') {
+    if (tabParam === 'notes' || tabParam === 'quiz' || tabParam === 'listening' || tabParam === 'exam') {
       setActiveTab(tabParam);
     }
   }, [searchParams]);
 
   const topic = findTopicById(topicId);
+  const listeningTrack = topic ? getListeningTrackByTopicId(topic.id) : undefined;
 
   if (!topic) {
     return (
@@ -52,7 +55,7 @@ export default function LessonPage() {
   const topicExercises = getTopicExercises(topic.id);
   const activeExercises = topicExercises.length > 0 ? topicExercises : topic.exercises;
 
-  const handleTabChange = (tab: 'notes' | 'quiz' | 'exam') => {
+  const handleTabChange = (tab: 'notes' | 'quiz' | 'listening' | 'exam') => {
     setActiveTab(tab);
     router.replace(`/learn/${params.level}/${topic.id}?tab=${tab}`);
   };
@@ -83,41 +86,53 @@ export default function LessonPage() {
 
       {/* Tabs Control */}
       <div className="flex justify-center">
-        <div className="inline-flex p-1 bg-zinc-100 dark:bg-zinc-800/80 rounded-xl w-full max-w-md">
+        <div className="inline-flex p-1 bg-zinc-100 dark:bg-zinc-800/80 rounded-xl w-full max-w-xl">
           <button
             onClick={() => handleTabChange('notes')}
-            className={`flex-1 py-2 px-3 rounded-lg text-xs font-medium flex items-center justify-center gap-1.5 transition ${
+            className={`flex-1 py-2 px-2.5 rounded-lg text-xs font-medium flex items-center justify-center gap-1.5 transition ${
               activeTab === 'notes'
                 ? 'bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 shadow-sm font-semibold'
                 : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100'
             }`}
           >
             <BookOpen className="w-3.5 h-3.5" />
-            <span>Теорія</span>
+            <span className="truncate">Теорія</span>
           </button>
 
           <button
             onClick={() => handleTabChange('quiz')}
-            className={`flex-1 py-2 px-3 rounded-lg text-xs font-medium flex items-center justify-center gap-1.5 transition ${
+            className={`flex-1 py-2 px-2.5 rounded-lg text-xs font-medium flex items-center justify-center gap-1.5 transition ${
               activeTab === 'quiz'
                 ? 'bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 shadow-sm font-semibold'
                 : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100'
             }`}
           >
             <HelpCircle className="w-3.5 h-3.5" />
-            <span>Практика ({activeExercises.length})</span>
+            <span className="truncate">Тести ({activeExercises.length})</span>
+          </button>
+
+          <button
+            onClick={() => handleTabChange('listening')}
+            className={`flex-1 py-2 px-2.5 rounded-lg text-xs font-medium flex items-center justify-center gap-1.5 transition ${
+              activeTab === 'listening'
+                ? 'bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 shadow-sm font-semibold'
+                : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100'
+            }`}
+          >
+            <Headphones className="w-3.5 h-3.5 text-blue-500" />
+            <span className="truncate">Аудіювання (10)</span>
           </button>
 
           <button
             onClick={() => handleTabChange('exam')}
-            className={`flex-1 py-2 px-3 rounded-lg text-xs font-medium flex items-center justify-center gap-1.5 transition ${
+            className={`flex-1 py-2 px-2.5 rounded-lg text-xs font-medium flex items-center justify-center gap-1.5 transition ${
               activeTab === 'exam'
                 ? 'bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 shadow-sm font-semibold'
                 : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100'
             }`}
           >
             <FileCheck className="w-3.5 h-3.5 text-amber-500" />
-            <span>Контрольна (КР)</span>
+            <span className="truncate">Контрольна (КР)</span>
           </button>
         </div>
       </div>
@@ -128,6 +143,7 @@ export default function LessonPage() {
           notes={topic.notes}
           onGoToQuiz={() => handleTabChange('quiz')}
           onGoToExam={() => handleTabChange('exam')}
+          onGoToListening={() => handleTabChange('listening')}
         />
       ) : activeTab === 'quiz' ? (
         <QuizEngine
@@ -136,6 +152,11 @@ export default function LessonPage() {
           exercises={activeExercises}
           onRestart={() => handleTabChange('quiz')}
           onGoToExam={() => handleTabChange('exam')}
+        />
+      ) : activeTab === 'listening' && listeningTrack ? (
+        <ListeningPlayer
+          track={listeningTrack}
+          onBack={() => handleTabChange('notes')}
         />
       ) : (
         <TopicExam

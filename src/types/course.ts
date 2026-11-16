@@ -12,6 +12,9 @@ export interface Exercise {
   correctAnswer: string | string[]; // string for choice/blank, array of words for builder
   explanationUk: string; // Crystal clear explanation in Ukrainian of why this is correct
   tipUk?: string; // Helpful mnemonic or rule hint
+  audioText?: string; // Spoken audio text for listening questions
+  audioSpeaker?: string; // e.g. "British English • Sonia"
+  audioVoice?: string; // Specific studio voice
 }
 
 export interface VocabularyItem {

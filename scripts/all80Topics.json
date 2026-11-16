@@ -1,0 +1,722 @@
+[
+  {
+    "id": "a1-to-be-present",
+    "level": "A1",
+    "order": 1,
+    "unitTitleUk": "Блок 1: Знайомство та базовий фундамент",
+    "titleEn": "Verb \"To Be\" — Present Affirmative",
+    "titleUk": "Дієслово \"To Be\" — Ствердження (am / is / are)",
+    "descriptionUk": "Головна цеглина англійської мови: як сказати \"Я є студент\", \"Вона вдома\", \"Ми щасливі\" без помилок."
+  },
+  {
+    "id": "a1-to-be-neg-questions",
+    "level": "A1",
+    "order": 2,
+    "unitTitleUk": "Блок 1: Знайомство та базовий фундамент",
+    "titleEn": "Verb \"To Be\" — Negatives & Questions",
+    "titleUk": "Дієслово \"To Be\" — Заперечення та запитання",
+    "descriptionUk": "Як запитати \"Ти вдома?\", \"Він лікар?\" та сказати \"Я не втомлений\", \"Це не правда\"."
+  },
+  {
+    "id": "a1-demonstratives",
+    "level": "A1",
+    "order": 3,
+    "unitTitleUk": "Блок 1: Знайомство та базовий фундамент",
+    "titleEn": "Demonstratives: This, That, These, Those",
+    "titleUk": "Вказівні займенники: This, That, These, Those",
+    "descriptionUk": "Як вказати на предмет поруч чи вдалині в однині та множині: \"цей\", \"той\", \"ці\", \"ті\"."
+  },
+  {
+    "id": "a1-possessives",
+    "level": "A1",
+    "order": 4,
+    "unitTitleUk": "Блок 1: Знайомство та базовий фундамент",
+    "titleEn": "Possessives: Pronouns & Apostrophe 'S",
+    "titleUk": "Присвійні форми: My, Your та апостроф 's",
+    "descriptionUk": "Чий це предмет? Різниця між my/your/his/her та як сказати \"машина мого брата\" (brother's car)."
+  },
+  {
+    "id": "a1-articles-a-an",
+    "level": "A1",
+    "order": 5,
+    "unitTitleUk": "Блок 2: Предмети, простір та числівники",
+    "titleEn": "Articles: A, An & Zero Article",
+    "titleUk": "Артиклі: A, An та коли вони не потрібні",
+    "descriptionUk": "Чому \"a cat\", але \"an orange\"? Правила вибору невизначеного артикля та незлічувані іменники."
+  },
+  {
+    "id": "a1-there-is-are",
+    "level": "A1",
+    "order": 6,
+    "unitTitleUk": "Блок 2: Предмети, простір та числівники",
+    "titleEn": "There is & There are",
+    "titleUk": "Конструкція There is / There are",
+    "descriptionUk": "Як сказати \"У кімнаті є стіл\", \"Тут немає кави\" та запитати \"Чи є поблизу банк?\"."
+  },
+  {
+    "id": "a1-prepositions-place",
+    "level": "A1",
+    "order": 7,
+    "unitTitleUk": "Блок 2: Предмети, простір та числівники",
+    "titleEn": "Prepositions of Place: In, On, Under, At",
+    "titleUk": "Прийменники місця: In, On, Under, Behind, Next to",
+    "descriptionUk": "Де знаходиться предмет? Вчимося точно вказувати координати у просторі."
+  },
+  {
+    "id": "a1-plurals-irregular",
+    "level": "A1",
+    "order": 8,
+    "unitTitleUk": "Блок 2: Предмети, простір та числівники",
+    "titleEn": "Noun Plurals: Regular & Irregular",
+    "titleUk": "Множина іменників: Правило -s та головні винятки",
+    "descriptionUk": "Як утворюється множина в англійській мові та чому \"man -> men\", \"child -> children\", \"person -> people\"."
+  },
+  {
+    "id": "a1-present-simple-positive",
+    "level": "A1",
+    "order": 9,
+    "unitTitleUk": "Блок 3: Рутина та Present Simple",
+    "titleEn": "Present Simple — Daily Habits & Rules",
+    "titleUk": "Present Simple — Ствердження та правило -s/-es",
+    "descriptionUk": "Як розповісти про звички, роботу та щоденні справи. Золоте правило he/she/it."
+  },
+  {
+    "id": "a1-present-simple-questions",
+    "level": "A1",
+    "order": 10,
+    "unitTitleUk": "Блок 3: Рутина та Present Simple",
+    "titleEn": "Present Simple — Questions & Negatives",
+    "titleUk": "Present Simple — Заперечення та запитання (Do / Does)",
+    "descriptionUk": "Як сказати \"Я не знаю\", \"Він не працює\" та запитати \"Ти говориш англійською?\". Допоміжні дієслова Do та Does."
+  },
+  {
+    "id": "a1-adverbs-frequency",
+    "level": "A1",
+    "order": 11,
+    "unitTitleUk": "Блок 3: Рутина та Present Simple",
+    "titleEn": "Adverbs of Frequency: Always, Often, Never",
+    "titleUk": "Прислівники частоти: Always, Usually, Often, Never",
+    "descriptionUk": "Як часто ви щось робите? Місце прислівника у реченні та шкала від 100% до 0%."
+  },
+  {
+    "id": "a1-wh-questions",
+    "level": "A1",
+    "order": 12,
+    "unitTitleUk": "Блок 3: Рутина та Present Simple",
+    "titleEn": "Wh- Questions: Who, What, Where, When, Why",
+    "titleUk": "Спеціальні запитання: Who, What, Where, When, Why, How",
+    "descriptionUk": "Як запитати \"Де ти живеш?\", \"Чому ти вчишся?\", \"Скільки це коштує?\". Порядок слів у спеціальних питаннях."
+  },
+  {
+    "id": "a1-modal-can",
+    "level": "A1",
+    "order": 13,
+    "unitTitleUk": "Блок 4: Вміння, час та процес",
+    "titleEn": "Modal Verb CAN & CAN'T",
+    "titleUk": "Модальне дієслово CAN та CAN'T",
+    "descriptionUk": "Як розповісти про свої фізичні та інтелектуальні вміння (\"Я вмію плавати\", \"Я можу допомогти\"), прохання та заборони."
+  },
+  {
+    "id": "a1-telling-time",
+    "level": "A1",
+    "order": 14,
+    "unitTitleUk": "Блок 4: Вміння, час та процес",
+    "titleEn": "Telling Time, Days & Time Prepositions",
+    "titleUk": "Годинник, дні тижня та прийменники часу: At, On, In",
+    "descriptionUk": "Як назвати час (\"It's half past three\"), дні тижня та не плутати: AT 5:00, ON Monday, IN May."
+  },
+  {
+    "id": "a1-present-continuous",
+    "level": "A1",
+    "order": 15,
+    "unitTitleUk": "Блок 4: Вміння, час та процес",
+    "titleEn": "Present Continuous — Actions Right Now",
+    "titleUk": "Present Continuous — Дії в момент мовлення (am/is/are + -ing)",
+    "descriptionUk": "Що відбувається прямо зараз? Різниця між щоденною рутиною (Simple) та тривалим моментом (Continuous)."
+  },
+  {
+    "id": "a1-level-review",
+    "level": "A1",
+    "order": 16,
+    "unitTitleUk": "Блок 4: Вміння, час та процес",
+    "titleEn": "Level A1 Review & Checkpoint",
+    "titleUk": "Підсумковий огляд та закріплення рівня A1",
+    "descriptionUk": "Комплексне закріплення всіх тем рівня A1: To Be, Present Simple, Continuous, артиклі та базовий діалог перед переходом на рівень A2."
+  },
+  {
+    "id": "a2-past-simple-regular",
+    "level": "A2",
+    "order": 1,
+    "unitTitleUk": "Блок 1: Минулі події та спогади",
+    "titleEn": "Past Simple — Regular Verbs & -ED",
+    "titleUk": "Past Simple — Правильні дієслова та закінчення -ed",
+    "descriptionUk": "Як розповісти про події вчора, минулого тижня чи рік тому. Правила додавання та вимови закінчення -ed."
+  },
+  {
+    "id": "a2-past-simple-irregular",
+    "level": "A2",
+    "order": 2,
+    "unitTitleUk": "Блок 1: Минулі події та спогади",
+    "titleEn": "Past Simple — Irregular Verbs",
+    "titleUk": "Past Simple — Неправильні дієслова (went, bought, saw)",
+    "descriptionUk": "Дієслова, які не підкоряються правилу -ed. Базовий список 30 найуживаніших слів другої форми."
+  },
+  {
+    "id": "a2-past-simple-questions",
+    "level": "A2",
+    "order": 3,
+    "unitTitleUk": "Блок 1: Минулі події та спогади",
+    "titleEn": "Past Simple — Questions & Negatives (Did)",
+    "titleUk": "Past Simple — Питання та заперечення з Did / Didn't",
+    "descriptionUk": "Як запитати \"Ти бачив це?\", \"Куди ти їздив?\" та сказати \"Я не знав\". Повернення дієслова у початкову форму."
+  },
+  {
+    "id": "a2-past-continuous",
+    "level": "A2",
+    "order": 4,
+    "unitTitleUk": "Блок 1: Минулі події та спогади",
+    "titleEn": "Past Continuous — Ongoing Past Actions",
+    "titleUk": "Past Continuous — Тривала дія в минулому (was/were + -ing)",
+    "descriptionUk": "Як сказати \"Я читав книгу вчора о 8 вечора\", \"Що ви робили, коли йшов дощ?\". Процес у минулому."
+  },
+  {
+    "id": "a2-past-cont-vs-past-simple",
+    "level": "A2",
+    "order": 5,
+    "unitTitleUk": "Блок 2: Наративи та порівняння",
+    "titleEn": "Past Continuous vs Past Simple (When & While)",
+    "titleUk": "Past Continuous проти Past Simple (Коли одна дія перервала іншу)",
+    "descriptionUk": "Класична ситуація: \"Я готував їжу (тривала дія), коли раптом задзвонив телефон (коротка дія)\". Слова While та When."
+  },
+  {
+    "id": "a2-used-to",
+    "level": "A2",
+    "order": 6,
+    "unitTitleUk": "Блок 2: Наративи та порівняння",
+    "titleEn": "Used To — Past Habits",
+    "titleUk": "Конструкція Used To — Колишні звички та стани",
+    "descriptionUk": "Як сказати \"Раніше я займався спортом, а зараз ні\" або \"Колись я жив у селі\". Звички, які залишилися в минулому."
+  },
+  {
+    "id": "a2-comparatives",
+    "level": "A2",
+    "order": 7,
+    "unitTitleUk": "Блок 2: Наративи та порівняння",
+    "titleEn": "Comparative Adjectives & \"Than\"",
+    "titleUk": "Ступені порівняння прикметників: Faster, Bigger, More expensive",
+    "descriptionUk": "Як порівняти два предмети між собою: короткі слова (-er) проти довгих слів (more) та слово \"than\" (ніж)."
+  },
+  {
+    "id": "a2-superlatives",
+    "level": "A2",
+    "order": 8,
+    "unitTitleUk": "Блок 2: Наративи та порівняння",
+    "titleEn": "Superlatives & \"As... As\"",
+    "titleUk": "Найвищий ступінь (The Best, The Most) та конструкція \"As... As\"",
+    "descriptionUk": "Як сказати \"найкращий\", \"найдорожчий у світі\" та порівняти рівність: \"такий самий швидкий, як...\"."
+  },
+  {
+    "id": "a2-future-be-going-to",
+    "level": "A2",
+    "order": 9,
+    "unitTitleUk": "Блок 3: Плани та майбутній час",
+    "titleEn": "Be Going To — Intentions & Predictions",
+    "titleUk": "Be Going To — Заплановані наміри та очевидні прогнози",
+    "descriptionUk": "Як розповісти про плани на вихідні (\"Я збираюся купити квитки\") та очевидні події (\"Подивись на хмари, зараз піде дощ!\")."
+  },
+  {
+    "id": "a2-future-will",
+    "level": "A2",
+    "order": 10,
+    "unitTitleUk": "Блок 3: Плани та майбутній час",
+    "titleEn": "Future Simple (Will) — Spontaneous Decisions & Promises",
+    "titleUk": "Future Simple (Will) — Спонтанні рішення та обіцянки",
+    "descriptionUk": "Коли ми приймаємо рішення в момент мовлення (\"Я допоможу тобі!\", \"Я візьму цей десерт\"), даємо обіцянки та висловлюємо надії."
+  },
+  {
+    "id": "a2-present-continuous-future",
+    "level": "A2",
+    "order": 11,
+    "unitTitleUk": "Блок 3: Плани та майбутній час",
+    "titleEn": "Present Continuous for Fixed Arrangements",
+    "titleUk": "Present Continuous для залізних домовленостей",
+    "descriptionUk": "Коли час і місце вже узгоджені або квитки куплені: \"Завтра о 18:00 я зустрічаюся з лікарем\", \"У суботу ми летимо в Париж\"."
+  },
+  {
+    "id": "a2-future-comparison",
+    "level": "A2",
+    "order": 12,
+    "unitTitleUk": "Блок 3: Плани та майбутній час",
+    "titleEn": "Future Tenses Comparison: Will vs Going To vs Continuous",
+    "titleUk": "Порівняння способів вираження майбутнього: Will проти Going To та Continuous",
+    "descriptionUk": "Фінальний майстер-клас майбутнього часу: обираємо правильний інструмент під будь-яку життєву ситуацію."
+  },
+  {
+    "id": "a2-have-to-must",
+    "level": "A2",
+    "order": 13,
+    "unitTitleUk": "Блок 4: Модальність та умови",
+    "titleEn": "Must vs Have To vs Don't Have To",
+    "titleUk": "Обовʼязок та правила: Must проти Have To та Don't Have To",
+    "descriptionUk": "Різниця між \"я зобовʼязаний за законом\" (have to), \"я вважаю це важливим\" (must) та \"це необовʼязково\" (don't have to)."
+  },
+  {
+    "id": "a2-should-advice",
+    "level": "A2",
+    "order": 14,
+    "unitTitleUk": "Блок 4: Модальність та умови",
+    "titleEn": "Giving Advice: Should & Shouldn't",
+    "titleUk": "Поради та рекомендації: Should та Shouldn't",
+    "descriptionUk": "Як дати дружню пораду: \"Тобі варто більше відпочивати\", \"Тобі не слід пити так багато кави\"."
+  },
+  {
+    "id": "a2-infinitives-gerunds-intro",
+    "level": "A2",
+    "order": 15,
+    "unitTitleUk": "Блок 4: Модальність та умови",
+    "titleEn": "Verb Patterns: Gerund (-ing) or Infinitive (to)",
+    "titleUk": "Дієслова з герундієм (-ing) або інфінітивом (to)",
+    "descriptionUk": "Чому \"I want TO go\", але \"I enjoy GOING\"? Базовий список дієслів, що вимагають після себе to або -ing."
+  },
+  {
+    "id": "a2-zero-first-conditional",
+    "level": "A2",
+    "order": 16,
+    "unitTitleUk": "Блок 4: Модальність та умови",
+    "titleEn": "Zero & First Conditionals (Real Conditions)",
+    "titleUk": "Zero та First Conditionals — Реальні умови (If it rains, we will stay)",
+    "descriptionUk": "Як будувати умови: закони природи (Zero) та реальні прогнози на завтра (First). Головне правило: після IF не ставимо will!"
+  },
+  {
+    "id": "b1-present-perfect-intro",
+    "level": "B1",
+    "order": 1,
+    "unitTitleUk": "Блок 1: Системи Present Perfect",
+    "titleEn": "Present Perfect — Experience & Life Results",
+    "titleUk": "Present Perfect — Життєвий досвід та результат (have/has + V3)",
+    "descriptionUk": "Місток між минулим і теперішнім: чому нам важливий результат прямо зараз, а не час, коли це сталося."
+  },
+  {
+    "id": "b1-present-perfect-markers",
+    "level": "B1",
+    "order": 2,
+    "unitTitleUk": "Блок 1: Системи Present Perfect",
+    "titleEn": "Markers: Already, Yet, Just, Ever, Never",
+    "titleUk": "Слова-маркери: Already, Yet, Just, Ever, Never",
+    "descriptionUk": "Як розставити слова-підказки: \"Я щойно закінчив\", \"Ти вже пообідав?\", \"Я ще не отримав відповіді\"."
+  },
+  {
+    "id": "b1-for-since",
+    "level": "B1",
+    "order": 3,
+    "unitTitleUk": "Блок 1: Системи Present Perfect",
+    "titleEn": "Duration: For vs Since",
+    "titleUk": "Тривалість стану: For проти Since",
+    "descriptionUk": "Як сказати \"Я живу тут уже 5 років\" або \"Ми знайомі з 2018 року\". Точка відліку (since) проти проміжку часу (for)."
+  },
+  {
+    "id": "b1-present-perfect-vs-past-simple",
+    "level": "B1",
+    "order": 4,
+    "unitTitleUk": "Блок 1: Системи Present Perfect",
+    "titleEn": "Present Perfect vs Past Simple",
+    "titleUk": "Present Perfect проти Past Simple: Головна битва часів",
+    "descriptionUk": "Як не плутати: \"Я розбив чашку (факт у минулому)\" чи \"Я розбив чашку (і ось осколки на підлозі зараз)\"."
+  },
+  {
+    "id": "b1-present-perfect-continuous",
+    "level": "B1",
+    "order": 5,
+    "unitTitleUk": "Блок 2: Тривалість та минулий час",
+    "titleEn": "Present Perfect Continuous — Duration of Actions",
+    "titleUk": "Present Perfect Continuous — Тривалість дії (have been doing)",
+    "descriptionUk": "Як підкреслити сам процес: \"Я чекаю на тебе вже дві години!\", \"Чому твої руки брудні? — Я ремонтував авто\"."
+  },
+  {
+    "id": "b1-past-perfect",
+    "level": "B1",
+    "order": 6,
+    "unitTitleUk": "Блок 2: Тривалість та минулий час",
+    "titleEn": "Past Perfect — Action Before Another Past Action",
+    "titleUk": "Past Perfect — Передминулий час (had + V3)",
+    "descriptionUk": "Дія, яка сталася РАНІШЕ за іншу подію в минулому: \"Коли я прийшов на вокзал, потяг ВЖЕ поїхав\"."
+  },
+  {
+    "id": "b1-narrative-tenses",
+    "level": "B1",
+    "order": 7,
+    "unitTitleUk": "Блок 2: Тривалість та минулий час",
+    "titleEn": "Narrative Tenses: Storytelling Masterclass",
+    "titleUk": "Звʼязні розповіді історій: Поєднання Past Simple, Continuous & Perfect",
+    "descriptionUk": "Як розповідати захоплюючі історії англійською мовою, легко комбінуючи три минулі часи в одному контексті."
+  },
+  {
+    "id": "b1-defining-relative-clauses",
+    "level": "B1",
+    "order": 8,
+    "unitTitleUk": "Блок 2: Тривалість та минулий час",
+    "titleEn": "Defining Relative Clauses: Who, Which, That, Where",
+    "titleUk": "Означальні підрядні речення: Who, Which, That, Where",
+    "descriptionUk": "Як обʼєднати два речення в одне елегантне: \"Це людина, яка мені допомогла\", \"Це книга, яку я шукав\"."
+  },
+  {
+    "id": "b1-second-conditional",
+    "level": "B1",
+    "order": 9,
+    "unitTitleUk": "Блок 3: Гіпотези та пасив",
+    "titleEn": "Second Conditional — Imaginary Situations & Dreams",
+    "titleUk": "Second Conditional — Нереальні мрії та гіпотези (If I had money...)",
+    "descriptionUk": "Як помріяти: \"Якби я виграв мільйон доларів...\", \"Якби я був на твоєму місці (If I were you)\"."
+  },
+  {
+    "id": "b1-passive-voice-simple",
+    "level": "B1",
+    "order": 10,
+    "unitTitleUk": "Блок 3: Гіпотези та пасив",
+    "titleEn": "Passive Voice — Present & Past Simple",
+    "titleUk": "Passive Voice — Пасивний стан (is made, was built)",
+    "descriptionUk": "Коли важлива сама дія, а не виконавець: \"iPhone виготовляють у Каліфорнії\", \"Цей міст збудували 100 років тому\"."
+  },
+  {
+    "id": "b1-modal-deduction-present",
+    "level": "B1",
+    "order": 11,
+    "unitTitleUk": "Блок 3: Гіпотези та пасив",
+    "titleEn": "Modals of Deduction: Must, Might, Can't",
+    "titleUk": "Модальні дієслова здогадки: Must, Might, Can't be true",
+    "descriptionUk": "Як висловити впевненість чи сумнів: \"Він, мабуть, спить (must be)\", \"Це точно неправда! (can't be)\"."
+  },
+  {
+    "id": "b1-too-enough",
+    "level": "B1",
+    "order": 12,
+    "unitTitleUk": "Блок 3: Гіпотези та пасив",
+    "titleEn": "Too vs Enough: Degrees & Modifiers",
+    "titleUk": "Конструкції Too та Enough (too late, strong enough)",
+    "descriptionUk": "Як описати надлишок чи нестачу: \"Це занадто дорого\", \"Він недостатньо дорослий, щоб водити авто\". Позиція слова enough."
+  },
+  {
+    "id": "b1-phrasal-verbs-daily",
+    "level": "B1",
+    "order": 13,
+    "unitTitleUk": "Блок 4: Фразові дієслова та розмовна вільність",
+    "titleEn": "Top Daily Phrasal Verbs",
+    "titleUk": "Топ фразових дієслів на щодень: Give up, Look for, Turn on",
+    "descriptionUk": "Секрет живої англійської мови: чому носії замість \"search\" кажуть \"look for\", а замість \"quit\" — \"give up\"."
+  },
+  {
+    "id": "b1-reported-speech-intro",
+    "level": "B1",
+    "order": 14,
+    "unitTitleUk": "Блок 4: Фразові дієслова та розмовна вільність",
+    "titleEn": "Reported Speech: Shifting Tenses",
+    "titleUk": "Непряма мова — Як переказати чужі слова (Backshift)",
+    "descriptionUk": "Як переказати діалог: \"Він сказав, що втомився\", \"Вона відповіла, що не прийде\". Правило кроку назад у часі."
+  },
+  {
+    "id": "b1-question-tags",
+    "level": "B1",
+    "order": 15,
+    "unitTitleUk": "Блок 4: Фразові дієслова та розмовна вільність",
+    "titleEn": "Question Tags: Aren't You? Didn't He?",
+    "titleUk": "Розділові запитання: Isn't it? Aren't you? Didn't he?",
+    "descriptionUk": "Як запитати \"Чи не так?\": британський хвостик запитань для підтримки живої бесіди."
+  },
+  {
+    "id": "b1-mastery",
+    "level": "B1",
+    "order": 16,
+    "unitTitleUk": "Блок 4: Фразові дієслова та розмовна вільність",
+    "titleEn": "Level B1 Review & Fluency Checkpoint",
+    "titleUk": "Підсумковий практикум рівня B1: Вільне спілкування",
+    "descriptionUk": "Закріплення всіх граматичних систем середнього рівня перед переходом до Upper-Intermediate (B2)."
+  },
+  {
+    "id": "b2-future-continuous-perfect",
+    "level": "B2",
+    "order": 1,
+    "unitTitleUk": "Блок 1: Складні часові аспекти та пасив",
+    "titleEn": "Future Continuous & Future Perfect",
+    "titleUk": "Future Continuous та Future Perfect (will be doing, will have done)",
+    "descriptionUk": "Як сказати \"Завтра в цей час я буду летіти над океаном\" та \"До 2030 року компанія побудує 10 нових офісів\"."
+  },
+  {
+    "id": "b2-passive-all-tenses",
+    "level": "B2",
+    "order": 2,
+    "unitTitleUk": "Блок 1: Складні часові аспекти та пасив",
+    "titleEn": "Passive Voice in Continuous & Perfect Aspects",
+    "titleUk": "Пасивний стан у всіх часах (is being done, has been done)",
+    "descriptionUk": "Як коректно говорити в пасиві: \"Зараз готується новий контракт\", \"Сервер уже оновлено\"."
+  },
+  {
+    "id": "b2-causative-have-get",
+    "level": "B2",
+    "order": 3,
+    "unitTitleUk": "Блок 1: Складні часові аспекти та пасив",
+    "titleEn": "Causative: Have / Get Something Done",
+    "titleUk": "Каузативні конструкції: Have / Get something done",
+    "descriptionUk": "Як сказати \"Я підстригся\" або \"Мені полагодили авто\", щоб не здавалося, що ви самі собі стригли волосся ножицями."
+  },
+  {
+    "id": "b2-passive-reporting-verbs",
+    "level": "B2",
+    "order": 4,
+    "unitTitleUk": "Блок 1: Складні часові аспекти та пасив",
+    "titleEn": "Passive with Reporting Verbs: It is said that...",
+    "titleUk": "Безособовий пасив: It is said that... / He is believed to be...",
+    "descriptionUk": "Мова якісної журналістики (BBC, The Economist): \"Кажуть, що...\", \"Вважається, що цей винахід змінить світ\"."
+  },
+  {
+    "id": "b2-third-conditional",
+    "level": "B2",
+    "order": 5,
+    "unitTitleUk": "Блок 2: Минулі гіпотези та жалі",
+    "titleEn": "Third Conditional — Regrets About the Past",
+    "titleUk": "Third Conditional — Нереальні умови в минулому та жалі",
+    "descriptionUk": "Як сказати \"Якби я вчора знав про затор, я б поїхав на метро\", \"Якби ти мені сказав, я б допоміг\"."
+  },
+  {
+    "id": "b2-mixed-conditionals",
+    "level": "B2",
+    "order": 6,
+    "unitTitleUk": "Блок 2: Минулі гіпотези та жалі",
+    "titleEn": "Mixed Conditionals — Past Cause, Present Result",
+    "titleUk": "Змішані умовні речення: Минула причина — теперішній наслідок",
+    "descriptionUk": "Як поєднати минуле з сьогоденням: \"Якби я народився в Лондоні (минуле), я б зараз говорив англійською ідеально (теперішнє)\"."
+  },
+  {
+    "id": "b2-wishes-regrets",
+    "level": "B2",
+    "order": 7,
+    "unitTitleUk": "Блок 2: Минулі гіпотези та жалі",
+    "titleEn": "Wish & If Only: Present and Past Regrets",
+    "titleUk": "Конструкції Wish та If Only: Як висловити жаль",
+    "descriptionUk": "Як сказати \"Шкода, що я не знаю відповіді\" (I wish I knew) або \"Якби ж я тільки прийшов вчасно!\" (If only I had come)."
+  },
+  {
+    "id": "b2-modals-past-deduction",
+    "level": "B2",
+    "order": 8,
+    "unitTitleUk": "Блок 2: Минулі гіпотези та жалі",
+    "titleEn": "Past Modals of Deduction: Must have, Can't have",
+    "titleUk": "Здогадки про минуле: Must have done, Can't have done",
+    "descriptionUk": "Як розслідувати минулі події: \"Він, мабуть, забув ключі\", \"Вона не могла цього зробити!\"."
+  },
+  {
+    "id": "b2-gerund-infinitive-nuances",
+    "level": "B2",
+    "order": 9,
+    "unitTitleUk": "Блок 3: Синтаксис та звʼязуючі елементи",
+    "titleEn": "Gerund vs Infinitive: Meaning Shifts",
+    "titleUk": "Герундій чи інфінітив: Зміна значення дієслів",
+    "descriptionUk": "Чому \"remember to lock\" — це не забути зачинити двері, а \"remember locking\" — згадати спогад про те, як зачиняв двері. Дієслова-перевертні: stop, try, forget, regret."
+  },
+  {
+    "id": "b2-advanced-linkers",
+    "level": "B2",
+    "order": 10,
+    "unitTitleUk": "Блок 3: Синтаксис та звʼязуючі елементи",
+    "titleEn": "Advanced Discourse Markers & Concession",
+    "titleUk": "Звʼязуючі слова: Although, Despite, Whereas, Furthermore",
+    "descriptionUk": "Як звʼязувати думки як досвідчений спікер: протиставлення, додавання аргументів та логічні переходи."
+  },
+  {
+    "id": "b2-non-defining-relative",
+    "level": "B2",
+    "order": 11,
+    "unitTitleUk": "Блок 3: Синтаксис та звʼязуючі елементи",
+    "titleEn": "Non-Defining Relative Clauses (With Commas)",
+    "titleUk": "Неозначальні підрядні речення: Правило ком в англійській мові",
+    "descriptionUk": "Коли в англійській ставляться коми: додаткова інформація про відомі обʼєкти. Чому тут не можна писати \"that\"."
+  },
+  {
+    "id": "b2-reported-speech-patterns",
+    "level": "B2",
+    "order": 12,
+    "unitTitleUk": "Блок 3: Синтаксис та звʼязуючі елементи",
+    "titleEn": "Advanced Reporting Verbs: Warn, Accuse, Insist",
+    "titleUk": "Складні звітні дієслова: Warn, Accuse, Remind, Apologise",
+    "descriptionUk": "Як не повторювати постійно \"he said / she said\": 15 сильних дієслів передачі чужої мови (threaten to do, accuse of doing)."
+  },
+  {
+    "id": "b2-business-correspondence",
+    "level": "B2",
+    "order": 13,
+    "unitTitleUk": "Блок 4: Професійне та ідіоматичне мовлення",
+    "titleEn": "Formal & Professional Business Correspondence",
+    "titleUk": "Ділове листування: Етикет, шаблони та тон комунікації",
+    "descriptionUk": "Як писати листи клієнтам та партнерам: \"I am writing to inquire regarding...\", \"Please find attached\", \"I look forward to hearing from you\"."
+  },
+  {
+    "id": "b2-essential-idioms-b2",
+    "level": "B2",
+    "order": 14,
+    "unitTitleUk": "Блок 4: Професійне та ідіоматичне мовлення",
+    "titleEn": "Essential Idioms for Discussions & Negotiations",
+    "titleUk": "Ключові ідіоми для дискусій: Cut corners, Hit the nail, Play devil's advocate",
+    "descriptionUk": "Як розуміти метафоричну мову колег на зустрічах та під час переговорів без буквального перекладу."
+  },
+  {
+    "id": "b2-hedging-politeness",
+    "level": "B2",
+    "order": 15,
+    "unitTitleUk": "Блок 4: Професійне та ідіоматичне мовлення",
+    "titleEn": "Hedging & Softening: Diplomatic Disagreement",
+    "titleUk": "Хеджування: Мистецтво ввічливої та делікатної незгоди",
+    "descriptionUk": "Чому в англомовному світі непристойно казати прямо \"You are wrong\". Вчимося помʼякшувати критику та висловлювати думку делікатно."
+  },
+  {
+    "id": "b2-b2-mastery",
+    "level": "B2",
+    "order": 16,
+    "unitTitleUk": "Блок 4: Професійне та ідіоматичне мовлення",
+    "titleEn": "Level B2 Capstone & Exam Readiness",
+    "titleUk": "Підсумковий практикум B2: Готовність до міжнародних іспитів (IELTS / FCE)",
+    "descriptionUk": "Фінальна перевірка знань рівня Upper-Intermediate перед переходом до елітного рівня Advanced (C1)."
+  },
+  {
+    "id": "c1-negative-inversion",
+    "level": "C1",
+    "order": 1,
+    "unitTitleUk": "Блок 1: Емфаза та інверсія",
+    "titleEn": "Negative Inversion: Never, Seldom, Under No Circumstances",
+    "titleUk": "Негативна інверсія: Зворотний порядок слів для підсилення",
+    "descriptionUk": "Як розмовляти мовою Черчилля та Обами: винос заперечних прислівників на перше місце з перестановкою дієслова та підмета."
+  },
+  {
+    "id": "c1-cleft-sentences-what",
+    "level": "C1",
+    "order": 2,
+    "unitTitleUk": "Блок 1: Емфаза та інверсія",
+    "titleEn": "Cleft Sentences with WHAT and ALL",
+    "titleUk": "Розщеплені речення (Cleft Sentences) з What та All",
+    "descriptionUk": "Як виділити найголовніше: \"Те, що мене здивувало — це його спокій\", \"Все, що мені потрібно — це чашка чаю\"."
+  },
+  {
+    "id": "c1-cleft-sentences-it",
+    "level": "C1",
+    "order": 3,
+    "unitTitleUk": "Блок 1: Емфаза та інверсія",
+    "titleEn": "It-Cleft Sentences: It was John who...",
+    "titleUk": "Конструкція It-Cleft: It was John who solved the problem",
+    "descriptionUk": "Як зняти сумніви і вказати конкретного винуватця чи час: \"Це саме Джон зробив це, а не Том\", \"Це саме вчора ми підписали угоду\"."
+  },
+  {
+    "id": "c1-fronting-adverbials",
+    "level": "C1",
+    "order": 4,
+    "unitTitleUk": "Блок 1: Емфаза та інверсія",
+    "titleEn": "Fronting & Locative Inversion",
+    "titleUk": "Фронтинг та просторова інверсія: Up went the prices",
+    "descriptionUk": "Художній та літературний синтаксис: винос обставини місця та напрямку на початок речення (Into the room walked the CEO)."
+  },
+  {
+    "id": "c1-participle-clauses-active",
+    "level": "C1",
+    "order": 5,
+    "unitTitleUk": "Блок 2: Дієприкметникові звороти та сослагання",
+    "titleEn": "Active Participle Clauses: Having done, Doing",
+    "titleUk": "Активні дієприкметникові звороти: Having finished, Feeling tired",
+    "descriptionUk": "Як скорочувати складні речення: замість \"Because he felt tired, he left\" сказати \"Feeling tired, he left\". Перфектні дієприкметники."
+  },
+  {
+    "id": "c1-participle-clauses-passive",
+    "level": "C1",
+    "order": 6,
+    "unitTitleUk": "Блок 2: Дієприкметникові звороти та сослагання",
+    "titleEn": "Passive Participle Clauses: Seen from above...",
+    "titleUk": "Пасивні дієприкметникові звороти: Rejected by the board...",
+    "descriptionUk": "Пасивні конструкції з третьою формою (V3) або Having been done: \"Відхилений радою директорів, проєкт був закритий\"."
+  },
+  {
+    "id": "c1-inverted-conditionals",
+    "level": "C1",
+    "order": 7,
+    "unitTitleUk": "Блок 2: Дієприкметникові звороти та сослагання",
+    "titleEn": "Inverted Conditionals: Had I known, Were you to ask",
+    "titleUk": "Інвертовані умовні речення без IF: Had I known, Should you need",
+    "descriptionUk": "Як звучати максимально дипломатично й авторитетно, викинувши слово \"IF\" із речення взагалі."
+  },
+  {
+    "id": "c1-subjunctive-mood",
+    "level": "C1",
+    "order": 8,
+    "unitTitleUk": "Блок 2: Дієприкметникові звороти та сослагання",
+    "titleEn": "The Subjunctive Mood: I insist that he BE present",
+    "titleUk": "Англійський сослагальний нахил (Subjunctive): It is vital that she study",
+    "descriptionUk": "Чому після слів insist, demand, recommend дієслово втрачає літеру -s навіть для he/she: \"I demand that he BE fired\"."
+  },
+  {
+    "id": "c1-advanced-modal-idioms",
+    "level": "C1",
+    "order": 9,
+    "unitTitleUk": "Блок 3: Нюанси стилістики та модальності",
+    "titleEn": "Nuanced Modal Idioms: Might as well, Needn't have",
+    "titleUk": "Рідкісні модальні конструкції: Might as well, Needn't have vs Didn't need to",
+    "descriptionUk": "Тонкі смислові відмінності: \"Ми з тим же успіхом можемо піти пішки (might as well)\", та різниця між \"даремно зробив\" і \"не було потреби робити\"."
+  },
+  {
+    "id": "c1-advanced-collocations",
+    "level": "C1",
+    "order": 10,
+    "unitTitleUk": "Блок 3: Нюанси стилістики та модальності",
+    "titleEn": "Academic & C1 Collocations: Blatantly obvious, Utterly devastated",
+    "titleUk": "Вишукані колокації рівня C1: Blatantly obvious, Heavily influenced",
+    "descriptionUk": "Стійкі поєднання прислівників та прикметників, які відрізняють рідного мовця від іноземця. Чому не можна казати \"strongly cold\" або \"deeply dead\"."
+  },
+  {
+    "id": "c1-nuanced-concession",
+    "level": "C1",
+    "order": 11,
+    "unitTitleUk": "Блок 3: Нюанси стилістики та модальності",
+    "titleEn": "Nuanced Concession: Be that as it may, Much as I...",
+    "titleUk": "Тонкі звороти поступки: Difficult though it is, Be that as it may",
+    "descriptionUk": "Як погодитися з аргументом опонента і водночас витончено його спростувати: \"Як би мені це не подобалося...\", \"Хоч це й важко...\"."
+  },
+  {
+    "id": "c1-nominalization",
+    "level": "C1",
+    "order": 12,
+    "unitTitleUk": "Блок 3: Нюанси стилістики та модальності",
+    "titleEn": "Nominalization in Academic & Executive Style",
+    "titleUk": "Номіналізація: Перетворення дієслів на іменники",
+    "descriptionUk": "Головна таємниця академічного та аналітичного стилю: чому \"We analyzed the data and discovered...\" перетворюється на \"Our analysis of the data led to the discovery of...\"."
+  },
+  {
+    "id": "c1-diplomatic-language",
+    "level": "C1",
+    "order": 13,
+    "unitTitleUk": "Блок 4: Риторика та дипломатична майстерність",
+    "titleEn": "Diplomatic & High-Level Negotiation Language",
+    "titleUk": "Дипломатичний регістр та ведення високих перемовин",
+    "descriptionUk": "Як вести переговори на рівні рад директорів та міністерств: \"With all due respect\", \"I am hesitant to commit\", \"We would appreciate clarification\"."
+  },
+  {
+    "id": "c1-advanced-metaphors-idioms",
+    "level": "C1",
+    "order": 14,
+    "unitTitleUk": "Блок 4: Риторика та дипломатична майстерність",
+    "titleEn": "Sophisticated Idioms, Euphemisms & Metaphors",
+    "titleUk": "Евфемізми та рідкісні метафори: Bite the bullet, Elephant in the room",
+    "descriptionUk": "Як помʼякшувати неприємні новини (економічний спад, скорочення штату) за допомогою евфемізмів та образних зворотів."
+  },
+  {
+    "id": "c1-stylistic-devices",
+    "level": "C1",
+    "order": 15,
+    "unitTitleUk": "Блок 4: Риторика та дипломатична майстерність",
+    "titleEn": "Stylistic Devices: Litotes, Chiasmus & Understatement",
+    "titleUk": "Стилістичні фігури: Літота, Хіазм та Британський Understatement",
+    "descriptionUk": "Як жартувати та висловлювати думки з легендарною британською стриманістю (\"Not bad\" = приголомшливо, \"A bit of a problem\" = катастрофа)."
+  },
+  {
+    "id": "c1-capstone",
+    "level": "C1",
+    "order": 16,
+    "unitTitleUk": "Блок 4: Риторика та дипломатична майстерність",
+    "titleEn": "Level C1 Capstone: Executive English Mastery",
+    "titleUk": "Фінальний майстер-клас C1: Досконале володіння англійською мовою",
+    "descriptionUk": "Кульмінація курсу LinguaFlow: інтеграція всіх 80 уроків програми. Ви готові до дебатів на будь-яку тему та міжнародної карʼєри."
+  }
+]

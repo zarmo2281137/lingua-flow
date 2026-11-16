@@ -103,6 +103,7 @@ export const HUMAN_VOICES: HumanVoiceOption[] = [
 let globalAudioElement: HTMLAudioElement | null = null;
 
 export interface PlayAudioOptions {
+  audioUrl?: string;
   voice?: string;
   rate?: number;
   onStart?: () => void;
@@ -149,7 +150,10 @@ export const playHumanAudio = (
   if (!cleanText) return () => {};
 
   const voice = options?.voice || 'Puck';
-  const url = `/api/tts?text=${encodeURIComponent(cleanText)}&voice=${encodeURIComponent(voice)}`;
+  const isDirectUrl = options?.audioUrl || (cleanText.startsWith('/') && cleanText.endsWith('.mp3'));
+  const url = isDirectUrl
+    ? (options?.audioUrl || cleanText)
+    : `/api/tts?text=${encodeURIComponent(cleanText)}&voice=${encodeURIComponent(voice)}`;
 
   const audio = new Audio(url);
   globalAudioElement = audio;
@@ -170,6 +174,18 @@ export const playHumanAudio = (
   };
 
   audio.onerror = (e) => {
+    // If a direct audioUrl failed, seamlessly fallback to server neural TTS
+    if (isDirectUrl) {
+      const fallbackUrl = `/api/tts?text=${encodeURIComponent(cleanText)}&voice=${encodeURIComponent(voice)}`;
+      audio.src = fallbackUrl;
+      audio.load();
+      audio.play().catch((err) => {
+        if (globalAudioElement === audio) globalAudioElement = null;
+        if (options?.onError) options.onError(err);
+      });
+      return;
+    }
+
     console.warn('Human audio streaming error:', e);
     if (globalAudioElement === audio) {
       globalAudioElement = null;

@@ -98,7 +98,7 @@ function ListeningContent() {
             Аудіювання для всіх рівнів (A1–C1)
           </h1>
           <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed">
-            Покращуйте розуміння живої англійської мови: студійні голоси, британський та американський акценти, інтерактивні транскрипти з кліком по реченнях та понад 240 завдань (тести, аудіо-диктанти та перевірка фактів).
+            Покращуйте розуміння живої англійської мови: студійні голоси, британський, американський та австралійський акценти, інтерактивні транскрипти з кліком по реченнях та по 10 завдань до кожної мікротеми (800 завдань: тести, аудіо-диктанти та перевірка фактів).
           </p>
         </div>
 
@@ -122,7 +122,9 @@ function ListeningContent() {
           </div>
           <div className="p-3 rounded-xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 text-center">
             <span className="text-[10px] uppercase font-mono tracking-wider text-zinc-400 block">Вправ у базі</span>
-            <span className="text-lg font-bold text-emerald-600 dark:text-emerald-400 font-mono">240+</span>
+            <span className="text-lg font-bold text-emerald-600 dark:text-emerald-400 font-mono">
+              {LISTENING_TRACKS.reduce((acc, t) => acc + (t.exercises ? t.exercises.length : 0), 0)}
+            </span>
           </div>
         </div>
       </div>

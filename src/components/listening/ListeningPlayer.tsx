@@ -93,6 +93,7 @@ export const ListeningPlayer: React.FC<ListeningPlayerProps> = ({ track, onBack 
     setPlayingSentenceIndex(null);
 
     playHumanAudio(track.fullAudioText, {
+      audioUrl: track.audioUrl,
       voice: selectedVoice,
       rate: playbackSpeed,
       onStart: () => {

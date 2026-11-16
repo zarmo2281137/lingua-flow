@@ -17,8 +17,13 @@ import {
   Check,
   X,
   Sparkles,
+  Headphones,
+  Play,
+  Pause,
+  Volume2,
 } from 'lucide-react';
 import { getUserStats, saveTopicExamScore } from '@/utils/storage';
+import { playHumanAudio, stopHumanAudio } from '@/utils/speech';
 
 interface TopicExamProps {
   topic: Topic;
@@ -65,15 +70,40 @@ export const TopicExam: React.FC<TopicExamProps> = ({
     }
   }, [topic.id]);
 
-  // Clean timer on unmount
+  // Audio listening state
+  const [playingAudioIndex, setPlayingAudioIndex] = useState<number | null>(null);
+
+  // Clean timer & audio on unmount
   useEffect(() => {
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
+      stopHumanAudio();
     };
   }, []);
 
+  const handleToggleExamAudio = (text: string, voice?: string) => {
+    if (playingAudioIndex === currentIndex) {
+      stopHumanAudio();
+      setPlayingAudioIndex(null);
+      return;
+    }
+
+    stopHumanAudio();
+    setPlayingAudioIndex(currentIndex);
+
+    playHumanAudio(text, {
+      voice: voice || 'Google-UK',
+      onStart: () => setPlayingAudioIndex(currentIndex),
+      onEnd: () => setPlayingAudioIndex(null),
+      onError: () => setPlayingAudioIndex(null),
+    });
+  };
+
   // Sync inputs when switching questions
   useEffect(() => {
+    stopHumanAudio();
+    setPlayingAudioIndex(null);
+
     const curr = questions[currentIndex];
     if (!curr) return;
 
@@ -259,7 +289,8 @@ export const TopicExam: React.FC<TopicExamProps> = ({
               <span>Правила складання контрольної роботи:</span>
             </h4>
             <ul className="list-disc list-inside space-y-1 text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
-              <li>Тест містить запитання на знання синтаксичних правил, виправлення помилок та складання речень.</li>
+              <li>Тест містить 10 граматичних питань та 5 завдань на <strong>аудіювання (Listening Comprehension)</strong> із живими записами носіїв мови.</li>
+              <li>Для завдань з аудіювання натискайте кнопку «Слухати аудіо» поруч із запитанням.</li>
               <li>Підказки під час проходження вимкнено — повний розбір з поясненнями буде доступний після здачі.</li>
               <li>Ви можете повертатися до будь-якого запитання через навігаційну панель до закінчення часу.</li>
               <li>Для зарахування теми в профіль необхідно набрати щонайменше 80% правильних відповідей.</li>
@@ -396,6 +427,55 @@ export const TopicExam: React.FC<TopicExamProps> = ({
                 : 'Складання речення'}
             </span>
           </div>
+
+          {/* Listening Comprehension Audio Card */}
+          {currentQ.audioText && (
+            <div className="p-4 rounded-xl bg-blue-50/80 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-900/60 flex flex-col sm:flex-row sm:items-center justify-between gap-3 animate-fadeIn">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center shrink-0 shadow-sm">
+                  <Headphones className="w-5 h-5" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className="text-[11px] font-bold font-mono uppercase text-blue-600 dark:text-blue-400">
+                      Аудіозапис носія мови
+                    </span>
+                    {currentQ.audioSpeaker && (
+                      <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-white dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border border-blue-200 dark:border-blue-800">
+                        {currentQ.audioSpeaker}
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-xs text-zinc-600 dark:text-zinc-400 mt-0.5">
+                    {playingAudioIndex === currentIndex
+                      ? 'Відтворюється аудіо... Слухайте уважно!'
+                      : 'Натисніть кнопку, щоб прослухати запис до запитання'}
+                  </p>
+                </div>
+              </div>
+
+              <button
+                onClick={() => handleToggleExamAudio(currentQ.audioText!, currentQ.audioVoice)}
+                className={`px-4 py-2 rounded-xl text-xs font-semibold flex items-center justify-center gap-2 transition shrink-0 shadow-sm ${
+                  playingAudioIndex === currentIndex
+                    ? 'bg-rose-600 text-white hover:bg-rose-700 ring-2 ring-rose-200 dark:ring-rose-950'
+                    : 'bg-blue-600 hover:bg-blue-700 text-white'
+                }`}
+              >
+                {playingAudioIndex === currentIndex ? (
+                  <>
+                    <Pause className="w-3.5 h-3.5" />
+                    <span>Зупинити аудіо</span>
+                  </>
+                ) : (
+                  <>
+                    <Play className="w-3.5 h-3.5 fill-current ml-0.5" />
+                    <span>Слухати аудіо</span>
+                  </>
+                )}
+              </button>
+            </div>
+          )}
 
           <h3 className="text-base sm:text-lg font-semibold text-zinc-900 dark:text-zinc-100 leading-relaxed">
             {currentQ.question}
@@ -649,6 +729,17 @@ export const TopicExam: React.FC<TopicExamProps> = ({
                     </div>
 
                     <div className="flex flex-col gap-1 pt-1 border-t border-zinc-200/60 dark:border-zinc-800 text-[11px]">
+                      {q.audioText && (
+                        <div className="flex items-center gap-2 pb-1">
+                          <button
+                            onClick={() => handleToggleExamAudio(q.audioText!, q.audioVoice)}
+                            className="px-2 py-0.5 rounded-md bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-800 text-[10px] font-semibold text-blue-600 dark:text-blue-400 flex items-center gap-1 hover:bg-blue-100 transition"
+                          >
+                            <Play className="w-2.5 h-2.5 fill-current" />
+                            <span>Прослухати аудіо ({q.audioSpeaker || 'Аудіозапис'})</span>
+                          </button>
+                        </div>
+                      )}
                       <div className="flex items-center gap-2">
                         <span className="text-zinc-400">Ваша відповідь:</span>
                         <span className={isQCorrect ? 'text-emerald-600 font-medium' : 'text-rose-500 font-medium line-through'}>
