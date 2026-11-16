@@ -3,7 +3,7 @@
 import React from 'react';
 import { LevelCode } from '@/types/course';
 import { LEVELS_CONFIG } from '@/data/courses';
-import { CheckCircle2, ChevronRight, Sparkles } from 'lucide-react';
+import { CheckCircle2 } from 'lucide-react';
 
 interface LevelOverviewProps {
   currentLevel: LevelCode;
@@ -21,14 +21,14 @@ export const LevelOverview: React.FC<LevelOverviewProps> = ({
   const levels: LevelCode[] = ['A1', 'A2', 'B1', 'B2', 'C1'];
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-3">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white">
+          <h2 className="text-xl font-bold tracking-tight text-zinc-900 dark:text-white">
             Рівні навчання
           </h2>
-          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
-            Оберіть свій рівень або перемикайтеся між модулями в будь-який час
+          <p className="text-xs text-zinc-500 dark:text-zinc-400">
+            Оберіть свій поточний рівень або перемикайтеся між модулями у вільному порядку
           </p>
         </div>
       </div>
@@ -45,43 +45,68 @@ export const LevelOverview: React.FC<LevelOverviewProps> = ({
             <button
               key={lvl}
               onClick={() => onSelectLevel(lvl)}
-              className={`text-left p-3.5 sm:p-4 rounded-2xl border transition-all duration-200 relative overflow-hidden group ${
+              className={`text-left p-3.5 rounded-xl border transition-all text-xs flex flex-col justify-between ${
                 isSelected
-                  ? 'bg-white dark:bg-slate-800 border-indigo-500 ring-2 ring-indigo-500/30 shadow-lg shadow-indigo-500/10 scale-[1.02]'
-                  : 'bg-white/60 dark:bg-slate-800/60 border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 hover:bg-white dark:hover:bg-slate-800'
+                  ? 'bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 border-zinc-900 dark:border-white shadow-sm'
+                  : 'bg-white dark:bg-[#12141A] border-zinc-200/90 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 text-zinc-800 dark:text-zinc-200'
               }`}
             >
-              {/* Header badge */}
-              <div className="flex items-center justify-between mb-2">
-                <span
-                  className={`text-xs font-black px-2 py-0.5 rounded-lg text-white bg-gradient-to-r ${info.color}`}
-                >
-                  {lvl}
-                </span>
-                {percent === 100 && (
-                  <CheckCircle2 className="w-4 h-4 text-emerald-500" />
-                )}
-              </div>
-
-              <div className="space-y-1">
-                <h3 className="font-bold text-slate-900 dark:text-white text-sm sm:text-base group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
-                  {info.nameEn}
-                </h3>
-                <p className="text-[11px] text-slate-500 dark:text-slate-400 line-clamp-1">
-                  {info.nameUk}
-                </p>
-              </div>
-
-              {/* Progress mini bar */}
-              <div className="mt-3 pt-2.5 border-t border-slate-100 dark:border-slate-700/60">
-                <div className="flex items-center justify-between text-[10px] text-slate-500 dark:text-slate-400 mb-1">
-                  <span>Прогрес</span>
-                  <span className="font-bold">{percent}%</span>
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <span
+                    className={`font-mono font-bold text-xs px-1.5 py-0.5 rounded ${
+                      isSelected
+                        ? 'bg-white/20 dark:bg-zinc-900/15 text-white dark:text-zinc-900'
+                        : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300'
+                    }`}
+                  >
+                    {lvl}
+                  </span>
+                  {percent === 100 && (
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
+                  )}
                 </div>
-                <div className="w-full h-1.5 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
+
+                <div className="space-y-0.5">
+                  <h3 className="font-bold text-sm tracking-tight">
+                    {info.nameEn}
+                  </h3>
+                  <p
+                    className={`text-[11px] truncate ${
+                      isSelected ? 'text-zinc-300 dark:text-zinc-600' : 'text-zinc-500 dark:text-zinc-400'
+                    }`}
+                  >
+                    {info.nameUk}
+                  </p>
+                </div>
+              </div>
+
+              {/* Progress mini indicator */}
+              <div
+                className={`mt-3 pt-2 border-t ${
+                  isSelected
+                    ? 'border-white/15 dark:border-zinc-900/15'
+                    : 'border-zinc-100 dark:border-zinc-850'
+                }`}
+              >
+                <div
+                  className={`flex items-center justify-between text-[10px] mb-1 font-medium ${
+                    isSelected ? 'text-zinc-300 dark:text-zinc-600' : 'text-zinc-400'
+                  }`}
+                >
+                  <span>Прогрес</span>
+                  <span className="font-mono">{completed}/{total} ({percent}%)</span>
+                </div>
+                <div
+                  className={`w-full h-1 rounded-full overflow-hidden ${
+                    isSelected ? 'bg-white/20 dark:bg-zinc-900/20' : 'bg-zinc-100 dark:bg-zinc-800'
+                  }`}
+                >
                   <div
-                    className={`h-full bg-gradient-to-r ${info.color} transition-all duration-500`}
-                    style={{ width: `${percent}%` }}
+                    className={`h-full rounded-full transition-all duration-300 ${
+                      isSelected ? 'bg-white dark:bg-zinc-900' : 'bg-zinc-700 dark:bg-zinc-300'
+                    }`}
+                    style={{ width: `${Math.max(4, percent)}%` }}
                   />
                 </div>
               </div>

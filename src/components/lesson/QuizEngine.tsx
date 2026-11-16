@@ -1,23 +1,15 @@
 'use client';
 
 import React, { useState } from 'react';
-import Link from 'next/link';
 import { Exercise } from '@/types/course';
 import {
   CheckCircle2,
   XCircle,
-  HelpCircle,
   ArrowRight,
   ArrowLeft,
-  RotateCcw,
-  Zap,
-  Sparkles,
-  Award,
   Volume2,
   Grid,
-  Filter,
 } from 'lucide-react';
-import confetti from 'canvas-confetti';
 import { completeTopic, addXp, getUserStats } from '@/utils/storage';
 import { playHumanAudio, stopSpeech } from '@/utils/speech';
 
@@ -46,10 +38,8 @@ export const QuizEngine: React.FC<QuizEngineProps> = ({
   const [sentenceWords, setSentenceWords] = useState<string[]>([]);
   const [availableWords, setAvailableWords] = useState<string[]>([]);
 
-  // Track results for each of the 40 tests individually
+  // Track results for each of the tests individually
   const [resultsMap, setResultsMap] = useState<Record<number, TestResultState>>({});
-  const [filterMode, setFilterMode] = useState<'all' | 'unsolved' | 'correct' | 'wrong'>('all');
-  const [isGridOpen, setIsGridOpen] = useState(true);
   const [jumpInput, setJumpInput] = useState('');
   const [isPlayingQuestion, setIsPlayingQuestion] = useState(false);
 
@@ -72,7 +62,6 @@ export const QuizEngine: React.FC<QuizEngineProps> = ({
     });
   };
 
-  // Sync state when switching to test `idx`
   const switchTest = (idx: number) => {
     if (idx < 0 || idx >= exercises.length) return;
     setCurrentIndex(idx);
@@ -151,18 +140,11 @@ export const QuizEngine: React.FC<QuizEngineProps> = ({
       addXp(10);
     }
 
-    // Check if all 40 tests completed
     const answeredCount = Object.values(updated).filter((r) => r.answered).length;
     if (answeredCount === exercises.length) {
       const correctCount = Object.values(updated).filter((r) => r.isCorrect).length;
       const scorePct = Math.round((correctCount / exercises.length) * 100);
       completeTopic(topicId, scorePct);
-
-      confetti({
-        particleCount: 100,
-        spread: 70,
-        origin: { y: 0.6 },
-      });
     }
   };
 
@@ -170,7 +152,6 @@ export const QuizEngine: React.FC<QuizEngineProps> = ({
   const isChecked = currentResult?.answered || false;
   const isCorrect = currentResult?.isCorrect || false;
 
-  // Stats
   const answeredTotal = Object.values(resultsMap).filter((r) => r.answered).length;
   const correctTotal = Object.values(resultsMap).filter((r) => r.isCorrect).length;
   const wrongTotal = Object.values(resultsMap).filter((r) => r.answered && !r.isCorrect).length;
@@ -187,44 +168,44 @@ export const QuizEngine: React.FC<QuizEngineProps> = ({
   return (
     <div className="space-y-6 max-w-4xl mx-auto animate-fadeIn pb-12">
       {/* Header Info Banner */}
-      <div className="bg-white dark:bg-slate-800 rounded-3xl p-5 border border-slate-200/80 dark:border-slate-800 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="bg-white dark:bg-zinc-900/60 rounded-2xl p-5 border border-zinc-200/90 dark:border-zinc-800 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <span className="text-xs font-black px-2.5 py-1 rounded-lg bg-indigo-600 text-white">
-              Тести теми: {exercises.length} шт
+            <span className="text-xs font-semibold px-2 py-0.5 rounded bg-zinc-900 text-white dark:bg-white dark:text-zinc-900">
+              {exercises.length} завдань
             </span>
-            <h3 className="font-extrabold text-slate-900 dark:text-white text-base sm:text-lg">
+            <h3 className="font-semibold text-zinc-900 dark:text-zinc-100 text-sm sm:text-base">
               {topicTitleEn}
             </h3>
           </div>
-          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-            Оберіть будь-який номер тесту нижче або проходьте послідовно
+          <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">
+            Оберіть будь-який номер або проходьте завдання послідовно
           </p>
         </div>
 
         {/* Counter Pills */}
-        <div className="flex items-center gap-2 text-xs font-bold">
-          <span className="px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300">
+        <div className="flex items-center gap-2 text-xs">
+          <span className="px-2.5 py-1 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 font-medium">
             Пройдено: {answeredTotal}/{exercises.length}
           </span>
-          <span className="px-3 py-1.5 rounded-xl bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
+          <span className="px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 font-medium">
             ✓ {correctTotal}
           </span>
           {wrongTotal > 0 && (
-            <span className="px-3 py-1.5 rounded-xl bg-rose-50 text-rose-700 dark:bg-rose-950/60 dark:text-rose-300 border border-rose-200 dark:border-rose-800">
+            <span className="px-2.5 py-1 rounded-lg bg-rose-50 text-rose-700 dark:bg-rose-950/40 dark:text-rose-300 border border-rose-200 dark:border-rose-800 font-medium">
               ✕ {wrongTotal}
             </span>
           )}
         </div>
       </div>
 
-      {/* Visual Numbered Test Picker Grid (1 to 40) */}
-      <div className="bg-white dark:bg-slate-800 rounded-3xl p-5 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-3">
-        <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 dark:border-slate-700/60 pb-3">
+      {/* Visual Numbered Test Picker Grid */}
+      <div className="bg-white dark:bg-zinc-900/60 rounded-2xl p-5 border border-zinc-200/90 dark:border-zinc-800 shadow-sm space-y-3">
+        <div className="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-zinc-200/80 dark:border-zinc-800">
           <div className="flex items-center gap-2">
-            <Grid className="w-4 h-4 text-indigo-600" />
-            <span className="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
-              Швидкий вибір тесту (1–{exercises.length}):
+            <Grid className="w-3.5 h-3.5 text-zinc-400" />
+            <span className="text-xs font-medium text-zinc-600 dark:text-zinc-400">
+              Вибір завдання (1–{exercises.length}):
             </span>
           </div>
 
@@ -234,45 +215,45 @@ export const QuizEngine: React.FC<QuizEngineProps> = ({
               type="number"
               min="1"
               max={exercises.length}
-              placeholder="№ тесту"
+              placeholder="№"
               value={jumpInput}
               onChange={(e) => setJumpInput(e.target.value)}
-              className="w-20 px-2.5 py-1 text-xs rounded-lg border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-750 text-center font-bold"
+              className="w-16 px-2 py-1 text-xs rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/60 text-zinc-900 dark:text-zinc-100 text-center font-medium focus:outline-none focus:ring-1 focus:ring-zinc-400"
             />
             <button
               type="submit"
-              className="px-2.5 py-1 rounded-lg text-xs font-bold bg-indigo-600 text-white hover:bg-indigo-700"
+              className="px-2.5 py-1 rounded-lg text-xs font-medium bg-zinc-900 text-white dark:bg-white dark:text-zinc-900"
             >
               Перейти
             </button>
           </form>
         </div>
 
-        {/* 40 Numbers Grid */}
-        <div className="grid grid-cols-5 sm:grid-cols-8 md:grid-cols-10 gap-1.5 max-h-[180px] overflow-y-auto p-1 scrollbar-none">
+        {/* Numbers Grid */}
+        <div className="grid grid-cols-5 sm:grid-cols-8 md:grid-cols-10 gap-1.5 max-h-[160px] overflow-y-auto p-0.5">
           {exercises.map((ex, idx) => {
             const res = resultsMap[idx];
             const isCurrent = currentIndex === idx;
 
-            let btnStyle = 'bg-slate-50 dark:bg-slate-700/50 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-600 hover:border-indigo-400';
+            let btnStyle = 'bg-zinc-50 dark:bg-zinc-800/40 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700';
 
             if (res?.answered) {
               if (res.isCorrect) {
-                btnStyle = 'bg-emerald-500 text-white border-emerald-600 font-bold';
+                btnStyle = 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300 border-emerald-300 dark:border-emerald-800 font-medium';
               } else {
-                btnStyle = 'bg-rose-500 text-white border-rose-600 font-bold';
+                btnStyle = 'bg-rose-50 text-rose-700 dark:bg-rose-950/40 dark:text-rose-300 border-rose-300 dark:border-rose-800 font-medium';
               }
             }
 
             if (isCurrent) {
-              btnStyle += ' ring-2 ring-indigo-600 ring-offset-2 dark:ring-offset-slate-800 scale-105 z-10 font-black';
+              btnStyle += ' ring-2 ring-zinc-900 dark:ring-white ring-offset-2 dark:ring-offset-zinc-900 font-bold';
             }
 
             return (
               <button
                 key={ex.id}
                 onClick={() => switchTest(idx)}
-                className={`h-9 rounded-xl text-xs font-semibold border flex items-center justify-center transition-all ${btnStyle}`}
+                className={`h-8 rounded-lg text-xs border flex items-center justify-center transition ${btnStyle}`}
                 title={`Перейти до тесту #${idx + 1}`}
               >
                 {idx + 1}
@@ -283,77 +264,76 @@ export const QuizEngine: React.FC<QuizEngineProps> = ({
       </div>
 
       {/* Active Question Card */}
-      <div className="p-6 sm:p-8 rounded-3xl bg-white dark:bg-slate-800 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-6">
-        {/* Question Header & Nav buttons */}
-        <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-700/60 pb-3">
-          <span className="text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider flex items-center gap-1.5">
-            <Sparkles className="w-4 h-4" />
-            <span>Тест #{currentIndex + 1} з {exercises.length}</span>
+      <div className="p-6 sm:p-8 rounded-2xl bg-white dark:bg-zinc-900/60 border border-zinc-200/90 dark:border-zinc-800 shadow-sm space-y-6">
+        {/* Header & Nav */}
+        <div className="flex items-center justify-between pb-3 border-b border-zinc-200/80 dark:border-zinc-800">
+          <span className="text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
+            Завдання #{currentIndex + 1} з {exercises.length}
           </span>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5">
             <button
               onClick={() => switchTest(currentIndex - 1)}
               disabled={currentIndex === 0}
-              className="p-1.5 rounded-lg border border-slate-200 dark:border-slate-700 disabled:opacity-30 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 text-xs flex items-center gap-1"
+              className="px-2.5 py-1.5 rounded-lg border border-zinc-200 dark:border-zinc-800 text-xs font-medium text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 disabled:opacity-30 disabled:hover:bg-transparent flex items-center gap-1 transition"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">Попередній</span>
+              <span className="hidden sm:inline">Попереднє</span>
             </button>
             <button
               onClick={() => switchTest(currentIndex + 1)}
               disabled={currentIndex + 1 >= exercises.length}
-              className="p-1.5 rounded-lg border border-slate-200 dark:border-slate-700 disabled:opacity-30 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 text-xs flex items-center gap-1"
+              className="px-2.5 py-1.5 rounded-lg border border-zinc-200 dark:border-zinc-800 text-xs font-medium text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 disabled:opacity-30 disabled:hover:bg-transparent flex items-center gap-1 transition"
             >
-              <span className="hidden sm:inline">Наступний</span>
+              <span className="hidden sm:inline">Наступне</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </button>
           </div>
         </div>
 
-        {/* Question text & Audio */}
+        {/* Question Text & Audio */}
         <div className="flex items-start justify-between gap-3">
           <div className="space-y-1">
-            <h3 className="text-lg sm:text-xl font-black text-slate-900 dark:text-white leading-snug">
+            <h3 className="text-lg sm:text-xl font-medium tracking-tight text-zinc-900 dark:text-zinc-100 leading-snug">
               {currentEx.question}
             </h3>
             {currentEx.context && (
-              <p className="text-xs text-slate-500 dark:text-slate-400 italic">
-                💡 {currentEx.context}
+              <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                {currentEx.context}
               </p>
             )}
           </div>
           <button
             onClick={() => handleSpeakQuestion(currentEx.question)}
-            className={`p-2 rounded-xl border transition shrink-0 ${
+            className={`p-2 rounded-lg border transition shrink-0 ${
               isPlayingQuestion
-                ? 'bg-indigo-600 text-white border-indigo-600 shadow-md animate-pulse'
-                : 'text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 bg-white dark:bg-slate-700 border-slate-200 dark:border-slate-600'
+                ? 'bg-zinc-900 text-white border-zinc-900 dark:bg-white dark:text-zinc-900'
+                : 'text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 bg-zinc-50 dark:bg-zinc-800/40 border-zinc-200 dark:border-zinc-800'
             }`}
-            title="Озвучити запитання живим голосом людини"
+            title="Озвучити природним голосом"
           >
             <Volume2 className="w-4 h-4" />
           </button>
         </div>
 
-        {/* 1. Multiple Choice Options */}
+        {/* 1. Multiple Choice */}
         {currentEx.type === 'multiple_choice' && currentEx.options && (
           <div className="space-y-2.5">
             {currentEx.options.map((opt, i) => {
               const isSelected = selectedOption === opt;
               let btnStyle =
-                'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-750 hover:border-indigo-400';
+                'border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/40 hover:border-zinc-300 dark:hover:border-zinc-700 text-zinc-800 dark:text-zinc-200';
 
               if (isChecked) {
                 if (opt === currentEx.correctAnswer) {
-                  btnStyle = 'border-emerald-500 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-900 dark:text-emerald-200 font-bold';
+                  btnStyle = 'border-emerald-500 bg-emerald-50/70 dark:bg-emerald-950/30 text-emerald-950 dark:text-emerald-100 font-medium';
                 } else if (isSelected && opt !== currentEx.correctAnswer) {
-                  btnStyle = 'border-rose-500 bg-rose-50 dark:bg-rose-950/40 text-rose-900 dark:text-rose-200';
+                  btnStyle = 'border-rose-400 bg-rose-50/70 dark:bg-rose-950/30 text-rose-950 dark:text-rose-100';
                 } else {
-                  btnStyle = 'opacity-40 border-slate-200 dark:border-slate-700';
+                  btnStyle = 'opacity-40 border-zinc-200 dark:border-zinc-800';
                 }
               } else if (isSelected) {
-                btnStyle = 'border-indigo-600 bg-indigo-50 dark:bg-indigo-950/50 text-indigo-900 dark:text-indigo-200 ring-2 ring-indigo-500/20 font-bold';
+                btnStyle = 'border-zinc-900 dark:border-white bg-zinc-50 dark:bg-zinc-800/60 text-zinc-900 dark:text-zinc-100 ring-1 ring-zinc-900 dark:ring-white font-medium';
               }
 
               return (
@@ -361,14 +341,19 @@ export const QuizEngine: React.FC<QuizEngineProps> = ({
                   key={i}
                   disabled={isChecked}
                   onClick={() => handleSelectOption(opt)}
-                  className={`w-full text-left p-4 rounded-2xl border text-sm transition flex items-center justify-between ${btnStyle}`}
+                  className={`w-full text-left p-3.5 sm:p-4 rounded-xl border text-sm transition flex items-center justify-between gap-3 ${btnStyle}`}
                 >
-                  <span>{opt}</span>
+                  <div className="flex items-center gap-3">
+                    <span className="w-6 h-6 rounded-md border border-zinc-200 dark:border-zinc-700 flex items-center justify-center text-xs font-medium text-zinc-500 shrink-0">
+                      {String.fromCharCode(65 + i)}
+                    </span>
+                    <span>{opt}</span>
+                  </div>
                   {isChecked && opt === currentEx.correctAnswer && (
-                    <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0" />
+                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
                   )}
                   {isChecked && isSelected && opt !== currentEx.correctAnswer && (
-                    <XCircle className="w-5 h-5 text-rose-600 shrink-0" />
+                    <XCircle className="w-4 h-4 text-rose-600 shrink-0" />
                   )}
                 </button>
               );
@@ -390,18 +375,18 @@ export const QuizEngine: React.FC<QuizEngineProps> = ({
                   handleCheckAnswer();
                 }
               }}
-              className="w-full px-4 py-3 rounded-2xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-750 text-slate-900 dark:text-white text-base focus:outline-none focus:ring-2 focus:ring-indigo-500 font-semibold"
+              className="w-full px-4 py-3 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/60 text-zinc-900 dark:text-zinc-100 text-sm focus:outline-none focus:ring-1 focus:ring-zinc-400 font-medium"
             />
           </div>
         )}
 
         {/* 3. Sentence Builder */}
         {currentEx.type === 'sentence_builder' && (
-          <div className="space-y-4">
-            <div className="min-h-[64px] p-4 rounded-2xl bg-slate-50 dark:bg-slate-750 border-2 border-dashed border-slate-200 dark:border-slate-700 flex flex-wrap gap-2 items-center">
+          <div className="space-y-3">
+            <div className="min-h-[56px] p-3 rounded-xl bg-zinc-50 dark:bg-zinc-800/30 border border-dashed border-zinc-200 dark:border-zinc-800 flex flex-wrap gap-2 items-center">
               {sentenceWords.length === 0 ? (
-                <span className="text-xs text-slate-400 italic">
-                  Натискайте на слова нижче у правильній послідовності...
+                <span className="text-xs text-zinc-400">
+                  Натискайте на слова нижче у правильній послідовності
                 </span>
               ) : (
                 sentenceWords.map((word, idx) => (
@@ -409,7 +394,7 @@ export const QuizEngine: React.FC<QuizEngineProps> = ({
                     key={idx}
                     disabled={isChecked}
                     onClick={() => handleRemoveSentenceWord(idx)}
-                    className="px-3.5 py-1.5 rounded-xl bg-indigo-600 text-white font-bold text-xs sm:text-sm shadow-sm hover:bg-indigo-700 transition"
+                    className="px-3 py-1.5 rounded-lg bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 font-medium text-xs shadow-sm hover:opacity-90 transition"
                   >
                     {word}
                   </button>
@@ -417,13 +402,13 @@ export const QuizEngine: React.FC<QuizEngineProps> = ({
               )}
             </div>
 
-            <div className="flex flex-wrap gap-2 pt-2">
+            <div className="flex flex-wrap gap-1.5 pt-1">
               {availableWords.map((word, idx) => (
                 <button
                   key={idx}
                   disabled={isChecked}
                   onClick={() => handleSentenceWordClick(word, idx)}
-                  className="px-3.5 py-2 rounded-xl bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 text-slate-800 dark:text-slate-100 font-semibold text-xs sm:text-sm hover:border-indigo-500 hover:scale-105 active:scale-95 transition"
+                  className="px-3 py-1.5 rounded-lg bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-800 dark:text-zinc-200 text-xs font-medium hover:border-zinc-400 transition"
                 >
                   {word}
                 </button>
@@ -435,30 +420,24 @@ export const QuizEngine: React.FC<QuizEngineProps> = ({
         {/* Feedback Banner */}
         {isChecked && (
           <div
-            className={`p-4 rounded-2xl space-y-1.5 animate-fadeIn ${
+            className={`p-4 rounded-xl border space-y-1 animate-fadeIn ${
               isCorrect
-                ? 'bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800'
-                : 'bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800'
+                ? 'bg-emerald-50/60 dark:bg-emerald-950/20 border-emerald-200 dark:border-emerald-900/50'
+                : 'bg-rose-50/60 dark:bg-rose-950/20 border-rose-200 dark:border-rose-900/50'
             }`}
           >
-            <div className="flex items-center gap-2 font-bold text-sm">
+            <div className="flex items-center gap-2 font-medium text-xs sm:text-sm">
               {isCorrect ? (
-                <>
-                  <CheckCircle2 className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
-                  <span className="text-emerald-900 dark:text-emerald-300">
-                    Правильно! Бездоганна відповідь! (+10 XP)
-                  </span>
-                </>
+                <span className="text-emerald-900 dark:text-emerald-300">
+                  Правильно (+10 XP)
+                </span>
               ) : (
-                <>
-                  <XCircle className="w-5 h-5 text-rose-600 dark:text-rose-400" />
-                  <span className="text-rose-900 dark:text-rose-300">
-                    Помилка. Правильна відповідь: {Array.isArray(currentEx.correctAnswer) ? currentEx.correctAnswer.join(' ') : currentEx.correctAnswer}
-                  </span>
-                </>
+                <span className="text-rose-900 dark:text-rose-300">
+                  Помилка. Правильна відповідь: {Array.isArray(currentEx.correctAnswer) ? currentEx.correctAnswer.join(' ') : currentEx.correctAnswer}
+                </span>
               )}
             </div>
-            <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-200 leading-relaxed">
+            <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed">
               {currentEx.explanationUk}
             </p>
           </div>
@@ -466,8 +445,8 @@ export const QuizEngine: React.FC<QuizEngineProps> = ({
 
         {/* Bottom Actions */}
         <div className="flex items-center justify-between pt-2">
-          <span className="text-xs font-semibold text-slate-400">
-            Оберіть інший тест у таблиці зверху або натисніть далі
+          <span className="text-xs text-zinc-400">
+            Оберіть інше завдання у сітці або перейдіть далі
           </span>
 
           {!isChecked ? (
@@ -478,7 +457,7 @@ export const QuizEngine: React.FC<QuizEngineProps> = ({
                 (currentEx.type === 'fill_blank' && !fillBlankInput.trim()) ||
                 (currentEx.type === 'sentence_builder' && sentenceWords.length === 0)
               }
-              className="py-3 px-6 rounded-2xl font-bold text-xs sm:text-sm text-white bg-indigo-600 hover:bg-indigo-700 shadow-md shadow-indigo-600/20 disabled:opacity-40 transition"
+              className="py-2.5 px-5 rounded-xl font-medium text-xs sm:text-sm text-white bg-zinc-900 hover:bg-zinc-800 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-100 disabled:opacity-40 transition"
             >
               Перевірити відповідь
             </button>
@@ -489,10 +468,10 @@ export const QuizEngine: React.FC<QuizEngineProps> = ({
                   switchTest(currentIndex + 1);
                 }
               }}
-              className="py-3 px-6 rounded-2xl font-bold text-xs sm:text-sm text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 shadow-lg shadow-indigo-600/25 flex items-center gap-2 transition"
+              className="py-2.5 px-5 rounded-xl font-medium text-xs sm:text-sm text-white bg-zinc-900 hover:bg-zinc-800 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-100 inline-flex items-center gap-1.5 transition"
             >
-              <span>{currentIndex + 1 < exercises.length ? 'Наступний тест' : 'Усі 40 тестів завершено!'}</span>
-              <ArrowRight className="w-4 h-4" />
+              <span>{currentIndex + 1 < exercises.length ? 'Наступне завдання' : 'Розділ завершено'}</span>
+              <ArrowRight className="w-3.5 h-3.5" />
             </button>
           )}
         </div>

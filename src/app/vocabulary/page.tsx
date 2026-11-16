@@ -5,79 +5,71 @@ import { VOCABULARY_BANK, VOCABULARY_CATEGORIES } from '@/data/vocabularyBank';
 import { VocabularyExplorer } from '@/components/vocabulary/VocabularyExplorer';
 import { FlashcardTrainer } from '@/components/vocabulary/FlashcardTrainer';
 import { WordQuizTrainer } from '@/components/vocabulary/WordQuizTrainer';
-import {
-  BookMarked,
-  Layers,
-  Zap,
-  Sparkles,
-  GraduationCap,
-} from 'lucide-react';
+import { BookMarked, Layers, Zap, Sparkles } from 'lucide-react';
 
 export default function VocabularyPage() {
   const [activeTab, setActiveTab] = useState<'catalog' | 'flashcards' | 'quiz'>('catalog');
 
   return (
     <div className="space-y-8 animate-fadeIn pb-16">
-      {/* Top Banner */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-indigo-900 via-purple-900 to-slate-900 text-white p-6 sm:p-8 shadow-xl">
-        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
-          <div className="space-y-2.5 max-w-xl">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md text-xs font-semibold text-purple-200 border border-white/10">
-              <BookMarked className="w-3.5 h-3.5 text-indigo-300" />
-              <span>Лексичний тренажер • Рівні A1 — C1</span>
+      {/* Editorial Header */}
+      <div className="border-b border-zinc-200/80 dark:border-zinc-800/80 pb-6 pt-2">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+          <div className="space-y-1.5 max-w-2xl">
+            <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
+              <span>Лексичний банк</span>
+              <span>•</span>
+              <span>Рівні A1 — C1</span>
+              <span>•</span>
+              <span className="text-zinc-900 dark:text-zinc-200 font-bold">2 400 слів</span>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-black text-white">
-              Словниковий запас & Тренажер слів
+            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-zinc-900 dark:text-white">
+              Словниковий запас та тренажер
             </h1>
-            <p className="text-xs sm:text-sm text-purple-100/90 leading-relaxed">
-              Вивчайте найуживаніші слова, фразові дієслова та живі ідіоми англійської мови. Кожне слово озвучується природним людським голосом та містить практичні приклади.
+            <p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
+              12 ключових тематичних категорій: від побутової лексики та подорожей до фразових дієслів, ідіом і академічного C1. Кожне слово супроводжується транскрипцією IPA, прикладами та студійним озвученням.
             </p>
           </div>
 
-          <div className="flex items-center gap-2 bg-white/10 backdrop-blur-md px-4 py-2.5 rounded-2xl border border-white/15 self-start md:self-auto text-xs font-bold text-white">
-            <Sparkles className="w-4 h-4 text-amber-400" />
-            <span>2400+ відібраних слів та виразів</span>
+          {/* Mode Switcher */}
+          <div className="inline-flex p-1 rounded-xl bg-zinc-100 dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 self-start md:self-auto shrink-0">
+            <button
+              onClick={() => setActiveTab('catalog')}
+              className={`py-1.5 px-3.5 rounded-lg text-xs font-medium transition flex items-center gap-1.5 ${
+                activeTab === 'catalog'
+                  ? 'bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-sm font-semibold'
+                  : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'
+              }`}
+            >
+              <BookMarked className="w-3.5 h-3.5" />
+              <span>Каталог</span>
+            </button>
+
+            <button
+              onClick={() => setActiveTab('flashcards')}
+              className={`py-1.5 px-3.5 rounded-lg text-xs font-medium transition flex items-center gap-1.5 ${
+                activeTab === 'flashcards'
+                  ? 'bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-sm font-semibold'
+                  : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'
+              }`}
+            >
+              <Layers className="w-3.5 h-3.5" />
+              <span>Флеш-картки</span>
+            </button>
+
+            <button
+              onClick={() => setActiveTab('quiz')}
+              className={`py-1.5 px-3.5 rounded-lg text-xs font-medium transition flex items-center gap-1.5 ${
+                activeTab === 'quiz'
+                  ? 'bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-sm font-semibold'
+                  : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'
+              }`}
+            >
+              <Zap className="w-3.5 h-3.5" />
+              <span>Квіз</span>
+            </button>
           </div>
         </div>
-      </div>
-
-      {/* Mode Navigation Tabs */}
-      <div className="flex items-center gap-2 p-1.5 rounded-2xl bg-slate-100 dark:bg-slate-800 max-w-md mx-auto border border-slate-200 dark:border-slate-700">
-        <button
-          onClick={() => setActiveTab('catalog')}
-          className={`flex-1 py-2.5 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition ${
-            activeTab === 'catalog'
-              ? 'bg-white dark:bg-slate-900 text-indigo-600 dark:text-indigo-400 shadow-sm'
-              : 'text-slate-600 dark:text-slate-300 hover:text-slate-900'
-          }`}
-        >
-          <BookMarked className="w-4 h-4" />
-          <span>Каталог слів</span>
-        </button>
-
-        <button
-          onClick={() => setActiveTab('flashcards')}
-          className={`flex-1 py-2.5 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition ${
-            activeTab === 'flashcards'
-              ? 'bg-white dark:bg-slate-900 text-indigo-600 dark:text-indigo-400 shadow-sm'
-              : 'text-slate-600 dark:text-slate-300 hover:text-slate-900'
-          }`}
-        >
-          <Layers className="w-4 h-4" />
-          <span>Флеш-картки</span>
-        </button>
-
-        <button
-          onClick={() => setActiveTab('quiz')}
-          className={`flex-1 py-2.5 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition ${
-            activeTab === 'quiz'
-              ? 'bg-white dark:bg-slate-900 text-indigo-600 dark:text-indigo-400 shadow-sm'
-              : 'text-slate-600 dark:text-slate-300 hover:text-slate-900'
-          }`}
-        >
-          <Zap className="w-4 h-4" />
-          <span>Швидкий квіз</span>
-        </button>
       </div>
 
       {/* Tab Content */}

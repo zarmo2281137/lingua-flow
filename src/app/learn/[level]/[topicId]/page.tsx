@@ -7,13 +7,7 @@ import { TOPICS } from '@/data/courses';
 import { getTopicExercises } from '@/data/topicExercises';
 import { TheoryNotes } from '@/components/lesson/TheoryNotes';
 import { QuizEngine } from '@/components/lesson/QuizEngine';
-import {
-  ArrowLeft,
-  BookOpen,
-  HelpCircle,
-  Sparkles,
-  Share2,
-} from 'lucide-react';
+import { ArrowLeft, BookOpen, HelpCircle } from 'lucide-react';
 
 export default function LessonPage() {
   const params = useParams();
@@ -36,13 +30,13 @@ export default function LessonPage() {
   if (!topic) {
     return (
       <div className="text-center py-20 space-y-4">
-        <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Тему не знайдено</h2>
-        <p className="text-slate-500">Можливо, посилання застаріло або веде на інший модуль.</p>
+        <h2 className="text-xl font-semibold text-zinc-900 dark:text-zinc-100">Тему не знайдено</h2>
+        <p className="text-sm text-zinc-500 dark:text-zinc-400">Можливо, посилання застаріло або веде на інший модуль.</p>
         <Link
           href="/"
-          className="inline-block py-2.5 px-5 rounded-2xl bg-indigo-600 text-white font-bold text-sm"
+          className="inline-block py-2.5 px-5 rounded-xl bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 font-medium text-sm transition"
         >
-          Повернутися до головного каталогу
+          Повернутися до каталогу
         </Link>
       </div>
     );
@@ -57,49 +51,48 @@ export default function LessonPage() {
   };
 
   return (
-    <div className="space-y-6 max-w-4xl mx-auto animate-fadeIn">
+    <div className="space-y-6 max-w-4xl mx-auto animate-fadeIn pb-16">
       {/* Breadcrumb & Navigation */}
       <div className="flex items-center justify-between">
         <Link
           href="/"
-          className="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white transition"
+          className="inline-flex items-center gap-1.5 text-xs font-medium text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 transition"
         >
-          <ArrowLeft className="w-4 h-4" />
-          <span>Назад до списку тем ({topic.level})</span>
+          <ArrowLeft className="w-3.5 h-3.5" />
+          <span>До списку тем ({topic.level})</span>
         </Link>
-        <span className="text-xs font-bold px-2.5 py-1 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+        <span className="text-xs font-medium px-2.5 py-1 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300">
           Рівень {topic.level}
         </span>
       </div>
 
       {/* Tabs Control */}
-      <div className="flex bg-slate-100 dark:bg-slate-800 p-1.5 rounded-2xl border border-slate-200 dark:border-slate-700 max-w-md mx-auto">
-        <button
-          onClick={() => handleTabChange('notes')}
-          className={`flex-1 py-2.5 px-4 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 transition ${
-            activeTab === 'notes'
-              ? 'bg-white dark:bg-slate-700 text-indigo-600 dark:text-white shadow-sm'
-              : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white'
-          }`}
-        >
-          <BookOpen className="w-4 h-4" />
-          <span>Конспект (Теорія)</span>
-        </button>
+      <div className="flex justify-center">
+        <div className="inline-flex p-1 bg-zinc-100 dark:bg-zinc-800/80 rounded-xl w-full max-w-sm">
+          <button
+            onClick={() => handleTabChange('notes')}
+            className={`flex-1 py-2 px-3 rounded-lg text-xs font-medium flex items-center justify-center gap-2 transition ${
+              activeTab === 'notes'
+                ? 'bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 shadow-sm font-semibold'
+                : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100'
+            }`}
+          >
+            <BookOpen className="w-3.5 h-3.5" />
+            <span>Теорія</span>
+          </button>
 
-        <button
-          onClick={() => handleTabChange('quiz')}
-          className={`flex-1 py-2.5 px-4 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 transition ${
-            activeTab === 'quiz'
-              ? 'bg-white dark:bg-slate-700 text-indigo-600 dark:text-white shadow-sm'
-              : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white'
-          }`}
-        >
-          <HelpCircle className="w-4 h-4" />
-          <span>Тест (Практика)</span>
-          <span className="px-1.5 py-0.2 bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 text-[10px] rounded-md font-extrabold">
-            {activeExercises.length} тестів
-          </span>
-        </button>
+          <button
+            onClick={() => handleTabChange('quiz')}
+            className={`flex-1 py-2 px-3 rounded-lg text-xs font-medium flex items-center justify-center gap-2 transition ${
+              activeTab === 'quiz'
+                ? 'bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 shadow-sm font-semibold'
+                : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100'
+            }`}
+          >
+            <HelpCircle className="w-3.5 h-3.5" />
+            <span>Практика ({activeExercises.length})</span>
+          </button>
+        </div>
       </div>
 
       {/* Tab Contents */}

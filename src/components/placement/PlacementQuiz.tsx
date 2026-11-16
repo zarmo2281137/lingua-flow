@@ -1,21 +1,9 @@
 'use client';
 
 import React, { useState } from 'react';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { PLACEMENT_QUESTIONS, calculatePlacementLevel } from '@/data/placement';
-import { LevelCode } from '@/types/course';
-import {
-  Compass,
-  CheckCircle2,
-  XCircle,
-  ArrowRight,
-  RotateCcw,
-  Sparkles,
-  Award,
-  BookOpen,
-} from 'lucide-react';
-import confetti from 'canvas-confetti';
+import { ArrowRight, Check } from 'lucide-react';
 import { updateUserStats } from '@/utils/storage';
 
 export const PlacementQuiz: React.FC = () => {
@@ -41,13 +29,7 @@ export const PlacementQuiz: React.FC = () => {
     if (currentIndex + 1 < PLACEMENT_QUESTIONS.length) {
       setCurrentIndex(currentIndex + 1);
     } else {
-      // Calculate final
       setIsFinished(true);
-      confetti({
-        particleCount: 100,
-        spread: 70,
-        origin: { y: 0.6 },
-      });
     }
   };
 
@@ -73,60 +55,59 @@ export const PlacementQuiz: React.FC = () => {
           total: PLACEMENT_QUESTIONS.length,
           date: new Date().toISOString(),
         },
-        xp: prev.xp + 100, // +100 XP for completing placement test
+        xp: prev.xp + 100,
       }));
       router.push('/');
     };
 
     return (
-      <div className="max-w-2xl mx-auto p-6 sm:p-10 rounded-3xl bg-white dark:bg-slate-800 border border-slate-200/80 dark:border-slate-800 text-center space-y-6 shadow-xl animate-fadeIn">
-        <div className="mx-auto w-20 h-20 rounded-3xl bg-gradient-to-tr from-indigo-500 to-purple-600 flex items-center justify-center text-white shadow-lg shadow-indigo-500/30">
-          <Award className="w-10 h-10" />
+      <div className="max-w-xl mx-auto p-6 sm:p-10 rounded-2xl bg-white dark:bg-zinc-900/60 border border-zinc-200/90 dark:border-zinc-800 space-y-6 text-center shadow-sm animate-fadeIn">
+        <div className="space-y-1">
+          <p className="text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
+            Результат тестування
+          </p>
+          <h2 className="text-xl sm:text-2xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
+            Рекомендований рівень
+          </h2>
         </div>
 
-        <div className="space-y-2">
-          <span className="text-xs font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">
-            Результат діагностичного тесту
-          </span>
-          <h2 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white">
-            Ваш орієнтовний рівень:
-          </h2>
-          <div className="inline-block px-5 py-2 rounded-2xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-black text-xl shadow-md shadow-indigo-600/20">
+        <div className="py-2">
+          <div className="inline-block px-5 py-2.5 rounded-xl bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 font-semibold text-lg sm:text-xl shadow-sm">
             {result.labelUk}
           </div>
         </div>
 
-        {/* Score & XP badge */}
-        <div className="grid grid-cols-2 gap-4 max-w-sm mx-auto">
-          <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-700/50 border border-slate-100 dark:border-slate-700">
-            <span className="text-[11px] text-slate-400">Правильних відповідей</span>
-            <p className="text-2xl font-black text-slate-900 dark:text-white mt-0.5">
+        {/* Stats Grid */}
+        <div className="grid grid-cols-2 gap-3 max-w-sm mx-auto">
+          <div className="p-4 rounded-xl bg-zinc-50 dark:bg-zinc-800/40 border border-zinc-200/80 dark:border-zinc-800 text-center">
+            <span className="text-xs text-zinc-500 dark:text-zinc-400">Точність</span>
+            <p className="text-xl font-semibold text-zinc-900 dark:text-zinc-100 mt-0.5">
               {score} / {PLACEMENT_QUESTIONS.length}
             </p>
           </div>
-          <div className="p-4 rounded-2xl bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-100 dark:border-indigo-900/60">
-            <span className="text-[11px] text-indigo-500">Нагорода</span>
-            <p className="text-2xl font-black text-indigo-700 dark:text-indigo-300 mt-0.5">
+          <div className="p-4 rounded-xl bg-zinc-50 dark:bg-zinc-800/40 border border-zinc-200/80 dark:border-zinc-800 text-center">
+            <span className="text-xs text-zinc-500 dark:text-zinc-400">Нагорода</span>
+            <p className="text-xl font-semibold text-emerald-600 dark:text-emerald-400 mt-0.5">
               +100 XP
             </p>
           </div>
         </div>
 
-        {/* Personalized description */}
-        <div className="p-5 rounded-2xl bg-slate-50 dark:bg-slate-750 text-left border border-slate-200/60 dark:border-slate-700 text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
-          <p className="font-bold text-slate-900 dark:text-white mb-1">
-            Рекомендація нашої системи:
+        {/* Recommendation Text */}
+        <div className="p-5 rounded-xl bg-zinc-50/60 dark:bg-zinc-800/30 text-left border border-zinc-200/80 dark:border-zinc-800 text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
+          <p className="font-semibold text-zinc-900 dark:text-zinc-100 mb-1">
+            Коментар методиста:
           </p>
           {result.summaryUk}
         </div>
 
-        {/* Actions */}
-        <div className="flex flex-col sm:flex-row gap-3 justify-center pt-2">
+        {/* Action Button */}
+        <div className="pt-2">
           <button
             onClick={handleApplyLevel}
-            className="py-3.5 px-6 rounded-2xl font-bold text-sm text-white bg-indigo-600 hover:bg-indigo-700 shadow-lg shadow-indigo-600/25 flex items-center justify-center gap-2 transition"
+            className="w-full sm:w-auto px-6 py-3 rounded-xl font-medium text-sm text-white bg-zinc-900 hover:bg-zinc-800 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-100 inline-flex items-center justify-center gap-2 transition"
           >
-            <span>Встановити цей рівень та почати уроки</span>
+            <span>Встановити рівень та перейти до тем</span>
             <ArrowRight className="w-4 h-4" />
           </button>
         </div>
@@ -135,34 +116,31 @@ export const PlacementQuiz: React.FC = () => {
   }
 
   return (
-    <div className="max-w-2xl mx-auto space-y-6 animate-fadeIn pb-12">
-      {/* Top Header */}
+    <div className="max-w-xl mx-auto space-y-6 animate-fadeIn">
+      {/* Top Header & Progress */}
       <div className="space-y-2">
-        <div className="flex items-center justify-between text-xs font-bold text-slate-500 dark:text-slate-400">
-          <div className="flex items-center gap-2">
-            <Compass className="w-4 h-4 text-indigo-600" />
-            <span>Запитання {currentIndex + 1} з {PLACEMENT_QUESTIONS.length}</span>
-          </div>
-          <span className="px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300">
-            Блок: {currentQ.targetLevel}
+        <div className="flex items-center justify-between text-xs text-zinc-500 dark:text-zinc-400">
+          <span>Запитання {currentIndex + 1} з {PLACEMENT_QUESTIONS.length}</span>
+          <span className="px-2 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 font-medium">
+            Секція {currentQ.targetLevel}
           </span>
         </div>
-        <div className="w-full h-2 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
+        <div className="w-full h-1 bg-zinc-100 dark:bg-zinc-800 rounded-full overflow-hidden">
           <div
-            className="h-full bg-gradient-to-r from-indigo-500 to-purple-600 transition-all duration-300"
+            className="h-full bg-zinc-900 dark:bg-zinc-100 transition-all duration-300"
             style={{ width: `${((currentIndex + 1) / PLACEMENT_QUESTIONS.length) * 100}%` }}
           />
         </div>
       </div>
 
       {/* Question Card */}
-      <div className="p-6 sm:p-8 rounded-3xl bg-white dark:bg-slate-800 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-6">
-        <h3 className="text-lg sm:text-xl font-black text-slate-900 dark:text-white leading-snug">
+      <div className="p-6 sm:p-8 rounded-2xl bg-white dark:bg-zinc-900/60 border border-zinc-200/90 dark:border-zinc-800 shadow-sm space-y-6">
+        <h3 className="text-base sm:text-lg font-medium tracking-tight text-zinc-900 dark:text-zinc-100 leading-snug">
           {currentQ.question}
         </h3>
 
         {/* Options */}
-        <div className="space-y-3">
+        <div className="space-y-2.5">
           {currentQ.options.map((opt, idx) => {
             const isSelected = selectedOption === idx;
 
@@ -170,22 +148,21 @@ export const PlacementQuiz: React.FC = () => {
               <button
                 key={idx}
                 onClick={() => handleSelect(idx)}
-                className={`w-full text-left p-4 rounded-2xl border text-sm font-medium transition flex items-center justify-between ${
+                className={`w-full text-left p-3.5 sm:p-4 rounded-xl border text-sm transition flex items-center justify-between gap-3 ${
                   isSelected
-                    ? 'border-indigo-600 bg-indigo-50 dark:bg-indigo-950/50 text-indigo-900 dark:text-indigo-200 ring-2 ring-indigo-500/20 font-bold'
-                    : 'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-750 text-slate-800 dark:text-slate-200 hover:border-indigo-300 dark:hover:border-indigo-600'
+                    ? 'border-zinc-900 dark:border-white bg-zinc-50 dark:bg-zinc-800/80 text-zinc-900 dark:text-zinc-100 ring-1 ring-zinc-900 dark:ring-white font-medium'
+                    : 'border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/40 text-zinc-800 dark:text-zinc-300 hover:border-zinc-300 dark:hover:border-zinc-700'
                 }`}
               >
-                <span>{opt}</span>
-                <span
-                  className={`w-5 h-5 rounded-full border flex items-center justify-center text-xs ${
-                    isSelected
-                      ? 'border-indigo-600 bg-indigo-600 text-white'
-                      : 'border-slate-300 dark:border-slate-600 text-slate-400'
-                  }`}
-                >
-                  {String.fromCharCode(65 + idx)}
-                </span>
+                <div className="flex items-center gap-3">
+                  <span className="w-6 h-6 rounded-md border border-zinc-200 dark:border-zinc-700 flex items-center justify-center text-xs font-medium text-zinc-500 shrink-0">
+                    {String.fromCharCode(65 + idx)}
+                  </span>
+                  <span>{opt}</span>
+                </div>
+                {isSelected && (
+                  <Check className="w-4 h-4 text-zinc-900 dark:text-white shrink-0" />
+                )}
               </button>
             );
           })}
@@ -196,10 +173,10 @@ export const PlacementQuiz: React.FC = () => {
           <button
             onClick={handleNext}
             disabled={selectedOption === null}
-            className="py-3 px-6 rounded-2xl font-bold text-xs sm:text-sm text-white bg-indigo-600 hover:bg-indigo-700 shadow-md shadow-indigo-600/20 disabled:opacity-40 flex items-center gap-2 transition"
+            className="px-5 py-2.5 rounded-xl font-medium text-xs sm:text-sm text-white bg-zinc-900 hover:bg-zinc-800 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-100 disabled:opacity-40 inline-flex items-center gap-1.5 transition"
           >
             <span>{currentIndex + 1 < PLACEMENT_QUESTIONS.length ? 'Далі' : 'Завершити тест'}</span>
-            <ArrowRight className="w-4 h-4" />
+            <ArrowRight className="w-3.5 h-3.5" />
           </button>
         </div>
       </div>

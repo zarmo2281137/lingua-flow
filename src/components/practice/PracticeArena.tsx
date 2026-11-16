@@ -6,18 +6,10 @@ import { LevelCode } from '@/types/course';
 import {
   CheckCircle2,
   XCircle,
-  HelpCircle,
   ArrowRight,
   ArrowLeft,
-  RotateCcw,
-  Sparkles,
-  Zap,
   Volume2,
-  Grid,
-  Filter,
-  Award,
 } from 'lucide-react';
-import confetti from 'canvas-confetti';
 import { addXp, getUserStats } from '@/utils/storage';
 import { playHumanAudio, stopSpeech } from '@/utils/speech';
 
@@ -94,24 +86,11 @@ export const PracticeArena: React.FC = () => {
     if (correct) {
       addXp(10);
     }
-
-    const answeredCount = Object.values(updated).filter((r) => r.answered).length;
-    if (answeredCount === sessionQuestions.length) {
-      confetti({
-        particleCount: 100,
-        spread: 70,
-        origin: { y: 0.6 },
-      });
-    }
   };
 
   const currentResult = resultsMap[currentIndex];
   const isChecked = currentResult?.answered || false;
   const isCorrect = currentResult?.isCorrect || false;
-
-  const answeredTotal = Object.values(resultsMap).filter((r) => r.answered).length;
-  const correctTotal = Object.values(resultsMap).filter((r) => r.isCorrect).length;
-  const wrongTotal = Object.values(resultsMap).filter((r) => r.answered && !r.isCorrect).length;
 
   const handleSpeakQuestion = (text: string) => {
     if (isPlayingQuestion) {
@@ -142,24 +121,33 @@ export const PracticeArena: React.FC = () => {
   // 1. LOBBY VIEW: DIRECT TEST NUMBER PICKER
   if (!isTestStarted) {
     return (
-      <div className="max-w-4xl mx-auto space-y-6 animate-fadeIn pb-12">
-        <div className="bg-white dark:bg-slate-800 rounded-3xl p-6 sm:p-8 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-6">
-          <div className="space-y-1">
-            <h2 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white flex items-center gap-2">
-              <Zap className="w-6 h-6 text-indigo-600 fill-current" />
-              <span>Каталог з 200 пронумерованих тестів (по 40 на кожен рівень)</span>
-            </h2>
-            <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
-              Оберіть рівень знань та натисніть на будь-який номер тесту (1–40), щоб скласти його індивідуально
-            </p>
+      <div className="space-y-6">
+        <div className="bg-white dark:bg-zinc-900/60 rounded-2xl p-6 sm:p-8 border border-zinc-200/90 dark:border-zinc-800 space-y-6 shadow-sm">
+          {/* Header */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-zinc-200/80 dark:border-zinc-800">
+            <div>
+              <h2 className="text-base sm:text-lg font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
+                Каталог завдань
+              </h2>
+              <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400">
+                200 практичних завдань — по 40 тестів на кожен рівень складності.
+              </p>
+            </div>
+            <button
+              onClick={startAllLevelTests}
+              className="inline-flex items-center gap-1.5 text-xs font-medium text-zinc-900 dark:text-zinc-100 hover:text-zinc-600 dark:hover:text-zinc-300 transition self-start sm:self-auto"
+            >
+              <span>Пройти всі 40 завдань рівня {selectedLevel}</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </button>
           </div>
 
           {/* Level Switcher (A1 to C1) */}
           <div className="space-y-2">
-            <label className="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
-              Оберіть рівень складності (40 тестів на кожен рівень):
+            <label className="text-xs font-medium uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
+              Рівень складності:
             </label>
-            <div className="grid grid-cols-5 gap-2">
+            <div className="inline-flex p-1 bg-zinc-100 dark:bg-zinc-800/80 rounded-xl w-full sm:w-auto">
               {(['A1', 'A2', 'B1', 'B2', 'C1'] as const).map((lvl) => (
                 <button
                   key={lvl}
@@ -167,10 +155,10 @@ export const PracticeArena: React.FC = () => {
                     setSelectedLevel(lvl);
                     setResultsMap({});
                   }}
-                  className={`py-3 rounded-2xl text-xs sm:text-sm font-black border transition ${
+                  className={`flex-1 sm:flex-initial px-4 py-2 rounded-lg text-xs font-medium transition ${
                     selectedLevel === lvl
-                      ? 'bg-indigo-600 text-white border-indigo-600 shadow-lg shadow-indigo-600/25 scale-105'
-                      : 'bg-slate-50 dark:bg-slate-700/60 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-600 hover:border-indigo-400'
+                      ? 'bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 shadow-sm font-semibold'
+                      : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100'
                   }`}
                 >
                   Рівень {lvl}
@@ -181,24 +169,24 @@ export const PracticeArena: React.FC = () => {
 
           {/* Category Filter */}
           <div className="space-y-2">
-            <label className="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
-              Фільтр за темою (опціонально):
+            <label className="text-xs font-medium uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
+              Категорія:
             </label>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-1.5">
               {[
                 { id: 'all', label: 'Всі категорії' },
                 { id: 'grammar', label: 'Граматика' },
-                { id: 'vocabulary', label: 'Словниковий запас' },
+                { id: 'vocabulary', label: 'Лексика' },
                 { id: 'prepositions', label: 'Прийменники' },
                 { id: 'idioms', label: 'Ідіоми' },
               ].map((cat) => (
                 <button
                   key={cat.id}
                   onClick={() => setSelectedCategory(cat.id)}
-                  className={`px-3.5 py-1.5 rounded-xl text-xs font-bold border transition ${
+                  className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition ${
                     selectedCategory === cat.id
-                      ? 'bg-indigo-600 text-white border-indigo-600'
-                      : 'bg-slate-50 dark:bg-slate-700/50 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700'
+                      ? 'bg-zinc-900 text-white border-zinc-900 dark:bg-white dark:text-zinc-900 dark:border-white'
+                      : 'bg-zinc-50 dark:bg-zinc-800/40 text-zinc-600 dark:text-zinc-400 border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700'
                   }`}
                 >
                   {cat.label}
@@ -207,19 +195,11 @@ export const PracticeArena: React.FC = () => {
             </div>
           </div>
 
-          {/* 40 Numbered Tests Grid for Selected Level */}
-          <div className="p-5 rounded-3xl bg-slate-50 dark:bg-slate-750 border border-slate-200/80 dark:border-slate-700 space-y-4">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-white flex items-center gap-2">
-                <Grid className="w-4 h-4 text-indigo-600" />
-                <span>Оберіть номер тесту рівня {selectedLevel} (1–{levelQuestions.length}):</span>
-              </span>
-              <button
-                onClick={startAllLevelTests}
-                className="text-xs font-bold text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 underline"
-              >
-                Пройти всі {levelQuestions.length} підряд $\rightarrow$
-              </button>
+          {/* Numbered Tests Grid */}
+          <div className="pt-2 space-y-3">
+            <div className="flex items-center justify-between text-xs text-zinc-500 dark:text-zinc-400">
+              <span>Доступно завдань: {levelQuestions.length}</span>
+              <span>Натисніть на номер для переходу</span>
             </div>
 
             <div className="grid grid-cols-5 sm:grid-cols-8 md:grid-cols-10 gap-2">
@@ -227,12 +207,12 @@ export const PracticeArena: React.FC = () => {
                 <button
                   key={q.id}
                   onClick={() => startSpecificTest(idx)}
-                  className="h-11 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 hover:border-indigo-600 hover:bg-indigo-50 dark:hover:bg-indigo-950/50 hover:scale-105 font-bold text-xs sm:text-sm text-slate-800 dark:text-slate-200 shadow-sm transition flex flex-col items-center justify-center group"
+                  className="h-11 rounded-xl border border-zinc-200/90 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-800/40 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 transition flex flex-col items-center justify-center group"
                 >
-                  <span className="group-hover:text-indigo-600 dark:group-hover:text-indigo-400">
+                  <span className="text-xs font-semibold text-zinc-900 dark:text-zinc-100 group-hover:text-zinc-600 dark:group-hover:text-white">
                     #{idx + 1}
                   </span>
-                  <span className="text-[9px] text-slate-400 -mt-1 font-normal capitalize">
+                  <span className="text-[10px] text-zinc-400 font-normal capitalize">
                     {q.category.slice(0, 4)}
                   </span>
                 </button>
@@ -244,23 +224,23 @@ export const PracticeArena: React.FC = () => {
     );
   }
 
-  // 2. ACTIVE TEST RUNNER WITH NUMERIC SELECTOR
+  // 2. ACTIVE TEST RUNNER
   return (
-    <div className="max-w-4xl mx-auto space-y-6 animate-fadeIn pb-12">
+    <div className="space-y-6">
       {/* Top Bar with Number Selector Grid */}
-      <div className="bg-white dark:bg-slate-800 rounded-3xl p-5 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-3">
-        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 dark:border-slate-700/60 pb-3">
+      <div className="bg-white dark:bg-zinc-900/60 rounded-2xl p-5 border border-zinc-200/90 dark:border-zinc-800 shadow-sm space-y-3">
+        <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-zinc-200/80 dark:border-zinc-800">
           <div className="flex items-center gap-2">
-            <span className="px-2.5 py-1 rounded-xl bg-indigo-600 text-white font-black text-xs">
+            <span className="px-2 py-0.5 rounded text-xs font-semibold bg-zinc-900 text-white dark:bg-white dark:text-zinc-900">
               {selectedLevel}
             </span>
-            <span className="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
-              Вибір тесту ({currentIndex + 1} з {sessionQuestions.length}):
+            <span className="text-xs font-medium text-zinc-600 dark:text-zinc-400">
+              Завдання {currentIndex + 1} з {sessionQuestions.length}
             </span>
           </div>
 
           <div className="flex items-center gap-3">
-            {/* Quick jump input */}
+            {/* Quick jump */}
             <form onSubmit={handleJumpSubmit} className="flex items-center gap-1.5">
               <input
                 type="number"
@@ -269,11 +249,11 @@ export const PracticeArena: React.FC = () => {
                 placeholder="№"
                 value={jumpInput}
                 onChange={(e) => setJumpInput(e.target.value)}
-                className="w-14 px-2 py-1 text-xs rounded-lg border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-750 text-center font-bold"
+                className="w-14 px-2 py-1 text-xs rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/60 text-zinc-900 dark:text-zinc-100 text-center font-medium focus:outline-none focus:ring-1 focus:ring-zinc-400"
               />
               <button
                 type="submit"
-                className="px-2.5 py-1 rounded-lg text-xs font-bold bg-indigo-600 text-white"
+                className="px-2.5 py-1 rounded-lg text-xs font-medium bg-zinc-900 text-white dark:bg-white dark:text-zinc-900"
               >
                 Go
               </button>
@@ -281,38 +261,38 @@ export const PracticeArena: React.FC = () => {
 
             <button
               onClick={() => setIsTestStarted(false)}
-              className="text-xs font-semibold text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
+              className="text-xs font-medium text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 transition"
             >
               До каталогу
             </button>
           </div>
         </div>
 
-        {/* 40 Numbers Grid */}
-        <div className="grid grid-cols-8 sm:grid-cols-10 md:grid-cols-20 gap-1.5 max-h-[140px] overflow-y-auto p-1 scrollbar-none">
+        {/* 40 Numbers Grid Strip */}
+        <div className="grid grid-cols-8 sm:grid-cols-10 md:grid-cols-20 gap-1.5 max-h-[140px] overflow-y-auto p-0.5">
           {sessionQuestions.map((q, idx) => {
             const res = resultsMap[idx];
             const isCurrent = currentIndex === idx;
 
-            let btnStyle = 'bg-slate-50 dark:bg-slate-700/50 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-600 hover:border-indigo-400';
+            let btnStyle = 'bg-zinc-50 dark:bg-zinc-800/40 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700';
 
             if (res?.answered) {
               if (res.isCorrect) {
-                btnStyle = 'bg-emerald-500 text-white border-emerald-600 font-bold';
+                btnStyle = 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300 border-emerald-300 dark:border-emerald-800 font-medium';
               } else {
-                btnStyle = 'bg-rose-500 text-white border-rose-600 font-bold';
+                btnStyle = 'bg-rose-50 text-rose-700 dark:bg-rose-950/40 dark:text-rose-300 border-rose-300 dark:border-rose-800 font-medium';
               }
             }
 
             if (isCurrent) {
-              btnStyle += ' ring-2 ring-indigo-600 ring-offset-2 dark:ring-offset-slate-800 scale-105 z-10 font-black';
+              btnStyle += ' ring-2 ring-zinc-900 dark:ring-white ring-offset-2 dark:ring-offset-zinc-900 font-bold';
             }
 
             return (
               <button
                 key={q.id}
                 onClick={() => switchQuestion(idx)}
-                className={`h-8 rounded-lg text-xs font-semibold border flex items-center justify-center transition-all ${btnStyle}`}
+                className={`h-8 rounded-lg text-xs border flex items-center justify-center transition ${btnStyle}`}
                 title={`Перейти до тесту #${idx + 1}`}
               >
                 {idx + 1}
@@ -323,19 +303,17 @@ export const PracticeArena: React.FC = () => {
       </div>
 
       {/* Active Question Box */}
-      <div className="p-6 sm:p-8 rounded-3xl bg-white dark:bg-slate-800 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-6">
-        <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-700/60 pb-3">
-          <div className="flex items-center gap-2">
-            <span className="px-2 py-0.5 rounded-lg bg-indigo-50 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 text-xs font-bold">
-              Тест #{currentIndex + 1} • {currentQ.category}
-            </span>
-          </div>
+      <div className="p-6 sm:p-8 rounded-2xl bg-white dark:bg-zinc-900/60 border border-zinc-200/90 dark:border-zinc-800 shadow-sm space-y-6">
+        <div className="flex items-center justify-between pb-3 border-b border-zinc-200/80 dark:border-zinc-800">
+          <span className="text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">
+            Завдання #{currentIndex + 1} • {currentQ.category}
+          </span>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5">
             <button
               onClick={() => switchQuestion(currentIndex - 1)}
               disabled={currentIndex === 0}
-              className="p-1.5 rounded-lg border border-slate-200 dark:border-slate-700 disabled:opacity-30 text-xs flex items-center gap-1"
+              className="px-2.5 py-1.5 rounded-lg border border-zinc-200 dark:border-zinc-800 text-xs font-medium text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 disabled:opacity-30 disabled:hover:bg-transparent flex items-center gap-1 transition"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
               <span className="hidden sm:inline">Попередній</span>
@@ -343,7 +321,7 @@ export const PracticeArena: React.FC = () => {
             <button
               onClick={() => switchQuestion(currentIndex + 1)}
               disabled={currentIndex + 1 >= sessionQuestions.length}
-              className="p-1.5 rounded-lg border border-slate-200 dark:border-slate-700 disabled:opacity-30 text-xs flex items-center gap-1"
+              className="px-2.5 py-1.5 rounded-lg border border-zinc-200 dark:border-zinc-800 text-xs font-medium text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 disabled:opacity-30 disabled:hover:bg-transparent flex items-center gap-1 transition"
             >
               <span className="hidden sm:inline">Наступний</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -353,39 +331,39 @@ export const PracticeArena: React.FC = () => {
 
         {/* Question Text */}
         <div className="flex items-start justify-between gap-3">
-          <h3 className="text-lg sm:text-xl font-black text-slate-900 dark:text-white leading-snug">
+          <h3 className="text-lg sm:text-xl font-medium tracking-tight text-zinc-900 dark:text-zinc-100 leading-snug">
             {currentQ.question}
           </h3>
           <button
             onClick={() => handleSpeakQuestion(currentQ.question)}
-            className={`p-2 rounded-xl border transition shrink-0 ${
+            className={`p-2 rounded-lg border transition shrink-0 ${
               isPlayingQuestion
-                ? 'bg-indigo-600 text-white border-indigo-600 shadow-md animate-pulse'
-                : 'text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 bg-white dark:bg-slate-700 border-slate-200 dark:border-slate-600'
+                ? 'bg-zinc-900 text-white border-zinc-900 dark:bg-white dark:text-zinc-900'
+                : 'text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 bg-zinc-50 dark:bg-zinc-800/40 border-zinc-200 dark:border-zinc-800'
             }`}
             title="Озвучити природним голосом людини"
           >
-            <Volume2 className="w-5 h-5" />
+            <Volume2 className="w-4 h-4" />
           </button>
         </div>
 
         {/* Options */}
-        <div className="space-y-3">
+        <div className="space-y-2.5">
           {currentQ.options.map((opt, idx) => {
             const isSelected = selectedOption === idx;
             let style =
-              'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-750 hover:border-indigo-400 text-slate-800 dark:text-slate-200';
+              'border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/40 hover:border-zinc-300 dark:hover:border-zinc-700 text-zinc-800 dark:text-zinc-200';
 
             if (isChecked) {
               if (idx === currentQ.correctIndex) {
-                style = 'border-emerald-500 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-900 dark:text-emerald-200 font-bold';
+                style = 'border-emerald-500 bg-emerald-50/70 dark:bg-emerald-950/30 text-emerald-950 dark:text-emerald-100 font-medium';
               } else if (isSelected && idx !== currentQ.correctIndex) {
-                style = 'border-rose-500 bg-rose-50 dark:bg-rose-950/40 text-rose-900 dark:text-rose-200';
+                style = 'border-rose-400 bg-rose-50/70 dark:bg-rose-950/30 text-rose-950 dark:text-rose-100';
               } else {
-                style = 'opacity-40 border-slate-200 dark:border-slate-700';
+                style = 'opacity-40 border-zinc-200 dark:border-zinc-800';
               }
             } else if (isSelected) {
-              style = 'border-indigo-600 bg-indigo-50 dark:bg-indigo-950/50 text-indigo-900 dark:text-indigo-200 ring-2 ring-indigo-500/20 font-bold';
+              style = 'border-zinc-900 dark:border-white bg-zinc-50 dark:bg-zinc-800/60 text-zinc-900 dark:text-zinc-100 ring-1 ring-zinc-900 dark:ring-white font-medium';
             }
 
             return (
@@ -393,14 +371,19 @@ export const PracticeArena: React.FC = () => {
                 key={idx}
                 disabled={isChecked}
                 onClick={() => handleSelectOption(idx)}
-                className={`w-full text-left p-4 rounded-2xl border text-sm transition flex items-center justify-between ${style}`}
+                className={`w-full text-left p-3.5 sm:p-4 rounded-xl border text-sm transition flex items-center justify-between gap-3 ${style}`}
               >
-                <span>{opt}</span>
+                <div className="flex items-center gap-3">
+                  <span className="w-6 h-6 rounded-md border border-zinc-200 dark:border-zinc-700 flex items-center justify-center text-xs font-medium text-zinc-500 shrink-0">
+                    {String.fromCharCode(65 + idx)}
+                  </span>
+                  <span>{opt}</span>
+                </div>
                 {isChecked && idx === currentQ.correctIndex && (
-                  <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0" />
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
                 )}
                 {isChecked && isSelected && idx !== currentQ.correctIndex && (
-                  <XCircle className="w-5 h-5 text-rose-600 shrink-0" />
+                  <XCircle className="w-4 h-4 text-rose-600 shrink-0" />
                 )}
               </button>
             );
@@ -410,16 +393,16 @@ export const PracticeArena: React.FC = () => {
         {/* Feedback Explanation */}
         {isChecked && (
           <div
-            className={`p-4 rounded-2xl space-y-1 animate-fadeIn ${
+            className={`p-4 rounded-xl border space-y-1 animate-fadeIn ${
               isCorrect
-                ? 'bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800'
-                : 'bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800'
+                ? 'bg-emerald-50/60 dark:bg-emerald-950/20 border-emerald-200 dark:border-emerald-900/50'
+                : 'bg-rose-50/60 dark:bg-rose-950/20 border-rose-200 dark:border-rose-900/50'
             }`}
           >
-            <p className="font-bold text-xs sm:text-sm">
-              {isCorrect ? '✅ Правильно! (+10 XP)' : '❌ Помилка:'}
+            <p className="font-semibold text-xs sm:text-sm text-zinc-900 dark:text-zinc-100">
+              {isCorrect ? 'Правильно (+10 XP)' : 'Помилка'}
             </p>
-            <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-200 leading-relaxed">
+            <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed">
               {currentQ.explanationUk}
             </p>
           </div>
@@ -427,15 +410,15 @@ export const PracticeArena: React.FC = () => {
 
         {/* Action Button */}
         <div className="flex items-center justify-between pt-2">
-          <span className="text-xs font-semibold text-slate-400">
-            Оберіть інший тест у сітці вгорі або натисніть далі
+          <span className="text-xs text-zinc-400">
+            Оберіть інший номер зверху або перейдіть далі
           </span>
 
           {!isChecked ? (
             <button
               onClick={handleCheck}
               disabled={selectedOption === null}
-              className="py-3 px-6 rounded-2xl font-bold text-xs sm:text-sm text-white bg-indigo-600 hover:bg-indigo-700 shadow-md shadow-indigo-600/20 disabled:opacity-40 transition"
+              className="py-2.5 px-5 rounded-xl font-medium text-xs sm:text-sm text-white bg-zinc-900 hover:bg-zinc-800 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-100 disabled:opacity-40 transition"
             >
               Перевірити відповідь
             </button>
@@ -446,10 +429,10 @@ export const PracticeArena: React.FC = () => {
                   switchQuestion(currentIndex + 1);
                 }
               }}
-              className="py-3 px-6 rounded-2xl font-bold text-xs sm:text-sm text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 shadow-lg shadow-indigo-600/25 flex items-center gap-2 transition"
+              className="py-2.5 px-5 rounded-xl font-medium text-xs sm:text-sm text-white bg-zinc-900 hover:bg-zinc-800 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-100 inline-flex items-center gap-1.5 transition"
             >
-              <span>{currentIndex + 1 < sessionQuestions.length ? 'Наступний тест' : 'Завершено!'}</span>
-              <ArrowRight className="w-4 h-4" />
+              <span>{currentIndex + 1 < sessionQuestions.length ? 'Наступне завдання' : 'Завершено'}</span>
+              <ArrowRight className="w-3.5 h-3.5" />
             </button>
           )}
         </div>

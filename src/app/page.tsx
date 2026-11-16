@@ -10,13 +10,10 @@ import { LevelOverview } from '@/components/dashboard/LevelOverview';
 import { TopicCard } from '@/components/dashboard/TopicCard';
 import {
   Mic,
-  Zap,
-  Flame,
-  Award,
-  Sparkles,
-  Compass,
   ArrowRight,
-  BookOpen,
+  BookMarked,
+  Compass,
+  CheckCircle2,
 } from 'lucide-react';
 
 export default function HomePage() {
@@ -64,63 +61,74 @@ export default function HomePage() {
     }
   });
 
-  const levelInfo = LEVELS_CONFIG[selectedLevel];
-
   return (
-    <div className="space-y-8 animate-fadeIn">
-      {/* Hero Welcome Banner */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-indigo-900 via-indigo-800 to-purple-900 text-white p-6 sm:p-8 shadow-xl">
-        {/* Background glow decoration */}
-        <div className="absolute -right-10 -bottom-10 w-64 h-64 bg-indigo-500/20 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute -left-10 -top-10 w-64 h-64 bg-purple-500/20 rounded-full blur-3xl pointer-events-none" />
-
-        <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-          <div className="space-y-3 max-w-xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md text-xs font-semibold text-indigo-200 border border-white/10">
-              <Sparkles className="w-3.5 h-3.5 text-indigo-300" />
-              <span>Інтерактивні конспекти + живий Speaking AI</span>
-            </div>
-            <h1 className="text-2xl sm:text-4xl font-black tracking-tight text-white leading-tight">
-              Вивчайте англійську легко та впевнено
-            </h1>
-            <p className="text-xs sm:text-sm text-indigo-100/90 leading-relaxed">
-              Жодних заплутаних правил! Кожна тема розкладена по поличках українською мовою з наочними формулами, тестами та розмовним AI-тренажером.
-            </p>
+    <div className="space-y-10 animate-fadeIn">
+      {/* Editorial Welcome Banner */}
+      <div className="rounded-2xl bg-white dark:bg-[#12141A] border border-zinc-200/90 dark:border-zinc-800 p-6 sm:p-10 shadow-sm relative overflow-hidden">
+        <div className="max-w-2xl space-y-4">
+          <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-md text-xs font-mono font-medium tracking-wide bg-zinc-100 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
+            <span className="w-1.5 h-1.5 rounded-full bg-blue-600 dark:bg-blue-400" />
+            <span>Платформа навчання • A1 — C1</span>
           </div>
 
-          {/* Quick Action Badges */}
-          <div className="flex flex-col sm:flex-row md:flex-col gap-2.5 w-full md:w-auto shrink-0">
+          <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-zinc-900 dark:text-white leading-[1.15]">
+            Практична англійська мова для реального життя
+          </h1>
+
+          <p className="text-sm sm:text-base text-zinc-600 dark:text-zinc-400 leading-relaxed font-normal">
+            Структуровані конспекти граматики, банк на 2 400 слів з природним озвученням та розмовний Speaking AI тренажер для подолання мовного бар&apos;єра.
+          </p>
+
+          <div className="flex flex-wrap items-center gap-3 pt-2">
             <Link
               href="/speaking"
-              className="py-3 px-5 rounded-2xl bg-gradient-to-r from-amber-400 to-amber-500 text-slate-950 font-black text-xs sm:text-sm shadow-lg shadow-amber-500/20 hover:scale-105 active:scale-95 transition flex items-center justify-center gap-2 group"
+              className="py-2.5 px-5 rounded-xl bg-zinc-900 hover:bg-zinc-800 dark:bg-white dark:hover:bg-zinc-200 text-white dark:text-zinc-900 font-semibold text-xs sm:text-sm transition flex items-center gap-2 shadow-sm"
             >
-              <Mic className="w-4 h-4 fill-current" />
-              <span>Speaking AI Тьютор</span>
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition" />
+              <Mic className="w-4 h-4" />
+              <span>Speaking AI тренажер</span>
+              <ArrowRight className="w-4 h-4" />
             </Link>
 
             <Link
-              href="/practice"
-              className="py-2.5 px-4 rounded-2xl bg-indigo-600/80 hover:bg-indigo-600 text-white font-bold text-xs border border-indigo-400/30 backdrop-blur-md flex items-center justify-center gap-2 transition"
+              href="/vocabulary"
+              className="py-2.5 px-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white hover:bg-zinc-50 dark:bg-[#12141A] dark:hover:bg-zinc-850 text-zinc-800 dark:text-zinc-200 font-semibold text-xs sm:text-sm transition flex items-center gap-2"
             >
-              <Zap className="w-3.5 h-3.5 fill-current" />
-              <span>Тренажер тестів (Бліц & Практика)</span>
+              <BookMarked className="w-4 h-4 text-zinc-500" />
+              <span>Словник 2 400 слів</span>
             </Link>
 
             <Link
               href="/placement"
-              className="py-2.5 px-4 rounded-2xl bg-white/10 hover:bg-white/20 text-white font-semibold text-xs border border-white/15 backdrop-blur-md flex items-center justify-center gap-2 transition"
+              className="py-2.5 px-3.5 rounded-xl text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white font-medium text-xs sm:text-sm transition flex items-center gap-1.5"
             >
-              <Compass className="w-3.5 h-3.5" />
-              <span>
-                {stats?.placementTestDone ? 'Пройти тест рівня знову' : 'Визначити свій рівень (Тест)'}
-              </span>
+              <Compass className="w-4 h-4" />
+              <span>Визначити свій рівень</span>
             </Link>
+          </div>
+        </div>
+
+        {/* Quick stats strip */}
+        <div className="mt-8 pt-6 border-t border-zinc-100 dark:border-zinc-850 grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs">
+          <div>
+            <span className="text-zinc-400 block text-[11px]">Рівні CEFR</span>
+            <span className="font-bold text-zinc-900 dark:text-white text-sm">5 рівнів (A1—C1)</span>
+          </div>
+          <div>
+            <span className="text-zinc-400 block text-[11px]">Словниковий банк</span>
+            <span className="font-bold text-zinc-900 dark:text-white text-sm">2 400 слів та ідіом</span>
+          </div>
+          <div>
+            <span className="text-zinc-400 block text-[11px]">Практичні вправи</span>
+            <span className="font-bold text-zinc-900 dark:text-white text-sm">400+ тестових завдань</span>
+          </div>
+          <div>
+            <span className="text-zinc-400 block text-[11px]">Вимова</span>
+            <span className="font-bold text-zinc-900 dark:text-white text-sm">Google Studio TTS</span>
           </div>
         </div>
       </div>
 
-      {/* Level Selection Tabs (A1, A2, B1, B2, C1) */}
+      {/* Level Selection Tabs */}
       <LevelOverview
         currentLevel={selectedLevel}
         onSelectLevel={handleSelectLevel}
@@ -128,57 +136,26 @@ export default function HomePage() {
         totalTopicsCount={totalTopicsCount}
       />
 
-      {/* Active Level Header & Skills */}
-      <div className="p-6 rounded-3xl bg-white dark:bg-slate-800 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-4">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <div>
-            <div className="flex items-center gap-2.5">
-              <span
-                className={`text-xs font-black px-2.5 py-1 rounded-lg text-white bg-gradient-to-r ${levelInfo.color}`}
-              >
-                {levelInfo.code}
-              </span>
-              <h3 className="text-lg sm:text-xl font-black text-slate-900 dark:text-white">
-                {levelInfo.nameEn} — {levelInfo.nameUk}
-              </h3>
-            </div>
-            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 mt-1">
-              {levelInfo.descriptionUk}
-            </p>
-          </div>
-
-          <span className="self-start sm:self-auto text-xs font-bold text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-700 px-3 py-1.5 rounded-xl">
-            {completedTopicsCount[selectedLevel]} з {totalTopicsCount[selectedLevel]} пройдено
-          </span>
-        </div>
-
-        {/* Skills pill tags */}
-        <div className="flex flex-wrap gap-2 pt-2 border-t border-slate-100 dark:border-slate-700/60">
-          <span className="text-xs font-bold text-slate-400 self-center mr-1">
-            Ключові теми рівня:
-          </span>
-          {levelInfo.targetSkillsUk.map((skill, sIdx) => (
-            <span
-              key={sIdx}
-              className="text-xs font-semibold px-2.5 py-1 rounded-lg bg-indigo-50 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-300 border border-indigo-100 dark:border-indigo-900/40"
-            >
-              ✓ {skill}
-            </span>
-          ))}
-        </div>
-      </div>
-
       {/* Topics Grid */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <h3 className="text-lg sm:text-xl font-black text-slate-900 dark:text-white">
-            Теми та конспекти модуля ({topicsForCurrentLevel.length})
-          </h3>
+          <div>
+            <h2 className="text-xl font-bold tracking-tight text-zinc-900 dark:text-white">
+              Модулі рівня {selectedLevel}
+            </h2>
+            <p className="text-xs text-zinc-500 dark:text-zinc-400">
+              {LEVELS_CONFIG[selectedLevel].nameUk} • {topicsForCurrentLevel.length} навчальних тем
+            </p>
+          </div>
+
+          <span className="text-xs text-zinc-400 font-mono">
+            {completedTopicsCount[selectedLevel] || 0} з {topicsForCurrentLevel.length} пройдено
+          </span>
         </div>
 
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-2">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {topicsForCurrentLevel.map((topic) => {
-            const isCompleted = stats?.completedTopics.includes(topic.id) || false;
+            const isCompleted = Boolean(stats?.completedTopics.includes(topic.id));
             const score = stats?.quizScores[topic.id];
 
             return (

@@ -42,6 +42,8 @@ export const ApiKeyModal: React.FC<ApiKeyModalProps> = ({ isOpen, onClose }) => 
       setStudentId(getStudentSyncId());
       setHasSupabase(isSupabaseConfigured());
       setSyncMsg(null);
+      setResetConfirm(false);
+      setResetMsg(null);
     }
     return () => {
       stopSpeech();
@@ -102,57 +104,49 @@ export const ApiKeyModal: React.FC<ApiKeyModalProps> = ({ isOpen, onClose }) => 
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fadeIn">
-      <div className="relative w-full max-w-lg bg-white dark:bg-slate-900 rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-fadeIn">
+      <div className="relative w-full max-w-lg bg-white dark:bg-[#12141A] rounded-2xl shadow-xl border border-zinc-200 dark:border-zinc-800 overflow-hidden">
         {/* Header */}
-        <div className="px-6 py-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between bg-gradient-to-r from-indigo-50/50 to-purple-50/50 dark:from-slate-800/50 dark:to-slate-800/50">
+        <div className="px-6 py-4 border-b border-zinc-100 dark:border-zinc-850 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <div className="w-10 h-10 rounded-xl bg-indigo-600 flex items-center justify-center text-white shadow-md shadow-indigo-500/20">
-              <Headphones className="w-5 h-5" />
+            <div className="w-8 h-8 rounded-lg bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center text-zinc-800 dark:text-zinc-200">
+              <Headphones className="w-4 h-4" />
             </div>
             <div>
-              <h3 className="font-bold text-slate-900 dark:text-white text-lg">Налаштування голосу та хмари</h3>
-              <p className="text-xs text-slate-500 dark:text-slate-400">Студійний звук та синхронізація Supabase</p>
+              <h3 className="font-bold text-zinc-900 dark:text-white text-base">
+                Налаштування платформи
+              </h3>
+              <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                Студійний звук та синхронізація
+              </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+            className="p-1.5 text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 transition"
           >
-            <X className="w-5 h-5" />
+            <X className="w-4 h-4" />
           </button>
         </div>
 
         {/* Content */}
         <div className="p-6 space-y-5 max-h-[75vh] overflow-y-auto">
-          {/* Active AI Status Notice */}
-          <div className="p-4 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200/80 dark:border-emerald-800/60 text-sm space-y-1.5">
-            <div className="flex items-center gap-2 font-bold text-emerald-800 dark:text-emerald-300">
-              <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-              <span>Штучний Інтелект та Нейронний Голос активні</span>
-            </div>
-            <p className="text-slate-600 dark:text-slate-300 text-xs leading-relaxed">
-              Speaking AI діалоговий симулятор, граматична оцінка та студійні людські голоси підключені автоматично і готові до тренувань.
-            </p>
-          </div>
-
-          {/* Human Voice Selector */}
+          {/* Studio Voice Selector */}
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <label className="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
-                <Headphones className="w-3.5 h-3.5 text-indigo-500" />
-                <span>Оберіть живий голос людини</span>
+              <label className="text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
+                Голос співрозмовника
               </label>
               <button
                 type="button"
                 onClick={handleTestVoice}
-                className={`text-[11px] font-bold flex items-center gap-1.5 px-2.5 py-1 rounded-lg transition ${
+                className={`text-xs font-medium flex items-center gap-1.5 px-2 py-1 rounded-md transition ${
                   isPlayingTest
-                    ? 'bg-indigo-600 text-white animate-pulse'
-                    : 'text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/60'
+                    ? 'bg-blue-600 text-white'
+                    : 'text-zinc-700 dark:text-zinc-300 bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200'
                 }`}
               >
-                <Volume2 className="w-3 h-3" />
+                <Volume2 className="w-3.5 h-3.5" />
                 <span>{isPlayingTest ? 'Зупинити' : 'Тест голосу'}</span>
               </button>
             </div>
@@ -160,7 +154,7 @@ export const ApiKeyModal: React.FC<ApiKeyModalProps> = ({ isOpen, onClose }) => 
             <select
               value={selectedVoice}
               onChange={(e) => setSelectedVoice(e.target.value)}
-              className="w-full px-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-3 py-2 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 text-zinc-900 dark:text-white text-xs font-medium focus:outline-none focus:ring-1 focus:ring-zinc-900 dark:focus:ring-white"
             >
               <optgroup label="Studio Neural Voices (Людиноподібні)">
                 {HUMAN_VOICES.filter((v) => v.isStudio).map((v) => (
@@ -182,16 +176,15 @@ export const ApiKeyModal: React.FC<ApiKeyModalProps> = ({ isOpen, onClose }) => 
           {/* Voice Speed Slider */}
           <div className="space-y-2 pt-1">
             <div className="flex items-center justify-between">
-              <label className="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
-                <Volume2 className="w-3.5 h-3.5 text-indigo-500" />
-                <span>Швидкість мовлення</span>
+              <label className="text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
+                Швидкість мовлення
               </label>
-              <span className="text-xs font-bold text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/50 px-2 py-0.5 rounded-md">
+              <span className="text-xs font-mono font-bold text-zinc-900 dark:text-white bg-zinc-100 dark:bg-zinc-800 px-2 py-0.5 rounded">
                 {voiceSpeed}x
               </span>
             </div>
             <div className="flex items-center gap-3">
-              <span className="text-xs text-slate-400">0.8x (повільно)</span>
+              <span className="text-xs text-zinc-400 font-mono">0.8x</span>
               <input
                 type="range"
                 min="0.7"
@@ -199,39 +192,38 @@ export const ApiKeyModal: React.FC<ApiKeyModalProps> = ({ isOpen, onClose }) => 
                 step="0.05"
                 value={voiceSpeed}
                 onChange={(e) => setVoiceSpeed(parseFloat(e.target.value))}
-                className="flex-1 accent-indigo-600 cursor-pointer"
+                className="flex-1 accent-zinc-900 dark:accent-white cursor-pointer"
               />
-              <span className="text-xs text-slate-400">1.2x (швидко)</span>
+              <span className="text-xs text-zinc-400 font-mono">1.2x</span>
             </div>
           </div>
 
           {/* Supabase Cloud Sync Section */}
-          <div className="space-y-3 pt-3 border-t border-slate-100 dark:border-slate-800">
+          <div className="space-y-2.5 pt-3 border-t border-zinc-100 dark:border-zinc-850">
             <div className="flex items-center justify-between">
-              <label className="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
-                <Database className="w-3.5 h-3.5 text-indigo-500" />
-                <span>Хмарна синхронізація (Supabase)</span>
+              <label className="text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
+                Хмарне збереження (Supabase)
               </label>
               <span
-                className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full ${
+                className={`text-[10px] font-mono font-semibold px-2 py-0.5 rounded ${
                   hasSupabase
-                    ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300'
-                    : 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400'
+                    ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-200/60 dark:border-emerald-800/60'
+                    : 'bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400'
                 }`}
               >
-                {hasSupabase ? '🟢 Хмара підключена' : '⚪ Локальний режим'}
+                {hasSupabase ? '● Підключено' : '○ Локальний режим'}
               </span>
             </div>
 
-            {hasSupabase ? (
-              <div className="p-3.5 rounded-2xl bg-indigo-50/60 dark:bg-indigo-950/30 border border-indigo-100 dark:border-indigo-900/40 space-y-2.5">
+            {hasSupabase && (
+              <div className="p-3.5 rounded-xl bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-200/80 dark:border-zinc-800 space-y-2.5">
                 <div className="flex items-center justify-between text-xs">
-                  <span className="text-slate-600 dark:text-slate-300 font-medium">ID учня для синхронізації:</span>
+                  <span className="text-zinc-600 dark:text-zinc-400 font-medium">ID учня:</span>
                   <button
                     type="button"
                     onClick={handleManualSync}
                     disabled={isSyncing}
-                    className="text-[11px] font-bold text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 flex items-center gap-1 bg-white dark:bg-slate-800 px-2.5 py-1 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm transition"
+                    className="text-xs font-medium text-zinc-700 dark:text-zinc-300 hover:text-zinc-900 flex items-center gap-1 bg-white dark:bg-zinc-800 px-2.5 py-1 rounded-md border border-zinc-200 dark:border-zinc-700 transition"
                   >
                     <RefreshCw className={`w-3 h-3 ${isSyncing ? 'animate-spin' : ''}`} />
                     <span>{isSyncing ? 'Синхронізація...' : 'Синхронізувати'}</span>
@@ -242,11 +234,11 @@ export const ApiKeyModal: React.FC<ApiKeyModalProps> = ({ isOpen, onClose }) => 
                   value={studentId}
                   onChange={(e) => setStudentId(e.target.value)}
                   placeholder="default_student"
-                  className="w-full px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-xs font-mono font-semibold focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white text-xs font-mono focus:outline-none focus:ring-1 focus:ring-zinc-900 dark:focus:ring-white"
                 />
                 {syncMsg && (
                   <p
-                    className={`text-[11px] font-semibold ${
+                    className={`text-[11px] font-medium ${
                       syncMsg.ok ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400'
                     }`}
                   >
@@ -254,32 +246,22 @@ export const ApiKeyModal: React.FC<ApiKeyModalProps> = ({ isOpen, onClose }) => 
                   </p>
                 )}
               </div>
-            ) : (
-              <div className="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700/60 text-xs text-slate-600 dark:text-slate-300 space-y-1">
-                <p className="font-semibold text-slate-800 dark:text-slate-200">
-                  Прогрес автоматично зберігається у вашому браузері.
-                </p>
-                <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed">
-                  Щоб увімкнути миттєву хмарну синхронізацію між комп'ютером і смартфоном, додайте змінні Supabase у ваш файл <code className="font-mono bg-slate-200 dark:bg-slate-700 px-1 rounded">.env.local</code> або налаштування Vercel.
-                </p>
-              </div>
             )}
           </div>
 
           {/* Reset Progress Section */}
-          <div className="space-y-2.5 pt-3 border-t border-slate-100 dark:border-slate-800">
-            <label className="text-xs font-bold uppercase tracking-wider text-rose-600 dark:text-rose-400 flex items-center gap-1.5">
-              <RotateCcw className="w-3.5 h-3.5 text-rose-500" />
-              <span>Анулювання прогресу</span>
+          <div className="space-y-2.5 pt-3 border-t border-zinc-100 dark:border-zinc-850">
+            <label className="text-xs font-semibold uppercase tracking-wider text-rose-600 dark:text-rose-400">
+              Скидання прогресу
             </label>
 
-            <div className="p-3.5 rounded-2xl bg-rose-50/70 dark:bg-rose-950/30 border border-rose-200/80 dark:border-rose-900/40 text-xs space-y-2.5">
-              <p className="text-slate-600 dark:text-slate-300 text-[11px] leading-relaxed">
-                Скидає всі вивчені слова, XP, виконані тести, уроки та сценарії до початкового стану (0 XP, рівень A1) як локально, так і в хмарі Supabase.
+            <div className="p-3.5 rounded-xl bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-200/80 dark:border-zinc-800 text-xs space-y-2.5">
+              <p className="text-zinc-500 dark:text-zinc-400 text-xs leading-relaxed">
+                Скидає всі вивчені слова, бали XP, виконані тести та сценарії до початкового стану (0 XP, рівень A1) як локально, так і в хмарі.
               </p>
 
               {resetMsg && (
-                <p className="text-[11px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/50 p-2 rounded-lg">
+                <p className="text-xs font-medium text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 p-2 rounded-md">
                   {resetMsg}
                 </p>
               )}
@@ -288,10 +270,10 @@ export const ApiKeyModal: React.FC<ApiKeyModalProps> = ({ isOpen, onClose }) => 
                 <button
                   type="button"
                   onClick={() => setResetConfirm(true)}
-                  className="w-full py-2 px-3 rounded-xl bg-white dark:bg-slate-800 border border-rose-300 dark:border-rose-800 text-rose-600 dark:text-rose-400 font-bold text-xs hover:bg-rose-50 dark:hover:bg-rose-900/30 transition shadow-sm flex items-center justify-center gap-1.5"
+                  className="w-full py-2 px-3 rounded-lg bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-rose-600 dark:text-rose-400 font-semibold text-xs hover:bg-rose-50 dark:hover:bg-rose-950/30 transition flex items-center justify-center gap-1.5"
                 >
                   <RotateCcw className="w-3.5 h-3.5" />
-                  <span>Скинути мій прогрес...</span>
+                  <span>Анулювати прогрес...</span>
                 </button>
               ) : (
                 <div className="flex items-center gap-2 pt-1">
@@ -299,15 +281,15 @@ export const ApiKeyModal: React.FC<ApiKeyModalProps> = ({ isOpen, onClose }) => 
                     type="button"
                     onClick={handleReset}
                     disabled={isResetting}
-                    className="flex-1 py-2 px-3 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs transition shadow-sm flex items-center justify-center gap-1.5 disabled:opacity-50"
+                    className="flex-1 py-2 px-3 rounded-lg bg-rose-600 hover:bg-rose-700 text-white font-semibold text-xs transition flex items-center justify-center gap-1.5 disabled:opacity-50"
                   >
                     <RotateCcw className={`w-3.5 h-3.5 ${isResetting ? 'animate-spin' : ''}`} />
-                    <span>{isResetting ? 'Скидання...' : 'Так, анулювати все!'}</span>
+                    <span>{isResetting ? 'Скидання...' : 'Так, підтверджую'}</span>
                   </button>
                   <button
                     type="button"
                     onClick={() => setResetConfirm(false)}
-                    className="py-2 px-3 rounded-xl bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 font-semibold text-xs hover:bg-slate-300 transition"
+                    className="py-2 px-3 rounded-lg bg-zinc-200 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 font-medium text-xs hover:bg-zinc-300 dark:hover:bg-zinc-700 transition"
                   >
                     Скасувати
                   </button>
@@ -318,16 +300,16 @@ export const ApiKeyModal: React.FC<ApiKeyModalProps> = ({ isOpen, onClose }) => 
         </div>
 
         {/* Footer */}
-        <div className="px-6 py-4 border-t border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/50 flex items-center justify-end gap-2">
+        <div className="px-6 py-3.5 border-t border-zinc-100 dark:border-zinc-850 bg-zinc-50/50 dark:bg-zinc-900/50 flex items-center justify-end gap-2">
           <button
             onClick={onClose}
-            className="px-4 py-2 text-xs font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-750 rounded-xl transition"
+            className="px-3.5 py-1.5 text-xs font-semibold text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg transition"
           >
-            Скасувати
+            Закрити
           </button>
           <button
             onClick={handleSave}
-            className="px-5 py-2 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl shadow-md shadow-indigo-600/20 transition"
+            className="px-4 py-1.5 text-xs font-semibold text-white bg-zinc-900 hover:bg-zinc-800 dark:bg-white dark:hover:bg-zinc-200 dark:text-zinc-900 rounded-lg transition shadow-sm"
           >
             Зберегти
           </button>
