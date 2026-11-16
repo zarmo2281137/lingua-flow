@@ -52,6 +52,11 @@ export interface LessonNote {
 export interface Topic {
   id: string;
   level: LevelCode;
+  unitNumber?: number; // 1 to 4
+  unitTitleUk?: string;
+  unitTitleEn?: string;
+  lessonNumber?: number; // 1 to 16
+  estimatedMinutes?: number; // e.g. 10
   titleEn: string;
   titleUk: string;
   descriptionUk: string;
