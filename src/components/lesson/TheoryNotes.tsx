@@ -258,6 +258,99 @@ export const TheoryNotes: React.FC<TheoryNotesProps> = ({ notes, onGoToQuiz }) =
         </div>
       )}
 
+      {/* Homework (ДЗ) Section */}
+      <div className="p-6 sm:p-7 rounded-2xl bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-200/90 dark:border-zinc-800 space-y-4 shadow-sm">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-lg bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 flex items-center justify-center font-bold text-xs tracking-wider">
+              ДЗ
+            </div>
+            <div>
+              <h3 className="text-base font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
+                Домашнє завдання для закріплення теми
+              </h3>
+              <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                Виконайте 3 кроки для повного засвоєння граматичного матеріалу
+              </p>
+            </div>
+          </div>
+          <span className="self-start sm:self-center px-2.5 py-1 rounded-full text-[11px] font-mono font-semibold bg-zinc-200/80 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-200">
+            Обовʼязкова практика
+          </span>
+        </div>
+
+        <div className="grid gap-3 sm:grid-cols-3 pt-1">
+          {/* Step 1: Practice Tests */}
+          <div className="p-4 rounded-xl bg-white dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700/80 flex flex-col justify-between gap-3">
+            <div className="space-y-1.5">
+              <div className="flex items-center justify-between">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-zinc-400 font-mono">Крок 1</span>
+                <span className="w-2 h-2 rounded-full bg-blue-500" />
+              </div>
+              <h4 className="font-semibold text-zinc-900 dark:text-zinc-100 text-xs sm:text-sm">
+                40 практичних тестів
+              </h4>
+              <p className="text-[11px] text-zinc-500 dark:text-zinc-400 leading-relaxed">
+                Пройдіть усі 40 різнопланових тестів (тест, пропуски, складання речень) з результатом від 80%.
+              </p>
+            </div>
+            <button
+              onClick={onGoToQuiz}
+              className="w-full py-2 px-3 rounded-lg bg-zinc-900 hover:bg-zinc-800 text-white dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-100 text-xs font-semibold flex items-center justify-center gap-1.5 transition"
+            >
+              <span>Почати тести</span>
+              <ArrowRight className="w-3 h-3" />
+            </button>
+          </div>
+
+          {/* Step 2: Speaking AI */}
+          <div className="p-4 rounded-xl bg-white dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700/80 flex flex-col justify-between gap-3">
+            <div className="space-y-1.5">
+              <div className="flex items-center justify-between">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-zinc-400 font-mono">Крок 2</span>
+                <span className="w-2 h-2 rounded-full bg-emerald-500" />
+              </div>
+              <h4 className="font-semibold text-zinc-900 dark:text-zinc-100 text-xs sm:text-sm">
+                Speaking AI практика
+              </h4>
+              <p className="text-[11px] text-zinc-500 dark:text-zinc-400 leading-relaxed">
+                Потренуйте живий діалог з голосовим ШІ та отримайте оцінку вимови, граматики й плинності.
+              </p>
+            </div>
+            <a
+              href="/speaking"
+              className="w-full py-2 px-3 rounded-lg border border-zinc-300 dark:border-zinc-700 text-zinc-900 dark:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 text-xs font-semibold flex items-center justify-center gap-1.5 transition"
+            >
+              <span>Speaking тренажер</span>
+              <ArrowRight className="w-3 h-3" />
+            </a>
+          </div>
+
+          {/* Step 3: Vocabulary */}
+          <div className="p-4 rounded-xl bg-white dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700/80 flex flex-col justify-between gap-3">
+            <div className="space-y-1.5">
+              <div className="flex items-center justify-between">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-zinc-400 font-mono">Крок 3</span>
+                <span className="w-2 h-2 rounded-full bg-purple-500" />
+              </div>
+              <h4 className="font-semibold text-zinc-900 dark:text-zinc-100 text-xs sm:text-sm">
+                Лексика та флеш-картки
+              </h4>
+              <p className="text-[11px] text-zinc-500 dark:text-zinc-400 leading-relaxed">
+                Повторіть слова у Словнику з аудіоозвучкою для довготривалого запамʼятовування.
+              </p>
+            </div>
+            <a
+              href="/vocabulary"
+              className="w-full py-2 px-3 rounded-lg border border-zinc-300 dark:border-zinc-700 text-zinc-900 dark:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 text-xs font-semibold flex items-center justify-center gap-1.5 transition"
+            >
+              <span>Відкрити словник</span>
+              <ArrowRight className="w-3 h-3" />
+            </a>
+          </div>
+        </div>
+      </div>
+
       {/* Bottom CTA to Test */}
       <div className="pt-2 flex justify-end">
         <button

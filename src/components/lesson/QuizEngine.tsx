@@ -476,6 +476,68 @@ export const QuizEngine: React.FC<QuizEngineProps> = ({
           )}
         </div>
       </div>
+
+      {/* Finished All Tests Celebration & Homework Next Steps */}
+      {answeredTotal === exercises.length && (
+        <div className="p-6 sm:p-7 rounded-2xl bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-200/90 dark:border-zinc-800 space-y-4 shadow-sm animate-fadeIn">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div className="flex items-center gap-2.5">
+              <div className="w-9 h-9 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-bold text-sm">
+                ✓
+              </div>
+              <div>
+                <h3 className="text-base sm:text-lg font-bold text-zinc-900 dark:text-zinc-100">
+                  Всі 40 тестів розділу пройдено!
+                </h3>
+                <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                  Результат: {correctTotal}/{exercises.length} правильних ({Math.round((correctTotal / exercises.length) * 100)}%). Наступний крок ДЗ — розмовна практика.
+                </p>
+              </div>
+            </div>
+            <span className="self-start sm:self-center px-3 py-1 rounded-full text-xs font-mono font-bold bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300">
+              +{correctTotal * 10} XP зароблено
+            </span>
+          </div>
+
+          <div className="pt-2 grid gap-3 sm:grid-cols-2">
+            <a
+              href="/speaking"
+              className="p-4 rounded-xl bg-white dark:bg-zinc-800/60 border border-zinc-200 dark:border-zinc-700/80 hover:border-zinc-400 transition space-y-2 group"
+            >
+              <div className="flex items-center justify-between">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
+                  ДЗ: Крок 2 • Speaking AI
+                </span>
+                <ArrowRight className="w-4 h-4 text-zinc-400 group-hover:translate-x-0.5 transition-transform" />
+              </div>
+              <h4 className="font-semibold text-zinc-900 dark:text-zinc-100 text-sm">
+                Попрактикувати знання в розмові з ШІ
+              </h4>
+              <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                Закріпіть конструкції у діалозі з реалістичними персонажами та отримайте оцінку вимови, граматики й вільного мовлення.
+              </p>
+            </a>
+
+            <a
+              href="/vocabulary"
+              className="p-4 rounded-xl bg-white dark:bg-zinc-800/60 border border-zinc-200 dark:border-zinc-700/80 hover:border-zinc-400 transition space-y-2 group"
+            >
+              <div className="flex items-center justify-between">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-purple-600 dark:text-purple-400">
+                  ДЗ: Крок 3 • Словник
+                </span>
+                <ArrowRight className="w-4 h-4 text-zinc-400 group-hover:translate-x-0.5 transition-transform" />
+              </div>
+              <h4 className="font-semibold text-zinc-900 dark:text-zinc-100 text-sm">
+                Повторити активний вокабуляр
+              </h4>
+              <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                Вивчіть нові слова та сталі вирази розділу з аудіовимовою та картками для довготривалого закріплення.
+              </p>
+            </a>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

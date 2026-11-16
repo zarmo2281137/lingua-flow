@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { scenario, history, userSpeech, clientApiKey } = body;
+    const { scenario, history, userSpeech, clientApiKey, action } = body;
 
     // Collect available keys with priority: clientApiKey > env primary > env backup
     const apiKeys: string[] = [
@@ -23,12 +23,100 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const historyFormatted = (history || []).slice(-8).map((m: any) => ({
-      role: m.sender === 'user' ? 'user' : 'model',
-      parts: [{ text: m.text }],
-    }));
+    let contentsPayload: any[] = [];
 
-    const systemInstruction = `
+    if (action === 'evaluate') {
+      const allUserMessages = (history || [])
+        .filter((m: any) => m.sender === 'user')
+        .map((m: any, i: number) => `User turn #${i + 1}: "${m.text}"`)
+        .join('\n');
+
+      const fullDialogue = (history || [])
+        .map((m: any) => `${m.sender === 'user' ? 'Student' : 'AI'}: "${m.text}"`)
+        .join('\n');
+
+      const evalInstruction = `
+You are a senior Cambridge/IELTS certified English examiner.
+SCENARIO: "${scenario?.titleEn || 'General English Practice'}" (${scenario?.descriptionUk || ''})
+TARGET CEFR LEVEL: "${scenario?.level || 'ALL'}"
+
+FULL TRANSCRIPT OF THE SESSION:
+${fullDialogue}
+
+STUDENT'S SPOKEN MESSAGES:
+${allUserMessages}
+
+TASK:
+Provide a rigorous, encouraging, comprehensive evaluation of the student's spoken performance across 4 CEFR criteria:
+1. Grammar & Accuracy (1-10): evaluate tense consistency, prepositions, word order, articles.
+2. Vocabulary & Range (1-10): variety of vocabulary, idioms, word choice, repetition.
+3. Fluency & Flow (1-10): response length, sentence complexity, natural pauses.
+4. Coherence & Task Achievement (1-10): did they answer in context, logical progression.
+
+Calculate an overall score out of 100, determine their estimated CEFR level (A1, A2, B1, B2, C1), list 2-3 key strengths, summarize grammatical mistakes with clear Ukrainian explanations, and suggest 2-3 vocabulary upgrades.
+
+OUTPUT STRICT JSON ONLY (no markdown formatting, no code backticks, no wrap):
+{
+  "overallScore": 84,
+  "estimatedLevel": "B1",
+  "messageCount": 5,
+  "xpEarned": 75,
+  "criteria": {
+    "grammar": {
+      "score": 8,
+      "titleUk": "Граматична точність",
+      "commentUk": "Чіткий відгук українською мовою про правильність вживання часів та структур."
+    },
+    "vocabulary": {
+      "score": 8,
+      "titleUk": "Словниковий запас",
+      "commentUk": "Відгук про багатство лексики та доречність виразів."
+    },
+    "fluency": {
+      "score": 9,
+      "titleUk": "Плавність та спонтанність",
+      "commentUk": "Відгук про темп мовлення та розгорнутість реплік."
+    },
+    "coherence": {
+      "score": 9,
+      "titleUk": "Зв'язність та відповідність",
+      "commentUk": "Відгук про логіку діалогу та вирішення комунікативного завдання."
+    }
+  },
+  "keyStrengthsUk": [
+    "Сильна сторона 1 українською",
+    "Сильна сторона 2 українською"
+  ],
+  "mistakesSummary": [
+    {
+      "original": "фраза з помилкою учня",
+      "corrected": "правильний варіант",
+      "explanationUk": "Чому саме так українською"
+    }
+  ],
+  "vocabularyHighlights": [
+    {
+      "used": "базове слово, яке використав учень",
+      "suggestedUpgrade": "краща/нативніша альтернатива",
+      "reasonUk": "Як це покращить мовлення"
+    }
+  ],
+  "teacherAdviceUk": "Підсумкова тепла рекомендація від викладача українською мовою."
+}
+`;
+      contentsPayload = [
+        {
+          role: 'user',
+          parts: [{ text: evalInstruction }],
+        },
+      ];
+    } else {
+      const historyFormatted = (history || []).slice(-8).map((m: any) => ({
+        role: m.sender === 'user' ? 'user' : 'model',
+        parts: [{ text: m.text }],
+      }));
+
+      const systemInstruction = `
 You are an elite, warm, encouraging, and pedagogically rigorous English tutor and conversational partner.
 SCENARIO: "${scenario?.titleEn || 'General English Practice'}" (${scenario?.descriptionUk || ''})
 YOUR PERSONA/ROLE: "${scenario?.aiRoleEn || 'Friendly Native English Speaker'}"
@@ -73,6 +161,14 @@ OUTPUT STRICT JSON ONLY (no markdown formatting, no code backticks, no wrap):
 }
 If there are zero grammatical errors, return "corrections": [].
 `;
+      contentsPayload = [
+        ...historyFormatted,
+        {
+          role: 'user',
+          parts: [{ text: userSpeech }, { text: systemInstruction }],
+        },
+      ];
+    }
 
     // Try keys sequentially with models
     const modelsToTry = ['gemini-3.5-flash-lite', 'gemini-3.5-flash', 'gemini-flash-latest'];
@@ -87,16 +183,10 @@ If there are zero grammatical errors, return "corrections": [].
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-              contents: [
-                ...historyFormatted,
-                {
-                  role: 'user',
-                  parts: [{ text: userSpeech }, { text: systemInstruction }],
-                },
-              ],
+              contents: contentsPayload,
               generationConfig: {
                 temperature: 0.7,
-                maxOutputTokens: 1200,
+                maxOutputTokens: 1500,
                 responseMimeType: 'application/json',
               },
             }),

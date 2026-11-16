@@ -1,4 +1,7 @@
 import { Exercise } from '@/types/course';
+import allLessonExercises from './allLessonExercises.json';
+
+const ALL_LESSON_EXERCISES: Record<string, Exercise[]> = allLessonExercises as any;
 
 export const TOPIC_EXERCISES_MAP: Record<string, Exercise[]> = {
   "a1-to-be": [
@@ -7748,5 +7751,8 @@ export const TOPIC_EXERCISES_MAP: Record<string, Exercise[]> = {
 };
 
 export const getTopicExercises = (topicId: string): Exercise[] => {
+  if (ALL_LESSON_EXERCISES[topicId] && ALL_LESSON_EXERCISES[topicId].length > 0) {
+    return ALL_LESSON_EXERCISES[topicId];
+  }
   return TOPIC_EXERCISES_MAP[topicId] || [];
 };

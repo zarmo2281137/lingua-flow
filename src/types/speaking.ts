@@ -45,3 +45,31 @@ export interface ChatMessage {
   feedback?: FeedbackData;
   audioPlaying?: boolean;
 }
+
+export interface SpeakingEvaluationCriterion {
+  score: number; // 1-10
+  titleUk: string;
+  commentUk: string;
+}
+
+export interface SpeakingEvaluation {
+  overallScore: number; // 0-100
+  estimatedLevel: 'A1' | 'A2' | 'B1' | 'B2' | 'C1';
+  messageCount: number;
+  xpEarned: number;
+  criteria: {
+    grammar: SpeakingEvaluationCriterion;
+    vocabulary: SpeakingEvaluationCriterion;
+    fluency: SpeakingEvaluationCriterion;
+    coherence: SpeakingEvaluationCriterion;
+  };
+  keyStrengthsUk: string[];
+  mistakesSummary: GrammarCorrection[];
+  vocabularyHighlights: {
+    used: string;
+    suggestedUpgrade: string;
+    reasonUk: string;
+  }[];
+  teacherAdviceUk: string;
+}
+
