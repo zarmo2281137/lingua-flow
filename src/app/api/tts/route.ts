@@ -1,7 +1,25 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { EdgeTTS } from '@andresaya/edge-tts';
+
+export const runtime = 'nodejs';
 
 // In-memory cache for ultra-fast repeated word/phrase audio playback
 const audioCache = new Map<string, { buffer: Buffer; mimeType: string }>();
+
+// Voice mappings for Microsoft Edge Neural Studio voices
+const EDGE_VOICE_MAP: Record<string, string> = {
+  Puck: 'en-US-GuyNeural', // Warm, authentic, natural American male
+  Kore: 'en-US-JennyNeural', // Soft, melodious, friendly American female
+  Aoede: 'en-US-AriaNeural', // Expressive, crystal clear American female
+  Charon: 'en-US-ChristopherNeural', // Deep, authoritative male teacher
+  Fenrir: 'en-US-EricNeural', // Energetic, articulate business male
+  'Google-UK': 'en-GB-SoniaNeural', // Authentic BBC/Oxford British female
+  British: 'en-GB-SoniaNeural',
+  'British-Male': 'en-GB-RyanNeural', // Distinguished British male
+  'Google-US': 'en-US-MichelleNeural', // Natural American female
+  'Google-AU': 'en-AU-NatashaNeural', // Australian English female
+  Australian: 'en-AU-NatashaNeural',
+};
 
 // Add 44-byte RIFF/WAV header to raw linear 16-bit PCM buffer so standard HTML5 audio can play it
 function addWavHeader(
@@ -32,7 +50,78 @@ function addWavHeader(
   return Buffer.concat([header, pcmBuffer]);
 }
 
-// Fetch natural MP3 audio from Google Neural Voice service with automatic sentence chunking
+// Edge TTS Neural audio generation with automatic retry
+async function fetchEdgeTTS(text: string, voiceName: string, retries = 1): Promise<Buffer> {
+  for (let attempt = 0; attempt <= retries; attempt++) {
+    try {
+      const tts = new EdgeTTS();
+      const res = await tts.generate(text, voiceName);
+      if (res?.audio && res.audio.length > 0) {
+        return res.audio;
+      }
+    } catch (err: any) {
+      if (attempt < retries && (err.message?.includes('429') || err.message?.includes('403'))) {
+        await new Promise((r) => setTimeout(r, 350 * (attempt + 1)));
+        continue;
+      }
+      throw err;
+    }
+  }
+  throw new Error('Edge TTS returned empty audio');
+}
+
+// Google Gemini Studio Neural TTS (Puck, Kore, Charon, Aoede, Fenrir)
+async function fetchGeminiTTS(text: string, targetVoice: string): Promise<Buffer> {
+  const keys = [
+    process.env.GEMINI_API_KEY?.trim(),
+    process.env.GEMINI_API_KEY_BACKUP?.trim(),
+    process.env.NEXT_PUBLIC_GEMINI_API_KEY?.trim(),
+  ].filter((k): k is string => Boolean(k && k.length > 10));
+
+  const uniqueKeys = Array.from(new Set(keys));
+  // Prefer flash-lite-tts for 2x faster response and higher rate limits
+  const models = ['gemini-3.8-flash-lite-tts', 'gemini-3.8-flash-tts', 'gemini-3.1-flash-tts-preview'];
+
+  for (const key of uniqueKeys) {
+    for (const model of models) {
+      try {
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`;
+        const res = await fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{ parts: [{ text }] }],
+            generationConfig: {
+              responseModalities: ['AUDIO'],
+              speechConfig: {
+                voiceConfig: {
+                  prebuiltVoiceConfig: {
+                    voiceName: targetVoice,
+                  },
+                },
+              },
+            },
+          }),
+        });
+
+        if (res.ok) {
+          const data = await res.json();
+          const part = data.candidates?.[0]?.content?.parts?.[0];
+          if (part?.inlineData?.data) {
+            const rawPcm = Buffer.from(part.inlineData.data, 'base64');
+            return addWavHeader(rawPcm, 24000, 1, 16);
+          }
+        }
+      } catch {
+        // try next key or model
+      }
+    }
+  }
+
+  throw new Error('All Gemini TTS models/keys exhausted');
+}
+
+// Fallback: Google Natural Audio with automatic sentence chunking
 async function fetchGoogleTTS(text: string, lang = 'en-US'): Promise<Buffer> {
   const chunks: string[] = [];
   let remaining = text.trim();
@@ -120,14 +209,25 @@ async function generateAudioResponse(text: string, voice: string) {
       headers: {
         'Content-Type': cached.mimeType,
         'Cache-Control': 'public, max-age=86400, immutable',
+        'Content-Length': cached.buffer.length.toString(),
       },
     });
   }
 
-  // Handle direct Google Natural voice choices
-  if (voice === 'Google-UK' || voice === 'British') {
+  const edgeVoiceName = EDGE_VOICE_MAP[voice] || 'en-US-GuyNeural';
+
+  // Strategy 1: For British or Australian voices, or long dialogues (> 180 chars),
+  // Edge Neural TTS is 5-10x faster and has native regional accents.
+  const isRegionalOrLong =
+    voice.includes('UK') ||
+    voice.includes('British') ||
+    voice.includes('AU') ||
+    voice.includes('Australian') ||
+    cleanText.length > 180;
+
+  if (isRegionalOrLong) {
     try {
-      const buffer = await fetchGoogleTTS(cleanText, 'en-GB');
+      const buffer = await fetchEdgeTTS(cleanText, edgeVoiceName);
       if (audioCache.size < 1000) {
         audioCache.set(cacheKey, { buffer, mimeType: 'audio/mpeg' });
       }
@@ -135,95 +235,60 @@ async function generateAudioResponse(text: string, voice: string) {
         headers: {
           'Content-Type': 'audio/mpeg',
           'Cache-Control': 'public, max-age=86400, immutable',
+          'Content-Length': buffer.length.toString(),
         },
       });
-    } catch (e: any) {
-      console.warn('Google UK TTS error:', e);
+    } catch {
+      // Fall through to Gemini or Google fallback
     }
   }
 
-  if (voice === 'Google-AU' || voice === 'Australian') {
-    try {
-      const buffer = await fetchGoogleTTS(cleanText, 'en-AU');
-      if (audioCache.size < 1000) {
-        audioCache.set(cacheKey, { buffer, mimeType: 'audio/mpeg' });
-      }
-      return new NextResponse(new Uint8Array(buffer), {
-        headers: {
-          'Content-Type': 'audio/mpeg',
-          'Cache-Control': 'public, max-age=86400, immutable',
-        },
-      });
-    } catch (e: any) {
-      console.warn('Google AU TTS error:', e);
-    }
-  }
-
-  // 1. Try Gemini Studio Neural TTS (Puck, Kore, Charon, Aoede, Fenrir)
+  // Strategy 2: For standard Studio voices (Puck, Kore, Aoede, Charon, Fenrir), try Gemini first
   const geminiVoices = ['Puck', 'Charon', 'Kore', 'Fenrir', 'Aoede'];
-  const targetVoice = geminiVoices.includes(voice) ? voice : 'Puck';
-
-  const keys = [
-    process.env.GEMINI_API_KEY?.trim(),
-    process.env.GEMINI_API_KEY_BACKUP?.trim(),
-    process.env.NEXT_PUBLIC_GEMINI_API_KEY?.trim(),
-  ].filter((k): k is string => Boolean(k && k.length > 10));
-
-  const uniqueKeys = Array.from(new Set(keys));
-  const models = ['gemini-2.5-flash-preview-tts', 'gemini-3.8-flash-tts'];
-
-  // Try Gemini API keys
-  for (const key of uniqueKeys) {
-    for (const model of models) {
-      try {
-        const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`;
-        const res = await fetch(url, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            contents: [{ parts: [{ text: cleanText }] }],
-            generationConfig: {
-              responseModalities: ['AUDIO'],
-              speechConfig: {
-                voiceConfig: {
-                  prebuiltVoiceConfig: {
-                    voiceName: targetVoice,
-                  },
-                },
-              },
-            },
-          }),
-        });
-
-        if (res.ok) {
-          const data = await res.json();
-          const part = data.candidates?.[0]?.content?.parts?.[0];
-          if (part?.inlineData?.data) {
-            const rawPcm = Buffer.from(part.inlineData.data, 'base64');
-            // Convert raw PCM to proper standard 24kHz 16-bit Mono WAV format
-            const wavBuffer = addWavHeader(rawPcm, 24000, 1, 16);
-
-            if (audioCache.size < 1000) {
-              audioCache.set(cacheKey, { buffer: wavBuffer, mimeType: 'audio/wav' });
-            }
-
-            return new NextResponse(new Uint8Array(wavBuffer), {
-              headers: {
-                'Content-Type': 'audio/wav',
-                'Cache-Control': 'public, max-age=86400, immutable',
-              },
-            });
-          }
-        }
-      } catch (e: any) {
-        // Fall through to try next key/model or fallback
+  if (geminiVoices.includes(voice)) {
+    try {
+      const wavBuffer = await fetchGeminiTTS(cleanText, voice);
+      if (audioCache.size < 1000) {
+        audioCache.set(cacheKey, { buffer: wavBuffer, mimeType: 'audio/wav' });
       }
+      return new NextResponse(new Uint8Array(wavBuffer), {
+        headers: {
+          'Content-Type': 'audio/wav',
+          'Cache-Control': 'public, max-age=86400, immutable',
+          'Content-Length': wavBuffer.length.toString(),
+        },
+      });
+    } catch {
+      // Fall through to Edge TTS
     }
   }
 
-  // 2. Seamless Fallback: Google Natural Audio (fluent, non-robotic, zero rate limit)
+  // Strategy 3: Edge Neural TTS fallback for any voice
   try {
-    const fallbackBuffer = await fetchGoogleTTS(cleanText, 'en-US');
+    const buffer = await fetchEdgeTTS(cleanText, edgeVoiceName);
+    if (audioCache.size < 1000) {
+      audioCache.set(cacheKey, { buffer, mimeType: 'audio/mpeg' });
+    }
+    return new NextResponse(new Uint8Array(buffer), {
+      headers: {
+        'Content-Type': 'audio/mpeg',
+        'Cache-Control': 'public, max-age=86400, immutable',
+        'Content-Length': buffer.length.toString(),
+      },
+    });
+  } catch {
+    // Fall through to Google Natural TTS
+  }
+
+  // Strategy 4: Seamless final fallback: Google Natural TTS (always works)
+  try {
+    const lang = voice.includes('UK') || voice.includes('British')
+      ? 'en-GB'
+      : voice.includes('AU') || voice.includes('Australian')
+      ? 'en-AU'
+      : 'en-US';
+
+    const fallbackBuffer = await fetchGoogleTTS(cleanText, lang);
     if (audioCache.size < 1000) {
       audioCache.set(cacheKey, { buffer: fallbackBuffer, mimeType: 'audio/mpeg' });
     }
@@ -231,6 +296,7 @@ async function generateAudioResponse(text: string, voice: string) {
       headers: {
         'Content-Type': 'audio/mpeg',
         'Cache-Control': 'public, max-age=86400, immutable',
+        'Content-Length': fallbackBuffer.length.toString(),
       },
     });
   } catch (err: any) {

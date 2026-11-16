@@ -9,9 +9,11 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@andresaya/edge-tts": "^1.9.1",
     "@supabase/supabase-js": "^2.119.0",
     "canvas-confetti": "^1.9.3",
     "clsx": "^2.1.1",
+    "edge-tts-universal": "^1.4.0",
     "framer-motion": "^11.11.11",
     "lucide-react": "^0.454.0",
     "next": "14.2.15",

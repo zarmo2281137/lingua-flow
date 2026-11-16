@@ -23,6 +23,7 @@ import {
   X,
   Gauge,
   User,
+  Loader2,
 } from 'lucide-react';
 import { playHumanAudio, stopHumanAudio, HUMAN_VOICES } from '@/utils/speech';
 import { getUserStats, saveListeningProgress, addXp } from '@/utils/storage';
@@ -34,6 +35,7 @@ interface ListeningPlayerProps {
 
 export const ListeningPlayer: React.FC<ListeningPlayerProps> = ({ track, onBack }) => {
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isLoadingAudio, setIsLoadingAudio] = useState(false);
   const [playingSentenceIndex, setPlayingSentenceIndex] = useState<number | null>(null);
   const [playbackSpeed, setPlaybackSpeed] = useState<number>(1.0);
   const [selectedVoice, setSelectedVoice] = useState<string>(track.preferredVoice || 'Puck');
@@ -64,33 +66,83 @@ export const ListeningPlayer: React.FC<ListeningPlayerProps> = ({ track, onBack 
     };
   }, [track]);
 
+  // Silently prime server and browser cache for instant playback on first click
+  useEffect(() => {
+    const clean = track.fullAudioText?.replace(/[*_#`~\[\]()]/g, '').trim();
+    if (clean) {
+      const url = `/api/tts?text=${encodeURIComponent(clean)}&voice=${encodeURIComponent(selectedVoice)}`;
+      fetch(url, { priority: 'low' }).catch(() => {});
+    }
+  }, [track.id, track.fullAudioText, selectedVoice]);
+
   const toggleFullAudio = () => {
     if (isPlaying) {
       stopHumanAudio();
       setIsPlaying(false);
+      setIsLoadingAudio(false);
       setPlayingSentenceIndex(null);
       return;
     }
 
-    setIsPlaying(true);
+    if (isLoadingAudio) {
+      // Prevent accidental double clicks from aborting current loading request
+      return;
+    }
+
+    setIsLoadingAudio(true);
+    setPlayingSentenceIndex(null);
+
     playHumanAudio(track.fullAudioText, {
       voice: selectedVoice,
       rate: playbackSpeed,
-      onStart: () => setIsPlaying(true),
+      onStart: () => {
+        setIsLoadingAudio(false);
+        setIsPlaying(true);
+      },
       onEnd: () => {
+        setIsLoadingAudio(false);
         setIsPlaying(false);
         setPlayingSentenceIndex(null);
       },
       onError: () => {
+        setIsLoadingAudio(false);
         setIsPlaying(false);
         setPlayingSentenceIndex(null);
       },
     });
   };
 
+  const handleVoiceChange = (newVoice: string) => {
+    setSelectedVoice(newVoice);
+    if (isPlaying || isLoadingAudio) {
+      stopHumanAudio();
+      setIsPlaying(false);
+      setIsLoadingAudio(true);
+      playHumanAudio(track.fullAudioText, {
+        voice: newVoice,
+        rate: playbackSpeed,
+        onStart: () => {
+          setIsLoadingAudio(false);
+          setIsPlaying(true);
+        },
+        onEnd: () => {
+          setIsLoadingAudio(false);
+          setIsPlaying(false);
+          setPlayingSentenceIndex(null);
+        },
+        onError: () => {
+          setIsLoadingAudio(false);
+          setIsPlaying(false);
+          setPlayingSentenceIndex(null);
+        },
+      });
+    }
+  };
+
   const playSentence = (text: string, idx: number) => {
     stopHumanAudio();
     setIsPlaying(false);
+    setIsLoadingAudio(false);
     setPlayingSentenceIndex(idx);
 
     playHumanAudio(text, {
@@ -207,7 +259,7 @@ export const ListeningPlayer: React.FC<ListeningPlayerProps> = ({ track, onBack 
             <Headphones className="w-3.5 h-3.5 text-zinc-500" />
             <select
               value={selectedVoice}
-              onChange={(e) => setSelectedVoice(e.target.value)}
+              onChange={(e) => handleVoiceChange(e.target.value)}
               className="bg-transparent text-zinc-700 dark:text-zinc-200 font-medium focus:outline-none cursor-pointer text-xs"
             >
               {HUMAN_VOICES.map((v) => (
@@ -238,14 +290,29 @@ export const ListeningPlayer: React.FC<ListeningPlayerProps> = ({ track, onBack 
           {/* Main Play Audio Button */}
           <button
             onClick={toggleFullAudio}
+            disabled={isLoadingAudio}
             className={`px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 transition shadow-sm ${
               isPlaying
                 ? 'bg-rose-600 text-white hover:bg-rose-700 ring-2 ring-rose-200 dark:ring-rose-950'
+                : isLoadingAudio
+                ? 'bg-zinc-700 text-white cursor-wait opacity-90'
                 : 'bg-zinc-900 hover:bg-zinc-800 text-white dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-100'
             }`}
           >
-            {isPlaying ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5 fill-current" />}
-            <span>{isPlaying ? 'Зупинити аудіо' : 'Слухати весь запис'}</span>
+            {isLoadingAudio ? (
+              <Loader2 className="w-3.5 h-3.5 animate-spin" />
+            ) : isPlaying ? (
+              <Pause className="w-3.5 h-3.5" />
+            ) : (
+              <Play className="w-3.5 h-3.5 fill-current" />
+            )}
+            <span>
+              {isLoadingAudio
+                ? 'Завантаження...'
+                : isPlaying
+                ? 'Зупинити аудіо'
+                : 'Слухати весь запис'}
+            </span>
           </button>
         </div>
       </div>
@@ -289,13 +356,24 @@ export const ListeningPlayer: React.FC<ListeningPlayerProps> = ({ track, onBack 
             <div className="flex items-center gap-3">
               <button
                 onClick={toggleFullAudio}
-                className="w-12 h-12 rounded-2xl bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 flex items-center justify-center shadow-md hover:scale-105 transition"
+                disabled={isLoadingAudio}
+                className="w-12 h-12 rounded-2xl bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 flex items-center justify-center shadow-md hover:scale-105 transition disabled:opacity-80"
               >
-                {isPlaying ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5 fill-current ml-0.5" />}
+                {isLoadingAudio ? (
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                ) : isPlaying ? (
+                  <Pause className="w-5 h-5" />
+                ) : (
+                  <Play className="w-5 h-5 fill-current ml-0.5" />
+                )}
               </button>
               <div>
                 <span className="text-xs font-bold text-zinc-900 dark:text-white block">
-                  {isPlaying ? 'Відтворюється аудіозапис...' : 'Натисніть для запуску повного аудіо'}
+                  {isLoadingAudio
+                    ? 'Підготовка студійного аудіо...'
+                    : isPlaying
+                    ? `Відтворюється аудіозапис (${selectedVoice})...`
+                    : 'Натисніть для запуску повного аудіо'}
                 </span>
                 <span className="text-[11px] text-zinc-500 dark:text-zinc-400">
                   Ви також можете натиснути на будь-яку репліку нижче, щоб почути конкретне речення.

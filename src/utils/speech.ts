@@ -68,19 +68,35 @@ export const HUMAN_VOICES: HumanVoiceOption[] = [
   },
   {
     id: 'Google-UK',
-    name: 'British Natural (UK)',
+    name: 'Sonia — Жіночий Studio (UK)',
     gender: 'female',
     accent: 'British UK',
     description: 'Еталонна оксфордська вимова',
-    isStudio: false,
+    isStudio: true,
+  },
+  {
+    id: 'British-Male',
+    name: 'Ryan — Чоловічий Studio (UK)',
+    gender: 'male',
+    accent: 'British UK',
+    description: 'Класичний британський чоловічий голос',
+    isStudio: true,
   },
   {
     id: 'Google-US',
-    name: 'American Natural (US)',
+    name: 'Michelle — Жіночий Studio (US)',
     gender: 'female',
     accent: 'American US',
     description: 'Чиста американська вимова',
-    isStudio: false,
+    isStudio: true,
+  },
+  {
+    id: 'Google-AU',
+    name: 'Natasha — Жіночий Studio (AU)',
+    gender: 'female',
+    accent: 'Australian AU',
+    description: 'Природна австралійська вимова',
+    isStudio: true,
   },
 ];
 
@@ -154,18 +170,27 @@ export const playHumanAudio = (
   };
 
   audio.onerror = (e) => {
-    console.warn('Human audio streaming error, falling back to Web Speech:', e);
+    console.warn('Human audio streaming error:', e);
     if (globalAudioElement === audio) {
       globalAudioElement = null;
     }
-    // Fallback to browser synthesis if network fails
-    speakEnglishText(cleanText, options?.rate || 1.0, options?.onStart, options?.onEnd, options?.voice);
+    if (options?.onError) {
+      options.onError(e);
+    }
   };
 
   audio.play().catch((err) => {
+    if (err.name === 'AbortError') {
+      // User paused or interrupted audio intentionally, do not error or fallback
+      return;
+    }
     console.warn('Audio play autoplay restriction or error:', err);
-    // If audio element failed due to browser restriction, fall back
-    speakEnglishText(cleanText, options?.rate || 1.0, options?.onStart, options?.onEnd, options?.voice);
+    if (globalAudioElement === audio) {
+      globalAudioElement = null;
+    }
+    if (options?.onError) {
+      options.onError(err);
+    }
   });
 
   return () => {
