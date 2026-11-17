@@ -63,8 +63,32 @@ export const ListeningPlayer: React.FC<ListeningPlayerProps> = ({ track, onBack 
     if (stats.voiceSpeed) setPlaybackSpeed(stats.voiceSpeed);
     return () => {
       stopHumanAudio();
+      setIsPlaying(false);
+      setIsLoadingAudio(false);
+      setPlayingSentenceIndex(null);
+      setIsPlayingSnippet(false);
     };
-  }, [track]);
+  }, [track.id]);
+
+  const handleBack = () => {
+    stopHumanAudio();
+    setIsPlaying(false);
+    setIsLoadingAudio(false);
+    setPlayingSentenceIndex(null);
+    setIsPlayingSnippet(false);
+    onBack();
+  };
+
+  const handleTabSwitch = (tab: 'audio' | 'exercises') => {
+    if (tab !== activeTab) {
+      stopHumanAudio();
+      setIsPlaying(false);
+      setIsLoadingAudio(false);
+      setPlayingSentenceIndex(null);
+      setIsPlayingSnippet(false);
+      setActiveTab(tab);
+    }
+  };
 
   // Silently prime server and browser cache for instant playback on first click
   useEffect(() => {
@@ -210,11 +234,14 @@ export const ListeningPlayer: React.FC<ListeningPlayerProps> = ({ track, onBack 
   };
 
   const switchExercise = (idx: number) => {
+    stopHumanAudio();
+    setIsPlaying(false);
+    setIsLoadingAudio(false);
+    setPlayingSentenceIndex(null);
+    setIsPlayingSnippet(false);
     setCurrentExerciseIdx(idx);
     setSelectedOption(null);
     setDictationInput('');
-    stopHumanAudio();
-    setIsPlayingSnippet(false);
   };
 
   const answeredTotal = Object.keys(exerciseResults).length;
@@ -228,7 +255,7 @@ export const ListeningPlayer: React.FC<ListeningPlayerProps> = ({ track, onBack 
       <div className="p-5 sm:p-6 rounded-2xl bg-white dark:bg-[#12141A] border border-zinc-200/90 dark:border-zinc-800 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div className="flex items-center gap-3">
           <button
-            onClick={onBack}
+            onClick={handleBack}
             className="p-2 rounded-xl text-zinc-500 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 transition shrink-0"
             title="Назад до списку треків"
           >
@@ -322,7 +349,7 @@ export const ListeningPlayer: React.FC<ListeningPlayerProps> = ({ track, onBack 
       <div className="flex justify-center">
         <div className="inline-flex p-1 bg-zinc-100 dark:bg-zinc-800/80 rounded-xl w-full max-w-sm">
           <button
-            onClick={() => setActiveTab('audio')}
+            onClick={() => handleTabSwitch('audio')}
             className={`flex-1 py-2 px-3 rounded-lg text-xs font-medium flex items-center justify-center gap-2 transition ${
               activeTab === 'audio'
                 ? 'bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 shadow-sm font-semibold'
@@ -334,7 +361,7 @@ export const ListeningPlayer: React.FC<ListeningPlayerProps> = ({ track, onBack 
           </button>
 
           <button
-            onClick={() => setActiveTab('exercises')}
+            onClick={() => handleTabSwitch('exercises')}
             className={`flex-1 py-2 px-3 rounded-lg text-xs font-medium flex items-center justify-center gap-2 transition ${
               activeTab === 'exercises'
                 ? 'bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 shadow-sm font-semibold'
@@ -514,7 +541,7 @@ export const ListeningPlayer: React.FC<ListeningPlayerProps> = ({ track, onBack 
           {/* CTA to Practice Tab */}
           <div className="flex justify-end pt-2">
             <button
-              onClick={() => setActiveTab('exercises')}
+              onClick={() => handleTabSwitch('exercises')}
               className="px-6 py-3 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-white dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-100 font-semibold text-xs sm:text-sm flex items-center gap-2 transition shadow-sm"
             >
               <span>Перейти до завдань на розуміння</span>
@@ -749,7 +776,7 @@ export const ListeningPlayer: React.FC<ListeningPlayerProps> = ({ track, onBack 
 
               <div className="pt-2 flex justify-end">
                 <button
-                  onClick={onBack}
+                  onClick={handleBack}
                   className="px-5 py-2.5 rounded-xl bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 font-semibold text-xs transition"
                 >
                   Повернутися до програми аудіювання

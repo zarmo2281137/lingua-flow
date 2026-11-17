@@ -18,6 +18,7 @@ import {
 } from 'lucide-react';
 import { getUserStats, syncWithCloud } from '@/utils/storage';
 import { isSupabaseConfigured } from '@/utils/supabase';
+import { stopHumanAudio } from '@/utils/speech';
 import { ApiKeyModal } from '../speaking/ApiKeyModal';
 import { UserStats } from '@/types/user';
 
@@ -26,6 +27,21 @@ export const Navbar: React.FC = () => {
   const [stats, setStats] = useState<UserStats | null>(null);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  // Stop any playing audio whenever user navigates to a different page
+  useEffect(() => {
+    stopHumanAudio();
+  }, [pathname]);
+
+  useEffect(() => {
+    const handlePopState = () => {
+      stopHumanAudio();
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+    };
+  }, []);
 
   useEffect(() => {
     setStats(getUserStats());

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { LessonNote } from '@/types/course';
 import {
   Volume2,
@@ -23,6 +23,12 @@ interface TheoryNotesProps {
 
 export const TheoryNotes: React.FC<TheoryNotesProps> = ({ notes, onGoToQuiz, onGoToExam, onGoToListening }) => {
   const [playingWord, setPlayingWord] = useState<string | null>(null);
+
+  useEffect(() => {
+    return () => {
+      stopSpeech();
+    };
+  }, []);
 
   const handleSpeak = (text: string) => {
     if (playingWord === text) {

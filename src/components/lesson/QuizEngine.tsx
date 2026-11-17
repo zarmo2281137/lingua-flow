@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Exercise } from '@/types/course';
 import {
   CheckCircle2,
@@ -45,6 +45,12 @@ export const QuizEngine: React.FC<QuizEngineProps> = ({
   const [jumpInput, setJumpInput] = useState('');
   const [isPlayingQuestion, setIsPlayingQuestion] = useState(false);
 
+  useEffect(() => {
+    return () => {
+      stopSpeech();
+    };
+  }, []);
+
   const currentEx = exercises[currentIndex] || exercises[0];
 
   const handleSpeakQuestion = (text: string) => {
@@ -66,6 +72,8 @@ export const QuizEngine: React.FC<QuizEngineProps> = ({
 
   const switchTest = (idx: number) => {
     if (idx < 0 || idx >= exercises.length) return;
+    stopSpeech();
+    setIsPlayingQuestion(false);
     setCurrentIndex(idx);
 
     const prevResult = resultsMap[idx];

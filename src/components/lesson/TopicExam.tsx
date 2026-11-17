@@ -172,7 +172,27 @@ export const TopicExam: React.FC<TopicExamProps> = ({
     setAnswers((prev) => ({ ...prev, [currentIndex]: nextSent }));
   };
 
+  const handleBackToPractice = () => {
+    stopHumanAudio();
+    setPlayingAudioIndex(null);
+    onBackToPractice();
+  };
+
+  const handleBackToTheory = () => {
+    stopHumanAudio();
+    setPlayingAudioIndex(null);
+    onBackToTheory();
+  };
+
+  const handleNextLesson = () => {
+    stopHumanAudio();
+    setPlayingAudioIndex(null);
+    if (onNextLesson) onNextLesson();
+  };
+
   const handleFinishExam = () => {
+    stopHumanAudio();
+    setPlayingAudioIndex(null);
     if (timerRef.current) clearInterval(timerRef.current);
 
     // Calculate score
@@ -327,7 +347,7 @@ export const TopicExam: React.FC<TopicExamProps> = ({
           {/* Action Buttons */}
           <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-3">
             <button
-              onClick={onBackToTheory}
+              onClick={handleBackToTheory}
               className="w-full sm:w-auto px-4 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 text-xs font-semibold text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition flex items-center justify-center gap-1.5"
             >
               <BookOpen className="w-3.5 h-3.5" />
@@ -778,7 +798,7 @@ export const TopicExam: React.FC<TopicExamProps> = ({
 
             <div className="flex items-center gap-2.5 w-full sm:w-auto">
               <button
-                onClick={onBackToPractice}
+                onClick={handleBackToPractice}
                 className="flex-1 sm:flex-initial px-4 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 text-xs font-semibold text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition"
               >
                 До практики
@@ -786,7 +806,7 @@ export const TopicExam: React.FC<TopicExamProps> = ({
 
               {onNextLesson && (
                 <button
-                  onClick={onNextLesson}
+                  onClick={handleNextLesson}
                   className="flex-1 sm:flex-initial px-5 py-2.5 rounded-xl bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 font-semibold text-xs transition flex items-center justify-center gap-1.5 shadow-sm"
                 >
                   <span>Наступний урок</span>

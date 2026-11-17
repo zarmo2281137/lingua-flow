@@ -101,6 +101,8 @@ export const HUMAN_VOICES: HumanVoiceOption[] = [
 ];
 
 let globalAudioElement: HTMLAudioElement | null = null;
+let currentAudioSessionId = 0;
+const activeAudios = new Set<HTMLAudioElement>();
 
 export interface PlayAudioOptions {
   audioUrl?: string;
@@ -112,22 +114,42 @@ export interface PlayAudioOptions {
 }
 
 export const stopHumanAudio = (): void => {
-  if (globalAudioElement) {
+  currentAudioSessionId++;
+
+  activeAudios.forEach((audio) => {
     try {
-      globalAudioElement.pause();
-      globalAudioElement.currentTime = 0;
-      globalAudioElement.src = '';
+      audio.onplay = null;
+      audio.onended = null;
+      audio.onerror = null;
+      audio.pause();
+      audio.currentTime = 0;
+      audio.removeAttribute('src');
+      audio.load();
     } catch (e) {
       // ignore
     }
-    globalAudioElement = null;
-  }
+  });
+  activeAudios.clear();
+  globalAudioElement = null;
+
   if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
     try {
       window.speechSynthesis.cancel();
     } catch (e) {
       // ignore
     }
+  }
+
+  if (typeof document !== 'undefined') {
+    try {
+      const domAudios = document.querySelectorAll('audio');
+      domAudios.forEach((el) => {
+        try {
+          el.pause();
+          el.currentTime = 0;
+        } catch (e) {}
+      });
+    } catch (e) {}
   }
 };
 
@@ -139,6 +161,8 @@ export const playHumanAudio = (
   options?: PlayAudioOptions
 ): (() => void) => {
   stopHumanAudio();
+
+  const sessionId = ++currentAudioSessionId;
 
   const cleanText = text
     .replace(/[*_#`~]/g, '')
@@ -157,36 +181,79 @@ export const playHumanAudio = (
 
   const audio = new Audio(url);
   globalAudioElement = audio;
+  activeAudios.add(audio);
 
   if (options?.rate) {
     audio.playbackRate = Math.max(0.7, Math.min(1.4, options.rate));
   }
 
   audio.onplay = () => {
+    if (sessionId !== currentAudioSessionId) {
+      try {
+        audio.pause();
+      } catch (e) {}
+      return;
+    }
     if (options?.onStart) options.onStart();
   };
 
   audio.onended = () => {
+    activeAudios.delete(audio);
     if (globalAudioElement === audio) {
       globalAudioElement = null;
     }
-    if (options?.onEnd) options.onEnd();
+    if (sessionId === currentAudioSessionId && options?.onEnd) {
+      options.onEnd();
+    }
   };
 
   audio.onerror = (e) => {
-    // If a direct audioUrl failed, seamlessly fallback to server neural TTS
+    activeAudios.delete(audio);
+    if (sessionId !== currentAudioSessionId) {
+      return; // Session cancelled, do nothing!
+    }
+
+    // If a direct audioUrl failed and session is still active, fallback to server neural TTS
     if (isDirectUrl) {
       const fallbackUrl = `/api/tts?text=${encodeURIComponent(cleanText)}&voice=${encodeURIComponent(voice)}`;
-      audio.src = fallbackUrl;
-      audio.load();
-      audio.play().catch((err) => {
-        if (globalAudioElement === audio) globalAudioElement = null;
-        if (options?.onError) options.onError(err);
+      const fallbackAudio = new Audio(fallbackUrl);
+      globalAudioElement = fallbackAudio;
+      activeAudios.add(fallbackAudio);
+
+      if (options?.rate) {
+        fallbackAudio.playbackRate = Math.max(0.7, Math.min(1.4, options.rate));
+      }
+
+      fallbackAudio.onplay = () => {
+        if (sessionId !== currentAudioSessionId) {
+          try { fallbackAudio.pause(); } catch (e) {}
+          return;
+        }
+        if (options?.onStart) options.onStart();
+      };
+
+      fallbackAudio.onended = () => {
+        activeAudios.delete(fallbackAudio);
+        if (globalAudioElement === fallbackAudio) globalAudioElement = null;
+        if (sessionId === currentAudioSessionId && options?.onEnd) options.onEnd();
+      };
+
+      fallbackAudio.onerror = (fallbackErr) => {
+        activeAudios.delete(fallbackAudio);
+        if (globalAudioElement === fallbackAudio) globalAudioElement = null;
+        if (sessionId === currentAudioSessionId && options?.onError) options.onError(fallbackErr);
+      };
+
+      fallbackAudio.play().catch((err) => {
+        activeAudios.delete(fallbackAudio);
+        if (globalAudioElement === fallbackAudio) globalAudioElement = null;
+        if (sessionId === currentAudioSessionId && err.name !== 'AbortError' && options?.onError) {
+          options.onError(err);
+        }
       });
       return;
     }
 
-    console.warn('Human audio streaming error:', e);
     if (globalAudioElement === audio) {
       globalAudioElement = null;
     }
@@ -196,11 +263,13 @@ export const playHumanAudio = (
   };
 
   audio.play().catch((err) => {
-    if (err.name === 'AbortError') {
-      // User paused or interrupted audio intentionally, do not error or fallback
+    if (err.name === 'AbortError' || sessionId !== currentAudioSessionId) {
+      // User paused, stopped or interrupted audio intentionally, do not error or fallback
+      activeAudios.delete(audio);
       return;
     }
     console.warn('Audio play autoplay restriction or error:', err);
+    activeAudios.delete(audio);
     if (globalAudioElement === audio) {
       globalAudioElement = null;
     }
@@ -210,8 +279,9 @@ export const playHumanAudio = (
   });
 
   return () => {
-    audio.pause();
-    audio.currentTime = 0;
+    if (sessionId === currentAudioSessionId) {
+      stopHumanAudio();
+    }
   };
 };
 

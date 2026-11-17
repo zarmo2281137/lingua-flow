@@ -18,6 +18,7 @@ import {
   BookOpen,
 } from 'lucide-react';
 import { getUserStats } from '@/utils/storage';
+import { stopHumanAudio } from '@/utils/speech';
 import { UserStats } from '@/types/user';
 
 function ListeningContent() {
@@ -40,8 +41,16 @@ function ListeningContent() {
     };
   }, []);
 
+  // Always stop audio on unmount of the page
+  useEffect(() => {
+    return () => {
+      stopHumanAudio();
+    };
+  }, []);
+
   // Sync with searchParams
   useEffect(() => {
+    stopHumanAudio();
     const trackId = searchParams.get('track');
     if (trackId) {
       const found = getListeningTrackById(trackId);
@@ -52,11 +61,13 @@ function ListeningContent() {
   }, [searchParams]);
 
   const handleSelectTrack = (track: ListeningTrack) => {
+    stopHumanAudio();
     setActiveTrack(track);
     router.push(`/listening?track=${track.id}`);
   };
 
   const handleBackToList = () => {
+    stopHumanAudio();
     setActiveTrack(null);
     router.push('/listening');
   };

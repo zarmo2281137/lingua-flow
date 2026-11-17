@@ -10,6 +10,7 @@ import { QuizEngine } from '@/components/lesson/QuizEngine';
 import { TopicExam } from '@/components/lesson/TopicExam';
 import { ListeningPlayer } from '@/components/listening/ListeningPlayer';
 import { getListeningTrackByTopicId } from '@/data/listening/tracks';
+import { stopHumanAudio } from '@/utils/speech';
 import { ArrowLeft, ArrowRight, BookOpen, HelpCircle, FileCheck, Headphones } from 'lucide-react';
 
 export default function LessonPage() {
@@ -21,9 +22,17 @@ export default function LessonPage() {
   const initialTab = (searchParams.get('tab') as 'notes' | 'quiz' | 'listening' | 'exam') || 'notes';
   const [activeTab, setActiveTab] = useState<'notes' | 'quiz' | 'listening' | 'exam'>(initialTab);
 
+  // Stop audio on page unmount
+  useEffect(() => {
+    return () => {
+      stopHumanAudio();
+    };
+  }, []);
+
   useEffect(() => {
     const tabParam = searchParams.get('tab');
     if (tabParam === 'notes' || tabParam === 'quiz' || tabParam === 'listening' || tabParam === 'exam') {
+      stopHumanAudio();
       setActiveTab(tabParam);
     }
   }, [searchParams]);
@@ -56,6 +65,7 @@ export default function LessonPage() {
   const activeExercises = topicExercises.length > 0 ? topicExercises : topic.exercises;
 
   const handleTabChange = (tab: 'notes' | 'quiz' | 'listening' | 'exam') => {
+    stopHumanAudio();
     setActiveTab(tab);
     router.replace(`/learn/${params.level}/${topic.id}?tab=${tab}`);
   };
