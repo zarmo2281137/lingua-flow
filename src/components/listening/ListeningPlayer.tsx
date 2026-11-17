@@ -80,14 +80,7 @@ export const ListeningPlayer: React.FC<ListeningPlayerProps> = ({ track, onBack 
   };
 
   const handleTabSwitch = (tab: 'audio' | 'exercises') => {
-    if (tab !== activeTab) {
-      stopHumanAudio();
-      setIsPlaying(false);
-      setIsLoadingAudio(false);
-      setPlayingSentenceIndex(null);
-      setIsPlayingSnippet(false);
-      setActiveTab(tab);
-    }
+    setActiveTab(tab);
   };
 
   // Silently prime server and browser cache for instant playback on first click
@@ -234,11 +227,10 @@ export const ListeningPlayer: React.FC<ListeningPlayerProps> = ({ track, onBack 
   };
 
   const switchExercise = (idx: number) => {
-    stopHumanAudio();
-    setIsPlaying(false);
-    setIsLoadingAudio(false);
-    setPlayingSentenceIndex(null);
-    setIsPlayingSnippet(false);
+    if (isPlayingSnippet) {
+      stopHumanAudio();
+      setIsPlayingSnippet(false);
+    }
     setCurrentExerciseIdx(idx);
     setSelectedOption(null);
     setDictationInput('');
